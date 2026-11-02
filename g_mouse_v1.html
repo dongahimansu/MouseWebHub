@@ -660,7 +660,7 @@
                         <p class="system-copy">Connect your mouse to view its details and battery information, or to prepare for a firmware update.</p>
                         <details class="technical-note">
                             <summary aria-label="Technical details" title="Technical details">i</summary>
-                            <p>The WebHID picker name comes from the device firmware. This firmware identifies as G Mouse V1; after flashing, remove/forget the old mouse in Windows and pair it again if the picker still says Unknown Device. WebHID provides diagnostics through vendor reports 7/8. Firmware upload uses a separate Web Bluetooth connection to MCUmgr SMP. Grant access separately for each browser API. If the vendor HID collection is missing, remove/re-pair the mouse in Windows to refresh its HID report map.</p>
+                            <p>The WebHID picker name comes from the firmware, which identifies as G Mouse V1. If it still shows Unknown Device after flashing, remove/forget the mouse in Windows and pair it again. WebHID provides diagnostics through vendor reports 7/8. Firmware upload uses MCUmgr SMP over BLE or the USB CDC serial port; grant access separately for WebHID and the selected transport. If the vendor HID collection is missing, remove and re-pair the mouse to refresh its HID report map. Use a supported Chromium browser over HTTPS or localhost.</p>
                         </details>
                     </div>
                     <div id="deviceInfo" style="display: none;">
@@ -828,22 +828,23 @@
             <section class="panel">
                 <div class="panel-header">
                     <span class="step-badge">6</span>
-                    <div class="panel-title">Firmware Over-The-Air Update (SMP)</div>
+                    <div class="panel-title">Firmware Update (USB / BLE SMP)</div>
                 </div>
                 <div class="panel-body firmware-body">
                     <div class="firmware-row">
                         <div class="user-guidance">
-                            <p class="firmware-text">Choose the firmware file for your mouse and verify it before flashing. Keep the mouse connected during the update.</p>
+                            <p class="firmware-text">Choose USB or BLE, then select and verify the signed firmware image before flashing. Keep the selected connection active during the update.</p>
                             <details class="technical-note">
                                 <summary aria-label="Technical details" title="Technical details">i</summary>
-                                <p>Select a signed MCUboot application image (for example, <code>app_update.bin</code>). Verify its header and SHA-256 before upload. MCUboot validates the image signature on the mouse. Use a Web Bluetooth-capable browser over HTTPS or localhost.</p>
+                                <p>Select the signed MCUboot image built for the inactive slot (for example, the generated update image). The page checks its header and SHA-256; MCUboot validates the signature. USB uses application-side MCUmgr SMP over CDC ACM, so it remains compatible with dual-slot background updates; BLE uses Web Bluetooth SMP. Both require a supported Chromium browser over HTTPS or localhost.</p>
                             </details>
                         </div>
                         <div class="styled-file">
                             <input type="file" id="fileFirmware" accept=".bin,application/octet-stream" disabled>
                             <label for="fileFirmware" class="file-label">📁 Choose File</label>
                         </div>
-                        <button id="btnConnectDfu" disabled>Connect SMP</button>
+                        <button id="btnConnectBleSmp" disabled>Connect BLE SMP</button>
+                        <button id="btnConnectUsbSmp" disabled>Connect USB SMP</button>
                         <button id="btnVerifyFirmware" disabled>Verify Firmware</button>
                         <button id="btnStartUpdate" disabled>Flash Firmware</button>
                     </div>
@@ -874,13 +875,27 @@
         const HID_BATTERY_UPDATE_RECIPIENT = 0xff;
         const HID_BATTERY_UPDATE_EVENT_ID = 0xff;
         const HID_REPORT_SIZE = 29;
+        const USB_SMP_FRAME_PAYLOAD_SIZE = 124;
+        const USB_SMP_MAX_PACKET_SIZE = 512;
 
         let bleDevice = null;
         let bleGattServer = null;
         let smpCharacteristic = null;
+        let smpTransport = null;
+        let usbSmpPort = null;
+        let usbSmpReader = null;
+        let usbSmpWriter = null;
+        let usbSmpReadPromise = null;
+        let usbSmpDisconnectRequested = false;
+        let usbSmpLine = [];
+        let usbSmpFrame = '';
+        let usbSmpExpectedLength = 0;
+        let usbSmpResponseHandler = null;
+        let usbSmpResponseReject = null;
         let binArrayBuffer = null;
         let verifiedFirmware = null;
         let smpSequence = 0;
+        let isConnectingSmp = false;
         let isUpdating = false;
         let isVerifyingFirmware = false;
         let isPreparingDfu = false;
@@ -904,13 +919,16 @@
         function updateFirmwareActionButtons() {
             document.getElementById('btnCheckDfuReadiness').disabled =
                 !hidDevice || !hidDevice.opened || isPreparingDfu || isDfuReadinessVerified || isUpdating;
-            document.getElementById('btnConnectDfu').disabled =
-                !isDfuReadinessVerified || Boolean(smpCharacteristic) || !navigator.bluetooth || isUpdating;
+            document.getElementById('btnConnectBleSmp').disabled =
+                !isDfuReadinessVerified || isConnectingSmp || Boolean(smpTransport) || !navigator.bluetooth || isUpdating;
+            document.getElementById('btnConnectUsbSmp').disabled =
+                !isDfuReadinessVerified || isConnectingSmp || Boolean(smpTransport) || !navigator.serial || isUpdating;
             document.getElementById('fileFirmware').disabled = !isDfuReadinessVerified || isUpdating;
             document.getElementById('btnVerifyFirmware').disabled =
                 !isDfuReadinessVerified || !binArrayBuffer || isUpdating || isVerifyingFirmware;
             document.getElementById('btnStartUpdate').disabled =
-                !isDfuReadinessVerified || !verifiedFirmware || !smpCharacteristic || isUpdating || isVerifyingFirmware;
+                !isDfuReadinessVerified || !verifiedFirmware || !smpTransport || isUpdating || isVerifyingFirmware;
+            updateDisconnectButton();
         }
 
         function setFirmwareStatus(message) {
@@ -1310,12 +1328,57 @@
 
         function handleGattDisconnected() {
             updateDisconnectButton();
-            smpCharacteristic = null;
-            isDfuReadinessVerified = false;
-            document.getElementById('lblDfuState').lastElementChild.textContent =
-                'Bluetooth disconnected. Reconnect, then prepare the device for SMP DFU again.';
-            updateFirmwareActionButtons();
+            if (smpTransport === 'ble') {
+                smpCharacteristic = null;
+                smpTransport = null;
+                isDfuReadinessVerified = false;
+                document.getElementById('lblDfuState').lastElementChild.textContent =
+                    'Bluetooth disconnected. Reconnect, then check update readiness again.';
+                updateFirmwareActionButtons();
+            }
             log('Bluetooth device disconnected.');
+        }
+
+        async function disconnectUsbSmp() {
+            const port = usbSmpPort;
+            if (!port) return;
+
+            const reader = usbSmpReader;
+            const readPromise = usbSmpReadPromise;
+            usbSmpDisconnectRequested = true;
+            if (reader) {
+                try {
+                    await reader.cancel();
+                } catch (error) {
+                    log(`USB SMP reader shutdown failed: ${error.message}`);
+                }
+            }
+            if (readPromise) await readPromise;
+            if (usbSmpPort === port) {
+                if (usbSmpReader) {
+                    try {
+                        usbSmpReader.releaseLock();
+                    } catch (error) {
+                        log(`USB SMP reader release failed: ${error.message}`);
+                    }
+                    usbSmpReader = null;
+                }
+                if (usbSmpWriter) {
+                    try {
+                        usbSmpWriter.releaseLock();
+                    } catch (error) {
+                        log(`USB SMP writer release failed: ${error.message}`);
+                    }
+                    usbSmpWriter = null;
+                }
+                usbSmpPort = null;
+                smpTransport = null;
+                try {
+                    await port.close();
+                } catch (error) {
+                    log(`USB SMP port close failed: ${error.message}`);
+                }
+            }
         }
 
         function registerDisconnectHandler(device) {
@@ -1415,8 +1478,9 @@
         function updateDisconnectButton() {
             const bluetoothConnected = Boolean(bleDevice && bleDevice.gatt.connected);
             const hidConnected = Boolean(hidDevice && hidDevice.opened);
+            const usbConnected = Boolean(usbSmpPort);
             document.getElementById('btnDisconnect').disabled =
-                !bluetoothConnected && !hidConnected;
+                isUpdating || (!bluetoothConnected && !hidConnected && !usbConnected);
         }
 
         document.getElementById('btnConnectNormal').addEventListener('click', async () => {
@@ -1433,10 +1497,16 @@
             }
         });
 
-        document.getElementById('btnConnectDfu').addEventListener('click', async () => {
+        document.getElementById('btnConnectBleSmp').addEventListener('click', async () => {
+            if (isConnectingSmp || smpTransport) return;
+            isConnectingSmp = true;
+            updateFirmwareActionButtons();
             try {
                 if (!navigator.bluetooth) {
                     throw new Error('Web Bluetooth is unavailable. Use Chrome or Edge over HTTPS or localhost.');
+                }
+                if (!isDfuReadinessVerified) {
+                    throw new Error('Check update readiness in section 5 before connecting an update transport.');
                 }
 
                 if (!bleDevice || !bleDevice.gatt.connected) {
@@ -1460,14 +1530,72 @@
                 }
                 await characteristic.startNotifications();
                 smpCharacteristic = characteristic;
+                smpTransport = 'ble';
                 updateFirmwareActionButtons();
                 document.getElementById('lblDfuState').lastElementChild.textContent =
-                    `SMP connected to ${bleDevice.name || 'selected device'}. Ready for a signed image.`;
-                log('SMP ready: Write Without Response and notifications are active.');
+                    `BLE SMP connected to ${bleDevice.name || 'selected device'}. Ready for a signed image.`;
+                log('BLE SMP ready: Write Without Response and notifications are active.');
             } catch (error) {
                 document.getElementById('lblDfuState').lastElementChild.textContent =
-                    `SMP connection failed: ${error.message}`;
-                log(`SMP connection failed: ${error.message}`);
+                    `BLE SMP connection failed: ${error.message}`;
+                log(`BLE SMP connection failed: ${error.message}`);
+            } finally {
+                isConnectingSmp = false;
+                updateFirmwareActionButtons();
+            }
+        });
+
+        document.getElementById('btnConnectUsbSmp').addEventListener('click', async () => {
+            if (isConnectingSmp || smpTransport) return;
+            isConnectingSmp = true;
+            updateFirmwareActionButtons();
+            let port = null;
+            try {
+                if (!navigator.serial) {
+                    throw new Error('Web Serial is unavailable. Use Chrome or Edge over HTTPS or localhost.');
+                }
+                if (!isDfuReadinessVerified) {
+                    throw new Error('Check update readiness in section 5 before connecting an update transport.');
+                }
+
+                port = await navigator.serial.requestPort({
+                    filters: [{usbVendorId: HID_VENDOR_ID, usbProductId: HID_PRODUCT_ID}]
+                });
+                await port.open({baudRate: 115200, bufferSize: 512});
+                if (!port.readable || !port.writable) {
+                    throw new Error('The selected USB device does not expose a readable and writable CDC ACM port.');
+                }
+
+                usbSmpPort = port;
+                usbSmpReader = port.readable.getReader();
+                usbSmpWriter = port.writable.getWriter();
+                usbSmpLine = [];
+                usbSmpFrame = '';
+                usbSmpExpectedLength = 0;
+                usbSmpDisconnectRequested = false;
+                smpTransport = 'usb';
+                usbSmpReadPromise = readUsbSmpPackets(usbSmpReader, port);
+                updateDisconnectButton();
+                updateFirmwareActionButtons();
+                document.getElementById('lblDfuState').lastElementChild.textContent =
+                    'USB SMP connected through the mouse CDC ACM port. Ready for a signed image.';
+                log('USB SMP ready over the CDC ACM serial interface.');
+            } catch (error) {
+                if (port && port === usbSmpPort) {
+                    await disconnectUsbSmp();
+                } else if (port) {
+                    try {
+                        await port.close();
+                    } catch (closeError) {
+                        log(`USB port cleanup failed: ${closeError.message}`);
+                    }
+                }
+                document.getElementById('lblDfuState').lastElementChild.textContent =
+                    `USB SMP connection failed: ${error.message}`;
+                log(`USB SMP connection failed: ${error.message}`);
+            } finally {
+                isConnectingSmp = false;
+                updateFirmwareActionButtons();
             }
         });
 
@@ -1530,6 +1658,182 @@
             packet[7] = command;
             packet.set(body, 8);
             return packet;
+        }
+
+        function calculateSmpSerialCrc(data, start = 0, end = data.length) {
+            let crc = 0;
+            for (let index = start; index < end; index++) {
+                crc ^= data[index] << 8;
+                for (let bit = 0; bit < 8; bit++) {
+                    crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
+                }
+                crc &= 0xffff;
+            }
+            return crc;
+        }
+
+        function encodeUsbSmpPacket(packet) {
+            const raw = new Uint8Array(packet.length + 4);
+            const packetAndCrcLength = packet.length + 2;
+            raw[0] = (packetAndCrcLength >>> 8) & 0xff;
+            raw[1] = packetAndCrcLength & 0xff;
+            raw.set(packet, 2);
+            const crc = calculateSmpSerialCrc(packet);
+            raw[raw.length - 2] = (crc >>> 8) & 0xff;
+            raw[raw.length - 1] = crc & 0xff;
+
+            let binary = '';
+            for (const byte of raw) binary += String.fromCharCode(byte);
+            const encoded = btoa(binary);
+            const frames = [];
+            for (let offset = 0; offset < encoded.length; offset += USB_SMP_FRAME_PAYLOAD_SIZE) {
+                const fragment = encoded.slice(offset, offset + USB_SMP_FRAME_PAYLOAD_SIZE);
+                const marker = offset === 0 ? [0x06, 0x09] : [0x04, 0x14];
+                const frame = new Uint8Array(marker.length + fragment.length + 1);
+                frame.set(marker);
+                for (let index = 0; index < fragment.length; index++) {
+                    frame[marker.length + index] = fragment.charCodeAt(index);
+                }
+                frame[frame.length - 1] = 0x0a;
+                frames.push(frame);
+            }
+            return concatenateBytes(...frames);
+        }
+
+        function resetUsbSmpFrame() {
+            usbSmpFrame = '';
+            usbSmpExpectedLength = 0;
+        }
+
+        function processUsbSmpLine(line) {
+            if (line.length < 6) {
+                throw new Error('USB SMP serial frame is too short.');
+            }
+
+            const startsPacket = line[0] === 0x06 && line[1] === 0x09;
+            const continuesPacket = line[0] === 0x04 && line[1] === 0x14;
+            if (startsPacket) {
+                resetUsbSmpFrame();
+            } else if (!continuesPacket || !usbSmpFrame) {
+                throw new Error('USB SMP serial frame has an invalid packet marker.');
+            }
+
+            for (let index = 2; index < line.length; index++) {
+                if (line[index] > 0x7f) {
+                    throw new Error('USB SMP serial frame contains invalid base64 data.');
+                }
+                usbSmpFrame += String.fromCharCode(line[index]);
+            }
+
+            if (!usbSmpExpectedLength) {
+                if (usbSmpFrame.length < 4) {
+                    throw new Error('USB SMP serial packet header is incomplete.');
+                }
+                const header = atob(usbSmpFrame.slice(0, 4));
+                const packetAndCrcLength = (header.charCodeAt(0) << 8) | header.charCodeAt(1);
+                usbSmpExpectedLength = packetAndCrcLength + 2;
+                if (packetAndCrcLength < 10 || usbSmpExpectedLength > USB_SMP_MAX_PACKET_SIZE) {
+                    throw new Error(`USB SMP serial packet length is invalid: ${packetAndCrcLength} bytes.`);
+                }
+            }
+
+            const encodedLength = Math.ceil(usbSmpExpectedLength / 3) * 4;
+            if (usbSmpFrame.length > encodedLength) {
+                throw new Error('USB SMP serial packet exceeds its declared length.');
+            }
+            if (usbSmpFrame.length < encodedLength) return;
+
+            const decoded = atob(usbSmpFrame);
+            const raw = Uint8Array.from(decoded, character => character.charCodeAt(0));
+            const declaredLength = (raw[0] << 8) | raw[1];
+            if (raw.length !== usbSmpExpectedLength || declaredLength !== raw.length - 2) {
+                throw new Error('USB SMP serial packet length does not match its header.');
+            }
+
+            const packet = raw.slice(2, raw.length - 2);
+            const expectedCrc = (raw[raw.length - 2] << 8) | raw[raw.length - 1];
+            if (calculateSmpSerialCrc(packet) !== expectedCrc) {
+                throw new Error('USB SMP serial packet failed its CRC check.');
+            }
+            if (packet.length < 8 || packet.length !== 8 + ((packet[2] << 8) | packet[3])) {
+                throw new Error('USB SMP serial packet has an invalid SMP header.');
+            }
+
+            resetUsbSmpFrame();
+            if (usbSmpResponseHandler) usbSmpResponseHandler(packet);
+        }
+
+        async function readUsbSmpPackets(reader, port) {
+            let lineOverflow = false;
+            let readError = null;
+            try {
+                while (true) {
+                    const {value, done} = await reader.read();
+                    if (done) break;
+                    for (const byte of value) {
+                        if (byte === 0x0a) {
+                            if (lineOverflow) {
+                                log('USB SMP serial frame exceeded the supported frame length.');
+                                resetUsbSmpFrame();
+                            } else if (usbSmpLine.length) {
+                                try {
+                                    processUsbSmpLine(Uint8Array.from(usbSmpLine));
+                                } catch (error) {
+                                    resetUsbSmpFrame();
+                                    log(`USB SMP serial frame rejected: ${error.message}`);
+                                }
+                            }
+                            usbSmpLine = [];
+                            lineOverflow = false;
+                        } else if (byte !== 0x0d) {
+                            if (usbSmpLine.length < 127) {
+                                usbSmpLine.push(byte);
+                            } else {
+                                lineOverflow = true;
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                readError = error;
+            } finally {
+                reader.releaseLock();
+                if (usbSmpPort === port) {
+                    usbSmpReader = null;
+                    if (usbSmpWriter) {
+                        try {
+                            usbSmpWriter.releaseLock();
+                        } catch (error) {
+                            log(`USB SMP writer shutdown failed: ${error.message}`);
+                        }
+                    }
+                    usbSmpWriter = null;
+                    usbSmpPort = null;
+                    usbSmpReadPromise = null;
+                    if (usbSmpResponseReject) {
+                        usbSmpResponseReject(new Error('USB SMP connection was closed.'));
+                    }
+                    usbSmpResponseHandler = null;
+                    usbSmpResponseReject = null;
+                    smpTransport = null;
+                    isDfuReadinessVerified = false;
+                    document.getElementById('lblDfuState').lastElementChild.textContent =
+                        'USB SMP disconnected. Reconnect and check update readiness again.';
+                    if (readError && !usbSmpDisconnectRequested) {
+                        log(`USB SMP disconnected: ${readError.message}`);
+                    } else if (!usbSmpDisconnectRequested) {
+                        log('USB SMP device disconnected.');
+                    }
+                    usbSmpDisconnectRequested = false;
+                    try {
+                        await port.close();
+                    } catch (error) {
+                        log(`USB SMP port close failed: ${error.message}`);
+                    }
+                    updateDisconnectButton();
+                    updateFirmwareActionButtons();
+                }
+            }
         }
 
         function decodeCbor(bytes) {
@@ -1610,27 +1914,28 @@
                 let buffered = new Uint8Array(0);
                 let timeout;
                 const characteristic = smpCharacteristic;
+                const transport = smpTransport;
 
                 const cleanup = () => {
                     clearTimeout(timeout);
-                    characteristic.removeEventListener('characteristicvaluechanged', handleNotification);
+                    if (characteristic) {
+                        characteristic.removeEventListener('characteristicvaluechanged', handleNotification);
+                    }
+                    if (usbSmpResponseHandler === handlePacket) {
+                        usbSmpResponseHandler = null;
+                        usbSmpResponseReject = null;
+                    }
                 };
                 cancelWait = cleanup;
                 const fail = (error) => {
                     cleanup();
                     reject(error);
                 };
-                const handleNotification = (event) => {
-                    const value = event.target.value;
-                    const fragment = new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
-                    buffered = concatenateBytes(buffered, fragment);
-                    if (buffered.length < 8) return;
-
-                    const bodyLength = (buffered[2] << 8) | buffered[3];
-                    const packetLength = 8 + bodyLength;
-                    if (buffered.length < packetLength) return;
-
-                    const packet = buffered.slice(0, packetLength);
+                const handlePacket = (packet) => {
+                    if (packet.length < 8 || packet.length !== 8 + ((packet[2] << 8) | packet[3])) {
+                        fail(new Error('SMP response has an invalid packet length.'));
+                        return;
+                    }
                     const responseGroup = (packet[4] << 8) | packet[5];
                     if (packet[0] !== expectedOperation || responseGroup !== group ||
                         packet[6] !== sequence || packet[7] !== command) {
@@ -1647,21 +1952,47 @@
                         fail(error);
                     }
                 };
+                const handleNotification = (event) => {
+                    const value = event.target.value;
+                    const fragment = new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+                    buffered = concatenateBytes(buffered, fragment);
+                    if (buffered.length < 8) return;
 
-                characteristic.addEventListener('characteristicvaluechanged', handleNotification);
+                    const packetLength = 8 + ((buffered[2] << 8) | buffered[3]);
+                    if (buffered.length < packetLength) return;
+                    handlePacket(buffered.slice(0, packetLength));
+                };
+
+                if (transport === 'ble' && characteristic) {
+                    characteristic.addEventListener('characteristicvaluechanged', handleNotification);
+                } else if (transport === 'usb' && usbSmpReader) {
+                    usbSmpResponseHandler = handlePacket;
+                    usbSmpResponseReject = fail;
+                } else {
+                    fail(new Error('Connect to USB or BLE SMP before starting DFU.'));
+                    return;
+                }
                 timeout = setTimeout(() => fail(new Error('Timed out waiting for an SMP response.')), timeoutMs);
             });
             return {promise, cancel: () => cancelWait()};
         }
 
         async function sendSmpRequest(operation, group, command, body, timeoutMs = 30000) {
-            if (!smpCharacteristic) throw new Error('Connect to the SMP service before starting DFU.');
+            if (!smpTransport) throw new Error('Connect to USB or BLE SMP before starting DFU.');
             const sequence = smpSequence++ & 0xff;
             const packet = encodeSmpPacket(operation, group, command, sequence, body);
             const responseWait = waitForSmpResponse(operation + 1, sequence, group, command, timeoutMs);
             try {
-                for (let offset = 0; offset < packet.length; offset += 20) {
-                    await smpCharacteristic.writeValueWithoutResponse(packet.slice(offset, offset + 20));
+                if (smpTransport === 'ble') {
+                    if (!smpCharacteristic) throw new Error('The BLE SMP characteristic is disconnected.');
+                    for (let offset = 0; offset < packet.length; offset += 20) {
+                        await smpCharacteristic.writeValueWithoutResponse(packet.slice(offset, offset + 20));
+                    }
+                } else if (smpTransport === 'usb') {
+                    if (!usbSmpWriter) throw new Error('The USB SMP serial port is disconnected.');
+                    await usbSmpWriter.write(encodeUsbSmpPacket(packet));
+                } else {
+                    throw new Error(`Unsupported SMP transport: ${smpTransport}.`);
                 }
                 return await responseWait.promise;
             } catch (error) {
@@ -1795,6 +2126,7 @@
                 }
             }
             if (bleDevice && bleDevice.gatt.connected) bleDevice.gatt.disconnect();
+            await disconnectUsbSmp();
             resetUiState();
         });
 
@@ -1805,9 +2137,10 @@
             document.getElementById('topConnection').className =
                 `connection-pill${hidConnected ? '' : ' offline'}`;
             smpCharacteristic = null;
+            smpTransport = null;
             isDfuReadinessVerified = false;
             document.getElementById('lblDfuState').lastElementChild.textContent =
-                'Disconnected. Reconnect and prepare the device for SMP DFU again.';
+                'Disconnected. Reconnect and check update readiness again.';
             updateDisconnectButton();
             updateFirmwareActionButtons();
         }
