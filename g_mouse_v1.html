@@ -660,7 +660,7 @@
                         <p class="system-copy">Connect your mouse to view its details and battery information, or to prepare for a firmware update.</p>
                         <details class="technical-note">
                             <summary aria-label="Technical details" title="Technical details">i</summary>
-                            <p>WebHID provides mouse and battery diagnostics through vendor reports 7/8. Firmware upload uses a separate Web Bluetooth connection to the MCUmgr SMP service. Grant browser access separately for each API. If the vendor HID collection is missing, flash the updated firmware and remove/re-pair the mouse in Windows to refresh its report map.</p>
+                            <p>The WebHID picker name comes from the device firmware. This firmware identifies as G Mouse V1; after flashing, remove/forget the old mouse in Windows and pair it again if the picker still says Unknown Device. WebHID provides diagnostics through vendor reports 7/8. Firmware upload uses a separate Web Bluetooth connection to MCUmgr SMP. Grant access separately for each browser API. If the vendor HID collection is missing, remove/re-pair the mouse in Windows to refresh its HID report map.</p>
                         </details>
                     </div>
                     <div id="deviceInfo" style="display: none;">
@@ -732,6 +732,10 @@
                             <span id="primaryChargeText">Charge state unknown</span>
                         </div>
                         <div class="battery-status-item">
+                            <span class="status-icon info">↻</span>
+                            <span id="primaryMethodText">Charging method: unknown</span>
+                        </div>
+                        <div class="battery-status-item">
                             <span class="status-icon info" id="primaryPowerDot">i</span>
                             <span id="primaryPowerText">Power source unknown</span>
                         </div>
@@ -775,6 +779,10 @@
                         <div class="battery-status-item">
                             <span class="status-icon info" id="backupChargeDot">⚡</span>
                             <span id="backupChargeText">Charge state unknown</span>
+                        </div>
+                        <div class="battery-status-item">
+                            <span class="status-icon info">↻</span>
+                            <span id="backupMethodText">Charging method: unknown</span>
                         </div>
                         <div class="battery-status-item">
                             <span class="status-icon info" id="backupPowerDot">i</span>
@@ -914,6 +922,7 @@
             const card = document.getElementById(`${prefix}BatteryCard`);
             if (!card) return;
             const measurementsValid = b.measurementsValid !== false;
+            const measurementsFresh = b.measurementsFresh !== false;
             const pct = measurementsValid && b.level !== null ? b.level : 0;
             const present = b.presence === 'Present';
             const fault = !!b.fault;
@@ -922,24 +931,28 @@
             if (fault) healthClass = 'fault';
             card.className = `panel battery-card ${healthClass}`;
             document.getElementById(`${prefix}BatteryFill`).style.height = `${pct}%`;
-            document.getElementById(`${prefix}HealthPill`).innerText = fault ? 'Fault' : (!present ? 'Not present' : b.chargeLevel);
-            document.getElementById(`${prefix}ActiveText`).innerText = present ? 'Active' : 'Not active';
+            document.getElementById(`${prefix}HealthPill`).innerText =
+                fault ? 'Fault' : (!present ? 'Not present' : (!measurementsValid ? 'Not sampled' : (measurementsFresh ? b.chargeLevel : 'Last measured')));
+            document.getElementById(`${prefix}ActiveText`).innerText =
+                present ? (measurementsValid && !measurementsFresh ? 'Present (last measured)' : 'Present') : 'Not present';
             document.getElementById(`${prefix}ActiveDot`).innerText = present ? '✓' : '−';
             document.getElementById(`${prefix}ActiveDot`).className = `status-icon ${present ? 'ok' : ''}`.trim();
             document.getElementById(`${prefix}ChargeText`).innerText = b.charge;
             document.getElementById(`${prefix}ChargeDot`).innerText = b.charge === 'Charging' ? '⚡' : b.charge === 'Discharging' ? '↓' : '−';
             document.getElementById(`${prefix}ChargeDot`).className = `status-icon ${b.charge === 'Charging' ? 'info' : b.charge === 'Discharging' ? 'warn' : 'ok'}`.trim();
+            document.getElementById(`${prefix}MethodText`).innerText = `Charging method: ${b.chargeMethod}`;
             document.getElementById(`${prefix}PowerText`).innerText = `Power: ${b.powerSource}`;
             document.getElementById(`${prefix}PowerDot`).innerText = b.powerSource === 'USB' ? '⚡' : 'i';
             document.getElementById(`${prefix}PowerDot`).className = `status-icon ${b.powerSource === 'Unknown' ? 'info' : 'ok'}`;
-            document.getElementById(`${prefix}HealthText`).innerText = fault ? 'Fault' : b.chargeLevel;
+            document.getElementById(`${prefix}HealthText`).innerText =
+                fault ? 'Fault' : (!present ? 'Not present' : (!measurementsValid ? 'Not sampled' : (measurementsFresh ? b.chargeLevel : 'Last measured')));
             document.getElementById(`${prefix}HealthDot`).innerText = fault || b.chargeLevel === 'Critical' ? '!' : b.chargeLevel === 'Low' ? '!' : '♥';
             document.getElementById(`${prefix}HealthDot`).className = `status-icon ${fault || b.chargeLevel === 'Critical' ? 'bad' : b.chargeLevel === 'Low' ? 'warn' : 'ok'}`.trim();
             document.getElementById(b.id === 1 ? 'lblPrimaryBls' : 'lblBackupBls').innerText =
                 measurementsValid ? `${pct}%` : '--%';
         }
 
-        function decodeBatteryStatus(id, level, status) {
+        function decodeBatteryStatus(id, level, status, chargePhase = 0) {
             const presenceCode = status & 0x03;
             const chargeCode = status & 0x0c;
             const levelCode = status & 0x60;
@@ -951,7 +964,19 @@
                 charge: chargeCode === 4 ? 'Charging' : chargeCode === 8 ? 'Discharging' : chargeCode === 12 ? 'Idle' : 'Unknown',
                 chargeLevel: levelCode === 0x20 ? 'Good' : levelCode === 0x40 ? 'Low' : levelCode === 0x60 ? 'Critical' : 'Unknown',
                 powerSource: powerSourceCode === 0x80 ? 'Battery' : powerSourceCode === 0x100 ? 'USB' : 'Unknown',
+                chargeMethod: ({
+                    0: 'Unknown',
+                    1: 'Not charging',
+                    2: 'Trickle charge',
+                    3: 'Fast charge - constant current',
+                    4: 'Fast charge - constant voltage',
+                    5: 'Charge complete',
+                    6: 'Paused: temperature limit',
+                    7: 'Recharging',
+                    8: 'System supply assist'
+                })[chargePhase] || 'Unknown',
                 measurementsValid: levelCode !== 0,
+                measurementsFresh: (status & 0x0400) === 0,
                 fault: (status & 0x10) !== 0
             };
         }
@@ -974,7 +999,8 @@
                 const response = parseHidConfigResponse(bytes);
                 if (response.recipient === HID_BATTERY_UPDATE_RECIPIENT &&
                     response.eventId === HID_BATTERY_UPDATE_EVENT_ID) {
-                    if (response.status !== 8 || response.payload.byteLength !== 14) {
+                    if (response.status !== 8 ||
+                        (response.payload.byteLength !== 14 && response.payload.byteLength !== 15)) {
                         throw new Error('Invalid WebHID battery update frame.');
                     }
                     const batteryId = response.payload[0];
@@ -1074,19 +1100,19 @@
         }
 
         function renderHidBattery(id, payload) {
-            if (payload.byteLength !== 13) {
-                throw new Error(`Battery ${id} config response should be 13 bytes, got ${payload.byteLength}.`);
+            if (payload.byteLength !== 13 && payload.byteLength !== 14) {
+                throw new Error(`Battery ${id} config response should be 13 or 14 bytes, got ${payload.byteLength}.`);
             }
             const view = new DataView(payload.buffer, payload.byteOffset, payload.byteLength);
-            const battery = decodeBatteryStatus(id, payload[0], view.getUint16(1, true));
+            const battery = decodeBatteryStatus(id, payload[0], view.getUint16(1, true), payload[13] || 0);
             renderBatteryCard(battery);
             const prefix = id === 1 ? 'primary' : 'backup';
             document.getElementById(`lbl${prefix[0].toUpperCase()}${prefix.slice(1)}Voltage`).innerText =
                 battery.measurementsValid ? `${view.getUint16(3, true)} mV` : '-- mV';
-            document.getElementById(`${prefix}CurrentText`).innerText = battery.measurementsValid
+            document.getElementById(`${prefix}CurrentText`).innerText = battery.measurementsValid && battery.measurementsFresh
                 ? `Current: ${view.getInt32(5, true)} mA`
                 : 'Current: --';
-            document.getElementById(`${prefix}TemperatureText`).innerText = battery.measurementsValid
+            document.getElementById(`${prefix}TemperatureText`).innerText = battery.measurementsValid && battery.measurementsFresh
                 ? `Temperature: ${(view.getInt32(9, true) / 1000).toFixed(1)} °C`
                 : 'Temperature: --';
         }
@@ -1222,8 +1248,12 @@
             if (!hidDevice.opened) await hidDevice.open();
             hidDevice.removeEventListener('inputreport', handleHidInputReport);
             hidDevice.addEventListener('inputreport', handleHidInputReport);
+            const reportedName = (hidDevice.productName || '').trim();
+            const deviceName = /^unknown device(?:\s|\()/i.test(reportedName)
+                ? 'G Mouse V1'
+                : (reportedName || 'G Mouse V1');
             document.getElementById('deviceInfo').style.display = 'block';
-            document.getElementById('lblDeviceName').innerText = hidDevice.productName || 'G Mouse V1';
+            document.getElementById('lblDeviceName').innerText = deviceName;
             document.getElementById('lblDeviceId').innerText =
                 `HID 0x${hidDevice.vendorId.toString(16).padStart(4, '0')}:0x${hidDevice.productId.toString(16).padStart(4, '0')}`;
             document.getElementById('lblHidConnection').innerText = 'Connected';
@@ -1232,7 +1262,7 @@
             document.getElementById('topConnection').className = 'connection-pill';
             updateDisconnectButton();
             updateFirmwareActionButtons();
-            log(`WebHID connected to ${hidDevice.productName || 'device'} (VID 0x${hidDevice.vendorId.toString(16).padStart(4, '0')}, PID 0x${hidDevice.productId.toString(16).padStart(4, '0')}).`);
+            log(`WebHID connected to ${deviceName} (VID 0x${hidDevice.vendorId.toString(16).padStart(4, '0')}, PID 0x${hidDevice.productId.toString(16).padStart(4, '0')}).`);
             if (hidDevice.productId !== HID_PRODUCT_ID) {
                 log(`Notice: this firmware expects HID PID 0x${HID_PRODUCT_ID.toString(16).padStart(4, '0')}.`);
             }
