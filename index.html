@@ -38,7 +38,7 @@ button{border:0;border-radius:8px;padding:10px 14px;font:inherit;font-size:12px;
 .primary{background:var(--battery-good);color:#052e2b}.primary:hover:not(:disabled){background:#34d399}
 .secondary{background:var(--button-secondary-bg);color:var(--button-secondary-text)}.secondary:hover:not(:disabled),.subtle:hover:not(:disabled){background:#475569}
 .subtle{background:var(--button-subtle-bg);color:var(--button-subtle-text)}.full{width:100%}
-nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;background:transparent;color:#cbd5e1;text-align:left;padding:12px;font-weight:650}
+nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;background:transparent;color:#cbd5e1;text-align:left;padding:12px;font-weight:650}.nav-item[hidden]{display:none}
 .nav-item span{width:18px;text-align:center;font-size:17px}.nav-item.active{background:#064e3b;color:#a7f3d0}
 .sidebar-foot{margin-top:auto;padding:20px 8px 0;color:var(--text-muted);font-size:11px;line-height:1.8}.sidebar-foot code{color:var(--text-main)}
 .content{padding:34px 38px 24px;min-width:0}.page{display:none}.page.active{display:block}
@@ -52,9 +52,9 @@ nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;back
 .config-toolbar{display:flex;align-items:end;gap:14px;margin-bottom:14px}.config-toolbar label,.form-grid label{display:grid;gap:7px;font-size:11px;color:var(--text-main);font-weight:700}
 .config-toolbar select,.config-toolbar input,.form-grid input{height:38px;border:1px solid var(--input-border);border-radius:8px;background:var(--input-bg);padding:0 11px;font:inherit;font-size:12px;color:var(--text-main);min-width:220px}
 .toolbar-spacer{flex:1}.config-toolbar input{min-width:210px}.config-panel{padding:0;overflow:hidden}.config-panel.empty-state{padding:28px}
-.config-group{border-bottom:1px solid var(--border-color)}.group-title{background:var(--bg-color);padding:13px 18px;font-size:12px;font-weight:800;color:var(--text-main);display:flex;justify-content:space-between}
-.config-row{display:grid;grid-template-columns:minmax(180px,1.1fr) minmax(170px,1fr) minmax(180px,1.2fr) 85px;gap:13px;align-items:center;padding:12px 18px;border-top:1px solid var(--border-color)}
-.option-name{font-size:12px;font-weight:700}.option-help,.option-range{font-size:10px;color:var(--text-muted);margin-top:3px}
+.config-intro{margin:0 0 16px}.config-group{border-bottom:1px solid var(--border-color)}.group-title{background:var(--bg-color);padding:13px 18px;font-size:12px;font-weight:800;color:var(--text-main);display:flex;justify-content:space-between}
+.config-columns,.config-row{display:grid;grid-template-columns:minmax(180px,1.1fr) minmax(170px,1fr) minmax(180px,1.2fr) 85px;gap:13px;align-items:center;padding:12px 18px}.config-columns{font-size:10px;font-weight:750;color:var(--text-muted);background:var(--card-bg)}.config-row{border-top:1px solid var(--border-color)}
+.option-name{font-size:12px;font-weight:700}.option-help,.option-range,.option-preview{font-size:10px;color:var(--text-muted);margin-top:4px}.option-technical{font-size:9px;color:var(--text-muted);margin-top:3px;opacity:.8}
 .config-row input{width:100%;height:34px;border:1px solid var(--input-border);border-radius:7px;padding:0 9px;font:inherit;font-size:12px;background:var(--input-bg);color:var(--text-main)}
 .config-row button{padding:8px 10px}.config-row .read-btn{background:var(--button-secondary-bg);color:var(--button-secondary-text)}.config-row .write-btn{background:#064e3b;color:#a7f3d0}.option-value{display:flex;gap:6px}.option-value input{min-width:0}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.info-list{min-height:95px;margin-bottom:14px}.info-item{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border-color);padding:8px 0;font-size:11px}.info-item span{color:var(--text-muted)}.info-item strong{text-align:right;overflow-wrap:anywhere}
@@ -95,9 +95,35 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 .theme-toggle{background:var(--button-secondary-bg);color:var(--button-secondary-text);border:1px solid var(--border-color);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:700}
 .theme-toggle:hover{background:var(--button-subtle-bg)}
 .mouse-tester-iframe{width:100%;height:calc(100vh - 120px);border:0;border-radius:13px;overflow:hidden}
-@media(max-width:1050px){.shell{grid-template-columns:210px 1fr}.content{padding:28px 22px}.stats-grid{grid-template-columns:repeat(2,1fr)}.module-grid{grid-template-columns:repeat(2,1fr)}.config-row{grid-template-columns:1fr 1fr 1fr 75px}.battery-grid{grid-template-columns:1fr}}
-@media(max-width:720px){.topbar{padding:0 14px}.brand small,.badge{display:none}.shell{display:block}.sidebar{padding:12px;border-right:0;border-bottom:1px solid var(--border-color)}.device-card{display:none}nav{display:flex;overflow:auto}.nav-item{white-space:nowrap;padding:9px}.sidebar-foot{display:none}.content{padding:22px 14px}.page-heading{align-items:flex-start;flex-direction:column}.stats-grid,.two-col{grid-template-columns:1fr 1fr}.module-grid{grid-template-columns:1fr 1fr}.config-toolbar{align-items:stretch;flex-direction:column}.config-toolbar select,.config-toolbar input{width:100%;min-width:0}.config-row{grid-template-columns:1fr 1fr}.config-row .option-range{display:none}.form-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.battery-grid{grid-template-columns:1fr}.battery-main{gap:16px}.battery-metrics{grid-template-columns:1fr}}
-@media(max-width:430px){.stats-grid,.module-grid{grid-template-columns:1fr}.top-actions button{padding:9px}.config-row{grid-template-columns:1fr}.config-row .option-range{display:block}.battery-main{align-items:flex-start}.battery-visual{min-width:65px}.battery-icon{width:44px;height:78px}}
+#page-mouseTester.active{height:calc(100vh - 130px);display:grid;grid-template-rows:auto auto auto minmax(0,1fr) minmax(0,1fr);gap:12px;overflow:hidden}
+#page-mouseTester.active~.copyright{display:none}
+#page-mouseTester .page-heading{margin:0}
+#page-mouseTester .stats-grid{margin:0;gap:10px}
+#page-mouseTester .stat{padding:10px 14px}
+#page-mouseTester .stat span{margin-bottom:5px}
+#page-mouseTester .two-col{min-height:0;gap:12px}
+#page-mouseTester .panel{min-height:0;margin:0;padding:14px;overflow:hidden}
+#page-mouseTester .panel-head{margin-bottom:8px}
+#page-mouseTester .info-list{min-height:0;margin-bottom:0}
+#page-mouseTester .info-item{padding:5px 0}
+#page-mouseTester #historyList{min-height:0!important;max-height:none!important;overflow:hidden!important}
+#page-mouseTester .chart{height:32px!important}
+.mouse-tester-open .sidebar{display:none}
+.mouse-tester-open .shell{height:calc(100vh - 72px);min-height:0;grid-template-columns:minmax(0,1fr)}
+.mouse-tester-open .content{height:100%;min-height:0;overflow:hidden;padding:12px 18px}
+.mouse-tester-open #page-mouseTester.active{height:100%;grid-template-rows:auto auto auto minmax(0,.8fr) minmax(0,1.2fr)}
+.mouse-tester-open #page-mouseTester .page-heading{align-items:center;flex-direction:row}
+.mouse-tester-open #page-mouseTester .stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mouse-tester-open #page-mouseTester .two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mouse-tester-open #page-mouseTester .info-list.tester-performance{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.mouse-tester-open #page-mouseTester .tester-performance .info-item{padding:2px 0}
+.mouse-tester-open #page-mouseTester .battery-main{min-height:0!important;height:34px}
+.mouse-tester-open #page-mouseTester .chart{height:24px!important}
+@media(max-height:760px) and (min-width:721px){#page-mouseTester.active{height:calc(100vh - 106px);gap:8px}#page-mouseTester .stats-grid{gap:8px}#page-mouseTester .stat{padding:7px 11px}#page-mouseTester .panel{padding:10px}#page-mouseTester .info-item{padding:3px 0}}
+@media(max-width:1050px){.shell{grid-template-columns:210px 1fr}.content{padding:28px 22px}.stats-grid{grid-template-columns:repeat(2,1fr)}.module-grid{grid-template-columns:repeat(2,1fr)}.config-columns,.config-row{grid-template-columns:1fr 1fr 1fr 75px}}
+@media(max-width:720px){.topbar{padding:0 14px}.brand small,.badge{display:none}.shell{display:block}.sidebar{padding:12px;border-right:0;border-bottom:1px solid var(--border-color)}.device-card{display:none}nav{display:flex;overflow:auto}.nav-item{white-space:nowrap;padding:9px}.sidebar-foot{display:none}.content{padding:22px 14px}.page-heading{align-items:flex-start;flex-direction:column}.stats-grid,.two-col{grid-template-columns:1fr 1fr}.module-grid{grid-template-columns:1fr 1fr}.config-toolbar{align-items:stretch;flex-direction:column}.config-toolbar select,.config-toolbar input{width:100%;min-width:0}.config-columns,.config-row{grid-template-columns:1fr 1fr}.config-columns span:nth-child(2),.config-row .option-range{display:none}.form-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.battery-grid{grid-template-columns:1fr}.battery-main{gap:16px}.battery-metrics{grid-template-columns:1fr}#page-mouseTester.active{height:auto;min-height:calc(100vh - 160px);grid-template-rows:auto auto auto auto auto;overflow:visible}#page-mouseTester .two-col{grid-template-columns:1fr;min-height:auto}#page-mouseTester .panel{overflow:visible}#page-mouseTester #historyList{overflow:auto!important;max-height:180px!important}.mouse-tester-open .content{padding:8px}.mouse-tester-open #page-mouseTester.active{height:100%;min-height:0;grid-template-rows:auto auto minmax(0,.8fr) minmax(0,1.2fr);overflow:hidden}.mouse-tester-open #page-mouseTester .two-col{grid-template-columns:repeat(2,minmax(0,1fr));min-height:0}.mouse-tester-open #page-mouseTester .panel{overflow:hidden}.mouse-tester-open #page-mouseTester #historyList{overflow:hidden!important;max-height:none!important}.mouse-tester-open #page-mouseTester .page-heading{gap:8px;margin:0}.mouse-tester-open #page-mouseTester .page-heading p{display:none}.mouse-tester-open #page-mouseTester .page-heading h1{font-size:20px;margin:2px 0}.mouse-tester-open #page-mouseTester .page-heading .eyebrow{font-size:8px}.mouse-tester-open #page-mouseTester .stats-grid{gap:5px}.mouse-tester-open #page-mouseTester .stat{padding:6px}.mouse-tester-open #page-mouseTester .stat span{font-size:9px}.mouse-tester-open #page-mouseTester .stat strong{font-size:12px}.mouse-tester-open #page-mouseTester .panel{padding:7px}.mouse-tester-open #page-mouseTester .panel-head{margin-bottom:4px}.mouse-tester-open #page-mouseTester .panel-head p{display:none}.mouse-tester-open #page-mouseTester .info-item{font-size:9px}.mouse-tester-open #page-mouseTester .battery-level{font-size:18px}}
+@media(max-width:430px){.stats-grid,.module-grid{grid-template-columns:1fr}.top-actions button{padding:9px}.config-columns{display:none}.config-row{grid-template-columns:1fr}.config-row .option-range{display:block}.battery-main{align-items:flex-start}.battery-visual{min-width:65px}.battery-icon{width:44px;height:78px}}
+@media(max-width:720px){.mouse-tester-open #page-mouseTester.active{grid-template-rows:auto auto auto minmax(0,.8fr) minmax(0,1.2fr)}.mouse-tester-open #page-mouseTester .two-col:last-child .panel:first-child .chart{display:none}}
 
 </style>
 </head>
@@ -112,12 +138,12 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
         <div class="section-label">SELECTED DEVICE</div>
         <div id="deviceName" class="device-name">No device selected</div>
         <div id="deviceMeta" class="muted">Connect your G Mouse V1 or G Dongle V1 to begin.</div>
-        <label class="endpoint-label">Configuration endpoint<select id="endpointSelect" disabled><option>Connect a device</option></select></label>
+        <label class="endpoint-label">Selected device<select id="endpointSelect" disabled><option>Connect a device</option></select></label>
         <button id="disconnectBtn" class="subtle full" disabled>Disconnect</button>
       </div>
       <nav id="nav">
         <button class="nav-item active" data-page="overview"><span>▦</span> Overview</button>
-        <button class="nav-item" data-page="configuration"><span>⚙</span> Configuration</button>
+        <button class="nav-item" data-page="configuration"><span>⚙</span> Settings</button>
         <button class="nav-item" data-page="battery"><span>▣</span> Battery</button>
         <button class="nav-item" data-page="firmware"><span>↻</span> Firmware & DFU</button>
         <button class="nav-item" data-page="led"><span>◉</span> LED stream</button>
@@ -128,20 +154,20 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
     </aside>
     <section class="content">
       <section class="page active" id="page-overview">
-        <div class="page-heading"><div><div class="eyebrow">DEVICE MANAGEMENT</div><h1>Overview</h1><p>Connect your G Mouse V1 or G Dongle V1 to inspect firmware and available configuration modules.</p></div><button id="refreshBtn" class="secondary" disabled>Refresh device data</button></div>
+        <div class="page-heading"><div><div class="eyebrow">DEVICE MANAGEMENT</div><h1>Overview</h1><p>Connect your G Mouse V1 or G Dongle V1 to inspect device details and available settings.</p></div><button id="refreshBtn" class="secondary" disabled>Refresh device data</button></div>
         <div class="stats-grid">
           <article class="stat"><span>Board</span><strong id="statBoard">—</strong></article>
           <article class="stat"><span>Hardware ID</span><strong id="statHwid">—</strong></article>
-          <article class="stat"><span>Configuration modules</span><strong id="statModules">—</strong></article>
+          <article class="stat"><span>Setting groups</span><strong id="statModules">—</strong></article>
           <article class="stat"><span>USB interface</span><strong id="statUsb">—</strong></article>
         </div>
-        <article class="panel"><div class="panel-head"><div><h2>Discovered modules</h2><p>Modules reported by the device firmware.</p></div><span id="moduleCount" class="count">0 modules</span></div><div id="moduleOverview" class="module-grid empty-state">Connect a device to discover its modules.</div></article>
-        <article class="notice"><strong>Browser-only operation</strong><p>All communication runs in this page through the WebHID API. No Python runtime, local server, or background helper is used. The browser may ask you to select the USB device and grant permission. Supports G Mouse V1 (PID 0x52de) and G Dongle V1 (PID 0x52dc).</p></article>
+        <article class="panel"><div class="panel-head"><div><h2>Available settings</h2><p>Settings supported by the selected device.</p></div><span id="moduleCount" class="count">0 setting groups</span></div><div id="moduleOverview" class="module-grid empty-state">Connect a device to discover its settings.</div></article>
+        <article class="notice"><strong>Connect your device</strong><p>Use Chrome or Edge, then select <strong>Connect USB device</strong>. Choose your G Mouse V1 or G Dongle V1 in the pop-up and select <strong>Connect</strong> to let this page read its settings.</p></article>
       </section>
 
       <section class="page" id="page-configuration">
-        <div class="page-heading"><div><div class="eyebrow">LIVE DEVICE PARAMETERS</div><h1>Configuration</h1><p>Read current values, edit supported parameters, and write them back to device firmware.</p></div><button id="readAllBtn" class="secondary" disabled>Read all values</button></div>
-        <div class="config-toolbar"><label>Module <select id="moduleSelect" disabled><option>Select a connected device</option></select></label><div class="toolbar-spacer"></div><input id="configSearch" type="search" placeholder="Filter options…" disabled /></div>
+        <div class="page-heading"><div><div class="eyebrow">DEVICE SETTINGS</div><h1>Settings</h1><p>Read a setting before changing it. Save applies your changes. Firmware updates and LED controls have their own sections.</p></div><button id="readAllBtn" class="secondary" disabled>Read all settings</button></div>
+        <div class="config-toolbar"><label>Setting group <select id="moduleSelect" disabled><option>Select a connected device</option></select></label><div class="toolbar-spacer"></div><input id="configSearch" type="search" placeholder="Find a setting…" disabled /></div>
         <div id="configPanel" class="panel config-panel empty-state">Connect a device to load configuration options.</div>
       </section>
 
@@ -219,7 +245,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 
       <section class="page" id="page-logs"><div class="page-heading"><div><div class="eyebrow">DIAGNOSTICS</div><h1>Activity log</h1><p>USB connection, configuration requests and transfer status.</p></div><button id="clearLogBtn" class="secondary">Clear log</button></div><article class="panel"><div id="logList" class="log-list"><div class="muted">No activity yet.</div></div></article></section>
 <section class="page" id="page-mouseTester">
-  <div class="page-heading"><div><div class="eyebrow">MOUSE TESTING</div><h1>Mouse Tester</h1><p>Test your mouse buttons, scroll wheel, and polling rate.</p></div></div>
+  <div class="page-heading"><div><div class="eyebrow">MOUSE TESTING</div><h1>Mouse Tester</h1><p>Test your mouse buttons, scroll wheel, and polling rate.</p></div><button type="button" class="secondary" id="testerBackBtn">Back to overview</button></div>
   <div class="stats-grid">
     <article class="stat"><span>Left Click</span><strong id="count-left">0</strong></article>
     <article class="stat"><span>Right Click</span><strong id="count-right">0</strong></article>
@@ -254,7 +280,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
   <div class="two-col">
     <article class="panel">
       <div class="panel-head"><div><h2>Performance</h2><p>Polling rate metrics</p></div></div>
-      <div class="info-list">
+      <div class="info-list tester-performance">
         <div class="info-item"><span>Current</span><strong id="currentHz">0 Hz</strong></div>
         <div class="info-item"><span>Average</span><strong id="averageHz">0 Hz</strong></div>
         <div class="info-item"><span>Max</span><strong id="maxHz">0 Hz</strong></div>
@@ -289,11 +315,15 @@ const VID = 0x1915, PIDs = [0x52de, 0x52dc];
 // Interrupt report IDs (used by Mouse)
 const REPORT_OUTPUT_ID = 7, REPORT_INPUT_ID = 8, REPORT_SIZE = 29, PAYLOAD_SIZE = REPORT_SIZE;
 // Feature report ID (used by Dongle and Mouse fallback)
-const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 30;
+const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 29;
 const HID_BATTERY_UPDATE_RECIPIENT = 0xff, HID_BATTERY_UPDATE_EVENT_ID = 0xff;
 const STATUS = {PENDING:0, GET_MAX_MOD_ID:1, GET_HWID:2, GET_BOARD_NAME:3, INDEX_PEERS:4, GET_PEER:5, SET:6, FETCH:7, SUCCESS:8, TIMEOUT:9, REJECT:10, WRITE_FAIL:11, DISCONNECTED:12, GET_PEERS_CACHE:13, FAULT:99};
 const TYPE_TO_BOARD = {gaming_mouse:['nrf52840gmouse'],dongle:['nrf52840dongle','nrf52833dongle','nrf52820dongle'],keyboard:['nrf52kbd'],desktop_mouse:['nrf52dmouse']};
 const OPTIONS = {
+ bas: {
+  battery_main:{id:'battery_main',range:null,help:'Read-only snapshot of the primary mouse battery.',type:'raw'},
+  battery_backup:{id:'battery_backup',range:null,help:'Read-only snapshot of the backup mouse battery.',type:'raw'}
+ },
  'motion/pmw3360': {
   downshift_run:{id:'downshift',range:[10,2550],help:'Run to Rest 1 switch time [ms]',type:'int'},
   downshift_rest1:{id:'rest1',range:[320,81600],help:'Rest 1 to Rest 2 switch time [ms]',type:'int'},
@@ -307,18 +337,18 @@ const OPTIONS = {
   cpi:{id:'cpi',range:[0,2394],help:'CPI resolution',type:'int'}
  },
  'ble_qos': {
-  sample_count_min:{id:'param_ble',range:[0,65535],help:'Minimum number of samples needed for channel map processing',type:'int'},
-  min_channel_count:{id:'param_ble',range:[2,37],help:'Minimum BLE channel count',type:'int'},
-  weight_crc_ok:{id:'param_ble',range:[-32767,32767],help:'Weight of CRC OK [Fixed point with 1/100 scaling]',type:'int'},
-  weight_crc_error:{id:'param_ble',range:[-32767,32767],help:'Weight of CRC ERROR [Fixed point with 1/100 scaling]',type:'int'},
-  ble_block_threshold:{id:'param_ble',range:[1,65535],help:'Threshold relative to average rating for blocking BLE channels [1/100 scaling]',type:'int'},
-  eval_max_count:{id:'param_ble',range:[1,37],help:'Maximum number of blocked channels that can be evaluated',type:'int'},
-  eval_duration:{id:'param_ble',range:[1,65535],help:'Duration of channel evaluation [seconds]',type:'int'},
-  eval_keepout_duration:{id:'param_ble',range:[1,65535],help:'Duration that a channel will be blocked before re-evaluation [seconds]',type:'int'},
-  eval_success_threshold:{id:'param_ble',range:[1,65535],help:'Threshold for approving blocked BLE channel under evaluation [1/100 scaling]',type:'int'},
-  wifi_rating_inc:{id:'param_wifi',range:[1,65535],help:'Wi-Fi strength rating multiplier [1/100 scaling]',type:'int'},
-  wifi_present_threshold:{id:'param_wifi',range:[1,65535],help:'Threshold for considering a Wi-Fi network present [1/100 scaling]',type:'int'},
-  wifi_active_threshold:{id:'param_wifi',range:[1,65535],help:'Threshold for considering Wi-Fi active/blockable [1/100 scaling]',type:'int'},
+  sample_count_min:{id:'param_ble',range:[0,65535],help:'Number of connection samples used to judge Bluetooth channel quality.',type:'int'},
+  min_channel_count:{id:'param_ble',range:[2,37],help:'Minimum number of Bluetooth channels to keep available.',type:'int'},
+  weight_crc_ok:{id:'param_ble',range:[-32767,32767],help:'How strongly successful Bluetooth messages improve a channel score.',type:'int'},
+  weight_crc_error:{id:'param_ble',range:[-32767,32767],help:'How strongly failed Bluetooth messages lower a channel score.',type:'int'},
+  ble_block_threshold:{id:'param_ble',range:[1,65535],help:'How poor a Bluetooth channel must be before it is avoided.',type:'int'},
+  eval_max_count:{id:'param_ble',range:[1,37],help:'Maximum number of avoided Bluetooth channels checked at once.',type:'int'},
+  eval_duration:{id:'param_ble',range:[1,65535],help:'How long the device checks whether an avoided channel is usable.',type:'int'},
+  eval_keepout_duration:{id:'param_ble',range:[1,65535],help:'How long a poor Bluetooth channel stays avoided before another check.',type:'int'},
+  eval_success_threshold:{id:'param_ble',range:[1,65535],help:'How good an avoided channel must be before it is used again.',type:'int'},
+  wifi_rating_inc:{id:'param_wifi',range:[1,65535],help:'How strongly nearby Wi-Fi activity affects Bluetooth channel selection.',type:'int'},
+  wifi_present_threshold:{id:'param_wifi',range:[1,65535],help:'Wi-Fi signal level at which a network is considered nearby.',type:'int'},
+  wifi_active_threshold:{id:'param_wifi',range:[1,65535],help:'Wi-Fi activity level at which a channel should be avoided.',type:'int'},
   channel_map:{id:'chmap',range:['0','0x1FFFFFFFFF'],help:'5-byte BLE channel map bitmask',type:'hex'},
   wifi_blacklist:{id:'blacklist',range:['0','1,2,...,11'],help:'List of blacklisted Wi-Fi channels',type:'text'}
  },
@@ -329,18 +359,159 @@ const FORMATS = {
  'ble_qos/param_ble':{size:16,fields:[['sample_count_min','u16'],['min_channel_count','u8'],['weight_crc_ok','i16'],['weight_crc_error','i16'],['ble_block_threshold','u16'],['eval_max_count','u8'],['eval_duration','u16'],['eval_keepout_duration','u16'],['eval_success_threshold','u16']]},
  'ble_qos/param_wifi':{size:6,fields:[['wifi_rating_inc','i16'],['wifi_present_threshold','i16'],['wifi_active_threshold','i16']]}
 };
+const FRIENDLY_MODULE_NAMES = {
+ 'motion/pmw3360':'Mouse sensor · PMW3360',
+ 'motion/paw3212':'Mouse sensor · PAW3212',
+ 'ble_qos':'Wireless connection quality',
+ 'ble_bond':'Bluetooth pairing',
+ 'factory_reset':'Factory reset',
+ 'bas':'Battery information',
+ 'dfu':'Firmware update',
+ 'led_stream':'LED lighting'
+};
+const FRIENDLY_OPTION_NAMES = {
+ downshift_run:'Time before sensor sleep',
+ downshift_rest1:'Time before deeper sleep',
+ downshift_rest2:'Time before lowest-power sleep',
+ sleep1_timeout:'Time before first sleep level',
+ sleep2_timeout:'Time before second sleep level',
+ sleep3_timeout:'Time before third sleep level',
+ cpi:'Pointer sensitivity',
+ sample_count_min:'Wireless signal checks',
+ min_channel_count:'Available wireless channels',
+ weight_crc_ok:'Effect of successful wireless messages',
+ weight_crc_error:'Effect of failed wireless messages',
+ ble_block_threshold:'When to avoid a wireless channel',
+ eval_max_count:'Channels checked at once',
+ eval_duration:'Time spent checking a channel',
+ eval_keepout_duration:'Wait before trying a channel again',
+ eval_success_threshold:'Signal needed to use a channel again',
+ wifi_rating_inc:'Effect of nearby Wi-Fi',
+ wifi_present_threshold:'Nearby Wi-Fi detection level',
+ wifi_active_threshold:'Wi-Fi activity level to avoid',
+ channel_map:'Bluetooth channel map',
+ wifi_blacklist:'Blocked Wi-Fi channels',
+ peer_erase:'Remove paired devices',
+ peer_search:'Start new pairing',
+ fast_pair:'Reset pairing setup',
+ battery_main:'Primary battery snapshot',
+ battery_backup:'Backup battery snapshot',
+ fwinfo:'Firmware version',
+ devinfo:'Device identification',
+ reboot:'Restart device'
+};
+const FRIENDLY_OPTION_HELP = {
+ downshift_run:'How long the sensor stays active without movement before entering sleep.',
+ downshift_rest1:'How long the sensor waits in its first sleep level before saving more power.',
+ downshift_rest2:'How long the sensor waits before entering its lowest-power sleep level.',
+ sleep1_timeout:'Delay before the sensor enters its first sleep level.',
+ sleep2_timeout:'Delay before the sensor enters its second sleep level.',
+ sleep3_timeout:'Delay before the sensor enters its third sleep level.',
+ cpi:'CPI means counts per inch. Higher values make the pointer move farther for the same mouse movement.',
+ sample_count_min:'Number of recent signal checks used to assess wireless reliability.',
+ min_channel_count:'Minimum wireless channels kept available for the connection.',
+ weight_crc_ok:'How much successful messages improve wireless reliability.',
+ weight_crc_error:'How much failed messages reduce wireless reliability.',
+ ble_block_threshold:'How poor the connection must be before a channel is avoided.',
+ eval_max_count:'Maximum number of avoided channels checked at once.',
+ eval_duration:'How long the device checks an avoided channel before trying it again.',
+ eval_keepout_duration:'How long the device waits before checking a poor channel again.',
+ eval_success_threshold:'Signal quality needed before a channel can be used again.',
+ wifi_rating_inc:'How much nearby Wi-Fi activity affects the wireless connection.',
+ wifi_present_threshold:'Signal level at which nearby Wi-Fi is detected.',
+ wifi_active_threshold:'Wi-Fi activity level at which the device avoids a channel.',
+ channel_map:'Bluetooth channels available for the wireless connection.',
+ wifi_blacklist:'Wi-Fi channels that wireless channel selection should avoid.',
+ peer_erase:'Remove saved Bluetooth pairings. This action cannot be undone.',
+ peer_search:'Put the device into pairing mode to connect to a new host.',
+ fast_pair:'Reset saved pairing information.',
+ set_led_effect:'LED animation data is managed by the LED controls.',
+ get_leds_state:'Check whether the LED controller is ready to accept effects.',
+ fwinfo:'Firmware details are shown in the Firmware & DFU section.',
+ devinfo:'Device details are shown in the Firmware & DFU section.'
+};
+const OPTION_UNITS = {
+ downshift_run:'ms', downshift_rest1:'ms', downshift_rest2:'ms',
+ sleep1_timeout:'ms', sleep2_timeout:'ms', sleep3_timeout:'ms',
+ cpi:'CPI', min_channel_count:'channels', eval_max_count:'channels',
+ eval_duration:'seconds', eval_keepout_duration:'seconds',
+ sample_count_min:'samples',
+};
+const OPTION_SCALES = {
+ weight_crc_ok:100, weight_crc_error:100, ble_block_threshold:100,
+ eval_success_threshold:100, wifi_rating_inc:100,
+ wifi_present_threshold:100, wifi_active_threshold:100
+};
 const $ = id => document.getElementById(id);
 let selected = null, devices = [], activeDevice = null, activeRecipient = 0, modules = {}, currentFw = null, dfuImage = null, dfuBusy = false, ledTimer = null, ledBusy = false, audioCtx = null, audioSource = null, audioAnalyser = null, audioElement = null, musicRAF = null, stopMusicFlag = false;
 
 function log(message, kind='') { const list=$('logList'); if(list.querySelector('.muted')) list.innerHTML=''; const row=document.createElement('div'); row.className=`log-entry ${kind}`; const t=document.createElement('time'); t.textContent=new Date().toLocaleTimeString(); const m=document.createElement('span'); m.textContent=message; row.append(t,m); list.prepend(row); }
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
-function setBusy(disabled){['connectBtn','refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','startLedBtn','startMusicBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice)}
+function setBusy(disabled){['connectBtn','refreshBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','startLedBtn','startMusicBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice);$('readAllBtn').disabled=disabled||!activeDevice||Object.keys(availableModules()).length===0}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function u8(data){return data instanceof Uint8Array?data:new Uint8Array(data)}
 function decode(data){return new TextDecoder().decode(data).replace(/\0/g,'')}
 function hex(data){return [...data].map(x=>x.toString(16).padStart(2,'0')).join('')}
 function boardType(name){for(const [k,v] of Object.entries(TYPE_TO_BOARD))if(v.includes(name))return k;return 'unknown'}
-function eventId(moduleName, optionName){const m=modules[moduleName],deviceOption=optionMeta(moduleName,optionName).id;if(!m||m.options[deviceOption]===undefined)throw new Error(`Firmware option ${moduleName}/${deviceOption} is not present`);return (m.id<<4)|m.options[deviceOption].id}
+function isDongleEndpoint(device=activeDevice){return !!device&&boardType(device.board)==='dongle'}
+function availableModules(){
+  return Object.fromEntries(Object.entries(modules).filter(([name])=>{
+    if(isDongleEndpoint()&&(name==='bas'||name.startsWith('bas/')))return false;
+    return !['dfu','led_stream'].some(internal=>name===internal||name.startsWith(`${internal}/`));
+  }));
+}
+function friendlyModuleName(name){
+  return FRIENDLY_MODULE_NAMES[name]||'Other device settings';
+}
+function friendlyOptionName(moduleName,optionName){
+  return FRIENDLY_OPTION_NAMES[optionName]||'Advanced setting';
+}
+function friendlyOptionHelp(moduleName,optionName,meta){
+  if(moduleName==='bas'&&meta.help)return meta.help;
+  return FRIENDLY_OPTION_HELP[optionName]||'This device setting is not yet explained by the app. It is shown as read-only data.';
+}
+function formatOptionValue(moduleName,optionName,value){
+  if(value===undefined||value===null||value==='')return 'Enter a value to preview.';
+  if(moduleName==='bas')return String(value);
+  if(optionMeta(moduleName,optionName).type==='raw')return `Device data (hex): ${String(value).toUpperCase()}`;
+  if(moduleName==='ble_qos'&&optionMeta(moduleName,optionName).id==='blacklist'){
+    const channels=String(value).split(',').map(channel=>channel.trim()).filter(Boolean);
+    return channels.length?`Avoid Wi-Fi channels ${channels.join(', ')}.`:'No Wi-Fi channels blocked.';
+  }
+  if(moduleName==='ble_qos'&&optionMeta(moduleName,optionName).id==='chmap'){
+    return `Bluetooth channel map: ${value}.`;
+  }
+  const numeric=Number(value);
+  if(!Number.isFinite(numeric))return String(value);
+  if(OPTION_SCALES[optionName])return numeric.toLocaleString(undefined,{maximumFractionDigits:2});
+  const unit=OPTION_UNITS[optionName]||'';
+  const display=numeric.toLocaleString(undefined,{maximumFractionDigits:2});
+  return unit?`${display} ${unit}`:display;
+}
+function formatOptionRange(meta,optionName){
+  if(meta.type==='action')return 'No value needed';
+  if(optionName==='battery_main'||optionName==='battery_backup')return 'Read-only battery snapshot';
+  if(meta.type==='raw')return 'Read only · firmware-specific format';
+  if(meta.type==='hex')return '5-byte channel map';
+  if(meta.type==='text'&&optionName==='wifi_blacklist')return 'Enter Wi-Fi channel numbers separated by commas';
+  if(!meta.range)return 'Firmware controlled';
+  const unit=OPTION_UNITS[optionName];
+  const scale=OPTION_SCALES[optionName]||1;
+  const format=value=>`${(Number(value)/scale).toLocaleString(undefined,{maximumFractionDigits:scale===1?0:2})}${unit?` ${unit}`:''}`;
+  return `${format(meta.range[0])} to ${format(meta.range[1])}`;
+}
+function updateDeviceTabs(device){
+  const hideMouseFeatures=!!device&&boardType(device.board)==='dongle';
+  for(const page of ['battery','led','mouseTester'])document.querySelector(`nav [data-page="${page}"]`).hidden=hideMouseFeatures;
+  if(hideMouseFeatures&&document.querySelector('nav .nav-item.active')?.dataset.page!=='overview')activatePage('overview');
+}
+function activatePage(page){
+  if(document.querySelector(`nav [data-page="${page}"]`)?.hidden)page='overview';
+  document.body.classList.toggle('mouse-tester-open',page==='mouseTester');
+  document.querySelectorAll('.nav-item').forEach(button=>button.classList.toggle('active',button.dataset.page===page));
+  document.querySelectorAll('.page').forEach(section=>section.classList.toggle('active',section.id===`page-${page}`));
+}
+function eventId(moduleName, optionName){if(isDongleEndpoint()&&(moduleName==='bas'||moduleName.startsWith('bas/')))throw new Error('Battery settings are not available on the dongle. Select the connected mouse endpoint instead.');const m=modules[moduleName],deviceOption=optionMeta(moduleName,optionName).id;if(!m||m.options[deviceOption]===undefined)throw new Error(`Firmware option ${moduleName}/${deviceOption} is not present`);return (m.id<<4)|m.options[deviceOption].id}
 
 function parseConfigInputReport(data){
   const bytes=u8(data);
@@ -351,6 +522,7 @@ function parseConfigInputReport(data){
 }
 const pendingRequests=new Map();
 let requestQueue=Promise.resolve();
+let useFeatureReports=false;
 function handleConfigInputReport(event){
   if(event.reportId!==REPORT_INPUT_ID)return;
   try{
@@ -375,7 +547,7 @@ function handleConfigInputReport(event){
     pending.reject(new Error(`Device returned ${name} (${response.status}) for event ${response.eventId}`));
   }catch(error){log(`Invalid HID input report: ${error.message}`,'error');}
 }
-async function exchange(recipient,evId,status,eventData=null){
+async function exchangeOutputReport(recipient,evId,status,eventData=null){
   const send=async()=>{
     if(!selected?.opened)throw new Error('USB HID device is not connected');
     if(pendingRequests.has(evId))throw new Error(`Request for event ${evId} is already pending`);
@@ -393,119 +565,69 @@ async function exchange(recipient,evId,status,eventData=null){
   const result=requestQueue.then(send,send);requestQueue=result.catch(()=>{});return result;
 }
 
-// Feature Report transport (Report ID 6, 30 bytes) - used by Dongle
-// Header format: <BBBBB (report_id, recipient, event_id, status, data_len)
-let useFeatureReports = false;
-const FEATURE_HEADER_FORMAT = [FEATURE_REPORT_ID]; // report ID byte
-const pendingFeatureRequests = new Map();
-let featureRequestQueue = Promise.resolve();
-
-function parseFeatureResponse(data) {
-  const bytes = u8(data);
-  if (bytes.length < 5) throw new Error(`Feature response too short: ${bytes.length} bytes`);
-  const reportId = bytes[0];
-  const recipient = bytes[1];
-  const eventId = bytes[2];
-  const status = bytes[3];
-  const dataLen = bytes[4];
-  if (dataLen > bytes.length - 5) throw new Error(`Invalid feature data length: ${dataLen}`);
-  const payload = dataLen > 0 ? bytes.slice(5, 5 + dataLen) : new Uint8Array();
-  return {recipient, eventId, status, payload};
-}
-
 async function exchangeFeature(recipient, evId, status, eventData = null) {
   const send = async () => {
     if (!selected?.opened) throw new Error('USB HID device is not connected');
-    if (pendingFeatureRequests.has(evId)) throw new Error(`Feature request for event ${evId} is already pending`);
-    
-    const bytes = eventData ? u8(eventData) : new Uint8Array();
-    if (bytes.length > FEATURE_REPORT_SIZE - 5) throw new Error(`Feature payload too large (${bytes.length}; maximum ${FEATURE_REPORT_SIZE - 5})`);
-    
-    // Build feature report with report ID byte
-    const packet = new Uint8Array(FEATURE_REPORT_SIZE);
-    packet[0] = FEATURE_REPORT_ID;
-    packet[1] = recipient;
-    packet[2] = evId & 255;
-    packet[3] = status;
-    packet[4] = bytes.length;
-    packet.set(bytes, 5);
-    // Pad with zeros
-    // (already zero-initialized)
-    
-    const response = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        pendingFeatureRequests.delete(evId);
-        reject(new Error(`Timed out waiting for Feature Report response (recipient ${recipient}, event ${evId}).`));
-      }, 15000);
-      pendingFeatureRequests.set(evId, {recipient, resolve, reject, timer, allowDisconnected: false});
-    });
-    
-    try {
-      await selected.sendFeatureReport(FEATURE_REPORT_ID, packet);
-    } catch (error) {
-      const p = pendingFeatureRequests.get(evId);
-      if (p) {
-        clearTimeout(p.timer);
-        pendingFeatureRequests.delete(evId);
-        p.reject(new Error(`Feature Report send failed: ${error.message}`));
-      }
+    if (typeof selected.receiveFeatureReport !== 'function') {
+      throw new Error('This browser does not support reading HID Feature Reports.');
     }
-    return response;
+    if (pendingRequests.has(evId)) throw new Error(`Request for event ${evId} is already pending`);
+    const bytes = eventData ? u8(eventData) : new Uint8Array();
+    if (bytes.length > FEATURE_REPORT_SIZE - 4) {
+      throw new Error(`Feature payload too large (${bytes.length}; maximum ${FEATURE_REPORT_SIZE - 4})`);
+    }
+
+    // The USB Feature Report transport returns config responses through GET_REPORT.
+    const packet = new Uint8Array(FEATURE_REPORT_SIZE);
+    packet[0] = recipient;
+    packet[1] = evId & 255;
+    packet[2] = status;
+    packet[3] = bytes.length;
+    packet.set(bytes, 4);
+
+    await selected.sendFeatureReport(FEATURE_REPORT_ID, packet);
+    const deadline = Date.now() + 15000;
+    while (Date.now() < deadline) {
+      const reportData = await selected.receiveFeatureReport(FEATURE_REPORT_ID);
+      if (!(reportData instanceof DataView)) {
+        throw new Error(`Feature Report ${FEATURE_REPORT_ID} returned an invalid response.`);
+      }
+      let frameData = new Uint8Array(
+        reportData.buffer,
+        reportData.byteOffset,
+        reportData.byteLength
+      );
+      if (frameData.byteLength === FEATURE_REPORT_SIZE + 1 &&
+          frameData[0] === FEATURE_REPORT_ID) {
+        frameData = frameData.subarray(1);
+      }
+      const response = parseConfigInputReport(frameData);
+      if (response.status === STATUS.PENDING) {
+        await sleep(20);
+        continue;
+      }
+      if (response.recipient !== recipient || response.eventId !== (evId & 255)) {
+        throw new Error(`Feature response mismatch for recipient ${recipient}, event ${evId}.`);
+      }
+      if (response.status !== STATUS.SUCCESS) {
+        const name = Object.keys(STATUS).find(key => STATUS[key] === response.status) ||
+          `status ${response.status}`;
+        throw new Error(`Device returned ${name} for Feature Report event ${evId}.`);
+      }
+      return response.payload;
+    }
+    throw new Error(`Timed out waiting for Feature Report response (recipient ${recipient}, event ${evId}).`);
   };
-  
-  const result = featureRequestQueue.then(send, send);
-  featureRequestQueue = result.catch(() => {});
+
+  const result = requestQueue.then(send, send);
+  requestQueue = result.catch(() => {});
   return result;
 }
 
-function handleFeatureReport(event) {
-  if (event.reportId !== FEATURE_REPORT_ID) return;
-  try {
-    const response = parseFeatureResponse(new Uint8Array(event.data.buffer, event.data.byteOffset, event.data.byteLength));
-    const pending = pendingFeatureRequests.get(response.eventId);
-    if (!pending) return;
-    if (response.status === STATUS.PENDING) return;
-    pendingFeatureRequests.delete(response.eventId);
-    clearTimeout(pending.timer);
-    if (response.recipient !== pending.recipient) {
-      pending.reject(new Error(`Feature response recipient mismatch: expected ${pending.recipient}, got ${response.recipient}`));
-      return;
-    }
-    if (response.status === STATUS.SUCCESS) {
-      pending.resolve(response.payload);
-      return;
-    }
-    if (response.status === STATUS.DISCONNECTED && pending.allowDisconnected) {
-      pending.resolve(null);
-      return;
-    }
-    const name = Object.keys(STATUS).find(k => STATUS[k] === response.status) || `status ${response.status}`;
-    pending.reject(new Error(`Device returned ${name} (${response.status}) for event ${response.eventId}`));
-  } catch (error) {
-    log(`Invalid Feature Report: ${error.message}`, 'error');
-  }
-}
-
-// Unified exchange function that tries interrupt first, then falls back to feature reports
-async function exchangeUnified(recipient, evId, status, eventData = null) {
-  if (!useFeatureReports) {
-    try {
-      return await exchange(recipient, evId, status, eventData);
-    } catch (error) {
-      // Check if it's a timeout or device not responding - try feature reports
-      if (error.message.includes('Timed out') || error.message.includes('write failed')) {
-        log(`Interrupt report failed, trying feature reports: ${error.message}`);
-        useFeatureReports = true;
-        // Re-register for feature reports
-        selected.removeEventListener('inputreport', handleConfigInputReport);
-        selected.addEventListener('inputreport', handleFeatureReport);
-        return await exchangeFeature(recipient, evId, status, eventData);
-      }
-      throw error;
-    }
-  } else {
-    return await exchangeFeature(recipient, evId, status, eventData);
-  }
+function exchange(recipient, evId, status, eventData = null) {
+  return useFeatureReports
+    ? exchangeFeature(recipient, evId, status, eventData)
+    : exchangeOutputReport(recipient, evId, status, eventData);
 }
 
 function decodeBatteryStatus(id, level, status, chargePhase=0) {
@@ -520,6 +642,18 @@ function decodeBatteryStatus(id, level, status, chargePhase=0) {
   return {id,level,presence,charge,chargeLevel,powerSource,chargingMethod,measurementsValid,measurementsFresh,fault,
     statusText:fault?'Fault':presence==='Present'?(measurementsValid?(measurementsFresh?chargeLevel:'Last measured'):'Not sampled'):presence,
     chargeStateText:charge,chargingMethodText:chargingMethod,powerSourceText:powerSource,healthText};
+}
+function summarizeBatterySnapshot(id,data){
+  if(data.length!==13&&data.length!==14)throw new Error(`Unexpected ${friendlyOptionName('bas',id===1?'battery_main':'battery_backup')} data.`);
+  const view=new DataView(data.buffer,data.byteOffset,data.byteLength);
+  const battery=decodeBatteryStatus(id,data[0],view.getUint16(1,true),data[13]||0);
+  const details=[`${data[0]}%`,battery.healthText,battery.chargeStateText];
+  if(battery.measurementsValid)details.push(`${view.getUint16(3,true).toLocaleString()} mV`);
+  if(battery.measurementsValid&&battery.measurementsFresh){
+    details.push(`${view.getInt32(5,true)} mA`);
+    details.push(`${(view.getInt32(9,true)/1000).toFixed(1)} °C`);
+  }
+  return details.join(' · ');
 }
 function renderBatteryCard(battery) {
   const prefix=battery.id===1?'primary':'backup';
@@ -566,7 +700,7 @@ $(`${prefix}BatteryLifeText`).textContent=`Estimated life: ${lifeText}`;
 if(!battery.measurementsValid)resetBatteryLabels(prefix);
 }
 async function refreshBatteryData() {
-  if(!activeDevice) return;
+  if(!activeDevice||isDongleEndpoint()) return;
   const bas=modules.bas;
   if(!bas || !bas.options || bas.options.battery_main===undefined || bas.options.battery_backup===undefined) {
     log('Battery snapshot options are not exposed by this firmware endpoint; waiting for live battery events.','error');
@@ -590,27 +724,184 @@ async function discoverConfig(recipient){const max=await getMaxModuleId(recipien
 async function readInfo(recipient){const board=await exchange(recipient,0,STATUS.GET_BOARD_NAME);const hwid=await exchange(recipient,0,STATUS.GET_HWID);return {board:decode(board||new Uint8Array()),hwid:hex(hwid||new Uint8Array())}}
 async function getPeers(recipient=0){const peers={};try{await exchange(recipient,0,STATUS.INDEX_PEERS);while(true){const d=await exchange(recipient,0,STATUS.GET_PEER);if(!d||d.length<2)break;const peerId=d[d.length-1];if(peerId===255)break;peers[hex(d.slice(0,-1))]=peerId;if(Object.keys(peers).length>255)return {}}}catch(e){log(`Peer discovery: ${e.message}`)}return peers}
 
-async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;selected=chosen[0];await selected.open();useFeatureReports=false;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config reports OUT 7 / IN 8`);await initializeSelected();}catch(e){selected=null;log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
-async function initializeSelected(){if(!selected)return;setBusy(true);try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){log(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData()}catch(e){log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`);try{await selected.close()}catch{}selected=null;activeDevice=null;renderDisconnected()}finally{setBusy(false)}}
-function renderConnected(){if(!activeDevice)return;const d=activeDevice;const endpoint=$('endpointSelect');endpoint.innerHTML='';devices.forEach((dev,index)=>{const op=document.createElement('option');op.value=String(index);op.textContent=`${dev.board} · ${dev.hwid.slice(0,12)}${dev.direct?' (USB)':' (peer)'}`;endpoint.append(op)});endpoint.value=String(Math.max(0,devices.indexOf(activeDevice)));endpoint.disabled=devices.length<2;$('connectionBadge').textContent='Connected';$('connectionBadge').className='badge online';$('deviceName').textContent=d.board;$('deviceMeta').textContent=`HW ID: ${d.hwid}${devices.length>1?` · ${devices.length} endpoints`:''}`;$('disconnectBtn').disabled=false;$('refreshBtn').disabled=false;$('readAllBtn').disabled=false;$('getFwInfoBtn').disabled=false;$('getDevInfoBtn').disabled=false;$('rebootBtn').disabled=false;$('dfuFile').disabled=false;$('startLedBtn').disabled=false;$('startMusicBtn').disabled=false;$('wavFile').disabled=false;$('refreshBatteryBtn').disabled=false;$('statBoard').textContent=d.board;$('statHwid').textContent=d.hwid;$('statModules').textContent=Object.keys(modules).length;$('statUsb').textContent=`${selected.vendorId.toString(16).toUpperCase()}:${selected.productId.toString(16).toUpperCase()}`;$('moduleCount').textContent=`${Object.keys(modules).length} modules`;$('moduleOverview').className='module-grid';$('moduleOverview').innerHTML='';for(const [name,mod] of Object.entries(modules)){const tile=document.createElement('div');tile.className='module-tile';tile.innerHTML=`<strong></strong><small></small>`;tile.querySelector('strong').textContent=name;tile.querySelector('small').textContent=`${Object.keys(mod.options).length} options`; $('moduleOverview').append(tile)}const sel=$('moduleSelect');sel.innerHTML='';for(const name of Object.keys(modules)){const op=document.createElement('option');op.value=name;op.textContent=name;sel.append(op)}sel.disabled=false;$('configSearch').disabled=false;renderConfig();$('refreshBatteryBtn').disabled=false;}
-function renderDisconnected(){$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile','startLedBtn','startMusicBtn','wavFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 modules';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its modules.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load configuration options.'}
-async function disconnect(){stopLed();stopMusic();try{if(selected?.opened)await selected.close()}catch{}selected=null;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
+async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;selected=chosen[0];await selected.open();const hasOutput=selected.collections.some(collection=>collection.outputReports.some(report=>report.reportId===REPORT_OUTPUT_ID));const hasFeature=selected.collections.some(collection=>collection.featureReports.some(report=>report.reportId===FEATURE_REPORT_ID));if(!hasOutput&&!hasFeature)throw new Error('Selected device exposes neither config Output Report 7 nor Feature Report 6.');useFeatureReports=!hasOutput&&hasFeature;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config transport ${useFeatureReports?'Feature Report 6':'Output Report 7'}, battery notifications Input Report 8`);await initializeSelected();}catch(e){if(selected?.opened)try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
+async function initializeSelected(){if(!selected)return;setBusy(true);try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){log(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData()}catch(e){log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`);try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;activeDevice=null;renderDisconnected()}finally{setBusy(false)}}
+function renderConnected(){
+  if(!activeDevice)return;
+  const d=activeDevice,visible=availableModules();
+  updateDeviceTabs(d);
+  const endpoint=$('endpointSelect');
+  endpoint.innerHTML='';
+  devices.forEach((dev,index)=>{
+    const option=document.createElement('option');
+    option.value=String(index);
+    option.textContent=`${dev.board} · ${dev.hwid.slice(0,12)}${dev.direct?' (USB)':' (peer)'}`;
+    endpoint.append(option);
+  });
+  endpoint.value=String(Math.max(0,devices.indexOf(activeDevice)));
+  endpoint.disabled=devices.length<2;
+  $('connectionBadge').textContent='Connected';
+  $('connectionBadge').className='badge online';
+  $('deviceName').textContent=d.board;
+  $('deviceMeta').textContent=`HW ID: ${d.hwid}${devices.length>1?` · ${devices.length} endpoints`:''}`;
+  $('disconnectBtn').disabled=false;
+  $('refreshBtn').disabled=false;
+  $('readAllBtn').disabled=false;
+  $('getFwInfoBtn').disabled=false;
+  $('getDevInfoBtn').disabled=false;
+  $('rebootBtn').disabled=false;
+  $('dfuFile').disabled=false;
+  $('startLedBtn').disabled=false;
+  $('startMusicBtn').disabled=false;
+  $('wavFile').disabled=false;
+  $('refreshBatteryBtn').disabled=isDongleEndpoint();
+  $('statBoard').textContent=d.board;
+  $('statHwid').textContent=d.hwid;
+  $('statModules').textContent=Object.keys(visible).length;
+  $('statUsb').textContent=`${selected.vendorId.toString(16).toUpperCase()}:${selected.productId.toString(16).toUpperCase()}`;
+  $('moduleCount').textContent=`${Object.keys(visible).length} setting groups`;
+  $('moduleOverview').className='module-grid';
+  $('moduleOverview').innerHTML='';
+  for(const [name,mod] of Object.entries(visible)){
+    const tile=document.createElement('div');
+    tile.className='module-tile';
+    tile.innerHTML='<strong></strong><small></small>';
+    tile.querySelector('strong').textContent=friendlyModuleName(name);
+    tile.querySelector('small').textContent=`${Object.keys(mod.options).length} settings`;
+    $('moduleOverview').append(tile);
+  }
+  const select=$('moduleSelect');
+  select.innerHTML='';
+  for(const name of Object.keys(visible)){
+    const option=document.createElement('option');
+    option.value=name;
+    option.textContent=friendlyModuleName(name);
+    select.append(option);
+  }
+  select.disabled=Object.keys(visible).length===0;
+  $('configSearch').disabled=select.disabled;
+  $('readAllBtn').disabled=select.disabled;
+  if(select.disabled){
+    select.innerHTML='<option>No settings available</option>';
+    $('configPanel').className='panel config-panel empty-state';
+    $('configPanel').textContent='This device does not expose configurable settings.';
+  }else renderConfig();
+}
+function renderDisconnected(){activatePage('overview');updateDeviceTabs(null);$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile','startLedBtn','startMusicBtn','wavFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 setting groups';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its settings.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load settings.'}
+async function disconnect(){stopLed();stopMusic();try{if(selected?.opened)await selected.close()}catch{}selected=null;useFeatureReports=false;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
 
 function optionMeta(moduleName,optName){const m=OPTIONS[moduleName]||{};return m[optName]||{id:optName,range:null,help:'Firmware-reported option (no local metadata available)',type:'raw'}}
-function moduleOptionMap(moduleName){const actual=modules[moduleName]?.options||{};const result={};for(const [name,meta] of Object.entries(OPTIONS[moduleName]||{})){if(actual[meta.id]!==undefined)result[name]={...meta,deviceOption:meta.id,deviceId:actual[meta.id].id}}for(const [name,desc] of Object.entries(actual)){if(!Object.values(OPTIONS[moduleName]||{}).some(meta=>meta.id===name))result[name]={id:name,range:null,help:'Firmware-reported option (no local metadata available)',type:'raw',deviceOption:name,deviceId:desc.id}}return result}
-function inputForOption(name,meta){const input=document.createElement('input');input.dataset.option=name;input.type='text';input.placeholder=meta.type==='action'?'Action':meta.type==='hex'?'0x0000000000':'Not read';if(meta.range&&meta.type==='int'){input.type='number';input.min=meta.range[0];input.max=meta.range[1];input.step='1'}input.disabled=meta.type==='action'||meta.type==='raw';return input}
-function renderConfig(){if(!activeDevice)return;const name=$('moduleSelect').value;const panel=$('configPanel');panel.className='panel config-panel';panel.innerHTML='';if(!name||!modules[name]){panel.textContent='Select a module.';return}const opts=moduleOptionMap(name),search=$('configSearch').value.toLowerCase();const group=document.createElement('div');group.className='config-group';const head=document.createElement('div');head.className='group-title';head.innerHTML=`<span></span><span>${Object.keys(opts).length} firmware options</span>`;head.firstChild.textContent=name;group.append(head);for(const [opt,meta] of Object.entries(opts)){if(!`${opt} ${meta.help}`.toLowerCase().includes(search))continue;const row=document.createElement('div');row.className='config-row';const title=document.createElement('div');title.innerHTML='<div class="option-name"></div><div class="option-help"></div>';title.querySelector('.option-name').textContent=opt;title.querySelector('.option-help').textContent=meta.help;const range=document.createElement('div');range.className='option-range';range.textContent=meta.range?`${meta.range[0]} – ${meta.range[1]}`:'No value';const value=document.createElement('div');value.className='option-value';const input=inputForOption(opt,meta);value.append(input);const actions=document.createElement('div');actions.className='button-row';if(meta.type!=='action'){const read=document.createElement('button');read.className='read-btn';read.textContent='Read';read.addEventListener('click',()=>readOption(name,opt,row));actions.append(read)}const write=document.createElement('button');write.className='write-btn';write.textContent=meta.type==='action'?'Trigger':'Write';write.addEventListener('click',()=>writeOption(name,opt,row));actions.append(write);row.append(title,range,value,actions);group.append(row)}panel.append(group);if(!group.querySelector('.config-row')){panel.className='panel config-panel empty-state';panel.textContent='No options match this filter.'}}
+function moduleOptionMap(moduleName){const actual=modules[moduleName]?.options||{};const result={};for(const [name,meta] of Object.entries(OPTIONS[moduleName]||{})){if(actual[meta.id]!==undefined)result[name]={...meta,deviceOption:meta.id,deviceId:actual[meta.id].id}}for(const [name,desc] of Object.entries(actual)){if(!Object.values(OPTIONS[moduleName]||{}).some(meta=>meta.id===name))result[name]={id:name,range:null,help:'',type:'raw',deviceOption:name,deviceId:desc.id}}return result}
+function inputForOption(name,meta){const input=document.createElement('input');input.dataset.option=name;input.type='text';input.placeholder=meta.type==='action'?'No value needed':meta.type==='hex'?'Enter channel map (hex)':meta.type==='text'?'Enter channel numbers':meta.type==='raw'?'Read only':'Read current value';if(meta.range&&meta.type==='int'){const scale=OPTION_SCALES[name]||1;input.type='number';input.min=meta.range[0]/scale;input.max=meta.range[1]/scale;input.step=scale>1?1/scale:'1'}input.disabled=meta.type==='action'||meta.type==='raw';return input}
+function renderConfig(){
+  if(!activeDevice)return;
+  const name=$('moduleSelect').value,panel=$('configPanel');
+  panel.className='panel config-panel';
+  panel.innerHTML='';
+  if(!name||!availableModules()[name]){panel.textContent='Select a setting group.';return}
+  const opts=moduleOptionMap(name),search=$('configSearch').value.trim().toLowerCase();
+  const intro=document.createElement('p');
+  intro.className='config-intro muted';
+  intro.textContent=name==='ble_qos'
+    ?'These advanced wireless controls affect how the mouse selects Bluetooth channels. Change them only if you have recommended values.'
+    :'Read a setting to see its current value. Edit the value and choose Save to apply it.';
+  panel.append(intro);
+  const group=document.createElement('div');
+  group.className='config-group';
+  const head=document.createElement('div');
+  head.className='group-title';
+  const groupName=document.createElement('span');
+  groupName.textContent=friendlyModuleName(name);
+  const count=document.createElement('span');
+  count.textContent=`${Object.keys(opts).length} settings`;
+  head.append(groupName,count);
+  group.append(head);
+  const columns=document.createElement('div');
+  columns.className='config-columns';
+  for(const label of ['Setting','Allowed value','Value','Action']){
+    const column=document.createElement('span');
+    column.textContent=label;
+    columns.append(column);
+  }
+  group.append(columns);
+  let visibleCount=0;
+  for(const [opt,meta] of Object.entries(opts)){
+    const label=friendlyOptionName(name,opt),help=friendlyOptionHelp(name,opt,meta);
+    if(!`${label} ${help} ${opt}`.toLowerCase().includes(search))continue;
+    visibleCount++;
+    const row=document.createElement('div');
+    row.className='config-row';
+    const title=document.createElement('div');
+    const optionTitle=document.createElement('div');
+    optionTitle.className='option-name';
+    optionTitle.textContent=label;
+    const description=document.createElement('div');
+    description.className='option-help';
+    description.textContent=help;
+    title.append(optionTitle,description);
+    if(meta.type==='raw'){
+      const details=document.createElement('details');
+      details.className='option-technical';
+      const summary=document.createElement('summary');
+      summary.textContent='Advanced details';
+      const technicalName=document.createElement('div');
+      technicalName.textContent=`Firmware setting: ${opt}`;
+      details.append(summary,technicalName);
+      title.append(details);
+    }
+    const range=document.createElement('div');
+    range.className='option-range';
+    range.textContent=formatOptionRange(meta,opt);
+    const value=document.createElement('div');
+    value.className='option-value';
+    const field=document.createElement('div');
+    field.style.flex='1';
+    const input=inputForOption(opt,meta);
+    field.append(input);
+    if(meta.type!=='action'){
+      const preview=document.createElement('div');
+      preview.className='option-preview';
+      preview.textContent='Current value: not read yet';
+      preview.setAttribute('aria-live','polite');
+      field.append(preview);
+      input.addEventListener('input',()=>{
+        preview.textContent=`Value preview: ${formatOptionValue(name,opt,input.value)}`;
+      });
+    }
+    value.append(field);
+    const actions=document.createElement('div');
+    actions.className='button-row';
+    if(meta.type!=='action'){
+      const read=document.createElement('button');
+      read.className='read-btn';
+      read.textContent='Read';
+      read.addEventListener('click',()=>readOption(name,opt,row));
+      actions.append(read);
+    }
+    if(meta.type!=='raw'){
+      const save=document.createElement('button');
+      save.className='write-btn';
+      save.textContent=meta.type==='action'?'Run':'Save';
+      save.addEventListener('click',()=>writeOption(name,opt,row));
+      actions.append(save);
+    }
+    row.append(title,range,value,actions);
+    group.append(row);
+  }
+  if(visibleCount)panel.append(group);
+  else{panel.className='panel config-panel empty-state';panel.textContent='No settings match this search.'}
+}
 function findFormat(moduleName,deviceOpt){if(moduleName==='ble_qos'&&['param_ble','param_wifi'].includes(deviceOpt))return FORMATS[`${moduleName}/${deviceOpt}`];return null}
-function parseOptionValue(moduleName,optName,data){const deviceOpt=optionMeta(moduleName,optName).id;const fmt=findFormat(moduleName,deviceOpt);if(fmt){const v=new DataView(data.buffer,data.byteOffset,data.byteLength);let off=0,out={};for(const [field,type] of fmt.fields){let n;if(type==='u8'){n=v.getUint8(off);off+=1}else if(type==='u16'){n=v.getUint16(off,true);off+=2}else{n=v.getInt16(off,true);off+=2}out[field]=n}return out[optName]}if(moduleName==='ble_qos'&&deviceOpt==='chmap'){if(data.length!==5)throw new Error('Unexpected channel map size');return '0x'+hex([...data].reverse()).toUpperCase()}if(moduleName==='ble_qos'&&deviceOpt==='blacklist'){if(data.length!==2)throw new Error('Unexpected Wi-Fi blacklist size');const mask=new DataView(data.buffer,data.byteOffset,2).getUint16(0,true);const a=[];for(let i=0;i<16;i++)if(mask&(1<<i))a.push(i);return a.join(',')}if(data.length>=4)return new DataView(data.buffer,data.byteOffset,data.byteLength).getUint32(0,true);if(data.length===1)return data[0];return hex(data)}
-async function fetchOption(moduleName,optName){const d=await exchange(activeRecipient,eventId(moduleName,optName),STATUS.FETCH);if(!d)throw new Error('Device returned no value');const parsed=parseOptionValue(moduleName,optName,d);const fmt=findFormat(moduleName,optionMeta(moduleName,optName).id);if(fmt){return {value:parsed,raw:d,format:fmt}}return {value:parsed,raw:d}}
-async function readOption(moduleName,optName,row){const input=row.querySelector('input');const btn=row.querySelector('.read-btn');btn.disabled=true;try{const res=await fetchOption(moduleName,optName);input.value=String(res.value);input.dataset.raw=hex(res.raw);log(`Read ${moduleName}/${optName}: ${res.value}`,'success')}catch(e){log(`Read failed ${moduleName}/${optName}: ${e.message}`,'error');toast(e.message)}finally{btn.disabled=false}}
-function valueToBytes(moduleName,optName,raw,priorRaw=null){const meta=optionMeta(moduleName,optName);const deviceOpt=optionMeta(moduleName,optName).id;const fmt=findFormat(moduleName,deviceOpt);if(fmt){const fields=fmt.fields;const parsed={};for(const [field] of fields){const desc=Object.entries(OPTIONS[moduleName]).find(([k,v])=>k===field);const rowInput=document.querySelector(`[data-option="${CSS.escape(field)}"]`);if(rowInput&&rowInput.value.trim()!=='')parsed[field]=Number(rowInput.value)}const prior=priorRaw?u8(priorRaw):new Uint8Array(fmt.size);const out=new Uint8Array(fmt.size);const dv=new DataView(out.buffer);let off=0;for(const [field,type] of fields){let n=parsed[field];if(n===undefined){const old=new DataView(prior.buffer,prior.byteOffset,prior.byteLength);if(type==='u8')n=old.getUint8(off);else if(type==='u16')n=old.getUint16(off,true);else n=old.getInt16(off,true)}if(type==='u8'){if(!Number.isInteger(n)||n<0||n>255)throw new Error(`${field} must be 0–255`);dv.setUint8(off,n);off++}else if(type==='u16'){if(!Number.isInteger(n)||n<0||n>65535)throw new Error(`${field} must be 0–65535`);dv.setUint16(off,n,true);off+=2}else{if(!Number.isInteger(n)||n< -32768||n>32767)throw new Error(`${field} must be -32768–32767`);dv.setInt16(off,n,true);off+=2}}return out}
+function parseOptionValue(moduleName,optName,data){const deviceOpt=optionMeta(moduleName,optName).id;if(moduleName==='bas'&&(deviceOpt==='battery_main'||deviceOpt==='battery_backup'))return summarizeBatterySnapshot(deviceOpt==='battery_main'?1:2,data);const fmt=findFormat(moduleName,deviceOpt);if(fmt){const v=new DataView(data.buffer,data.byteOffset,data.byteLength);let off=0,out={};for(const [field,type] of fmt.fields){let n;if(type==='u8'){n=v.getUint8(off);off+=1}else if(type==='u16'){n=v.getUint16(off,true);off+=2}else{n=v.getInt16(off,true);off+=2}out[field]=n}return out[optName]}if(moduleName==='ble_qos'&&deviceOpt==='chmap'){if(data.length!==5)throw new Error('Unexpected channel map size');return '0x'+hex([...data].reverse()).toUpperCase()}if(moduleName==='ble_qos'&&deviceOpt==='blacklist'){if(data.length!==2)throw new Error('Unexpected Wi-Fi blacklist size');const mask=new DataView(data.buffer,data.byteOffset,2).getUint16(0,true);const a=[];for(let i=0;i<16;i++)if(mask&(1<<i))a.push(i);return a.join(',')}return hex(data).toUpperCase()}
+async function fetchOption(moduleName,optName){const d=await exchange(activeRecipient,eventId(moduleName,optName),STATUS.FETCH);if(!d||!d.length)throw new Error('This setting did not return a value.');const parsed=parseOptionValue(moduleName,optName,d);const fmt=findFormat(moduleName,optionMeta(moduleName,optName).id);if(fmt){return {value:parsed,raw:d,format:fmt}}return {value:parsed,raw:d}}
+async function readOption(moduleName,optName,row){const input=row.querySelector('input'),btn=row.querySelector('.read-btn'),meta=optionMeta(moduleName,optName);btn.disabled=true;try{const res=await fetchOption(moduleName,optName),scale=OPTION_SCALES[optName]||1;input.value=meta.type==='raw'||meta.type==='text'?String(res.value):String(Number(res.value)/scale);input.dataset.raw=hex(res.raw);input.dispatchEvent(new Event('input',{bubbles:true}));log(`Read ${friendlyOptionName(moduleName,optName)}: ${formatOptionValue(moduleName,optName,input.value)}`,'success')}catch(e){log(`Read failed ${friendlyOptionName(moduleName,optName)}: ${e.message}`,'error');toast(e.message)}finally{btn.disabled=false}}
+function valueToBytes(moduleName,optName,raw,priorRaw=null){const meta=optionMeta(moduleName,optName);const deviceOpt=optionMeta(moduleName,optName).id;const fmt=findFormat(moduleName,deviceOpt);if(fmt){const fields=fmt.fields;const parsed={};for(const [field] of fields){const rowInput=document.querySelector(`[data-option="${CSS.escape(field)}"]`);if(rowInput&&rowInput.value.trim()!==''){const scale=OPTION_SCALES[field]||1;const scaled=Number(rowInput.value)*scale;const rounded=Math.round(scaled);if(Math.abs(scaled-rounded)>1e-8)throw new Error(`${friendlyOptionName(moduleName,field)} supports up to two decimal places`);parsed[field]=rounded}}const prior=priorRaw?u8(priorRaw):new Uint8Array(fmt.size);const out=new Uint8Array(fmt.size);const dv=new DataView(out.buffer);let off=0;for(const [field,type] of fields){let n=parsed[field];if(n===undefined){const old=new DataView(prior.buffer,prior.byteOffset,prior.byteLength);if(type==='u8')n=old.getUint8(off);else if(type==='u16')n=old.getUint16(off,true);else n=old.getInt16(off,true)}if(type==='u8'){if(!Number.isInteger(n)||n<0||n>255)throw new Error(`${friendlyOptionName(moduleName,field)} must be between 0 and 255`);dv.setUint8(off,n);off++}else if(type==='u16'){if(!Number.isInteger(n)||n<0||n>65535)throw new Error(`${friendlyOptionName(moduleName,field)} must be between 0 and 65535`);dv.setUint16(off,n,true);off+=2}else{if(!Number.isInteger(n)||n< -32768||n>32767)throw new Error(`${friendlyOptionName(moduleName,field)} must be between -32768 and 32767`);dv.setInt16(off,n,true);off+=2}}return out}
  if(meta.type==='hex'){let s=String(raw).trim().replace(/^0x/i,'');if(!/^[0-9a-fA-F]{1,10}$/.test(s))throw new Error('Enter up to 10 hexadecimal digits');s=s.padStart(10,'0');return Uint8Array.from(s.match(/../g).reverse().map(x=>parseInt(x,16)))}
  if(meta.type==='text'&&moduleName==='ble_qos'&&deviceOpt==='blacklist'){const vals=String(raw).split(',').map(x=>x.trim()).filter(Boolean).map(Number);let mask=0;for(const n of vals){if(!Number.isInteger(n)||n<0||n>15)throw new Error('Wi-Fi channel entries must be 0–15');mask|=1<<n}const a=new Uint8Array(2);new DataView(a.buffer).setUint16(0,mask,true);return a}
  if(meta.type==='int'){const n=Number(raw);if(!Number.isInteger(n)||n<meta.range[0]||n>meta.range[1])throw new Error(`Value must be ${meta.range[0]}–${meta.range[1]}`);const a=new Uint8Array(4);new DataView(a.buffer).setUint32(0,n>>>0,true);return a}
  if(meta.type==='raw'){const s=String(raw).trim().replace(/\s/g,'');if(!/^(?:[0-9a-fA-F]{2})+$/.test(s))throw new Error('Raw value must be hexadecimal byte pairs');return Uint8Array.from(s.match(/../g).map(x=>parseInt(x,16)))}
  return null}
-async function writeOption(moduleName,optName,row){const meta=optionMeta(moduleName,optName),input=row.querySelector('input'),btn=row.querySelector('.write-btn');btn.disabled=true;try{let bytes=null;if(meta.type!=='action'){let raw=input.value;if(raw==='')throw new Error('Enter a value first');let oldRaw=null;if(findFormat(moduleName,optionMeta(moduleName,optName).id)){ const fetched=await fetchOption(moduleName,optName);oldRaw=fetched.raw}bytes=valueToBytes(moduleName,optName,raw,oldRaw)}const ok=await exchange(activeRecipient,eventId(moduleName,optName),STATUS.SET,bytes);log(`${meta.type==='action'?'Triggered':'Wrote'} ${moduleName}/${optName}${input.value?`: ${input.value}`:''}`,'success');toast('Device accepted the request')}catch(e){log(`Write failed ${moduleName}/${optName}: ${e.message}`,'error');toast(e.message)}finally{btn.disabled=false}}
+async function writeOption(moduleName,optName,row){const meta=optionMeta(moduleName,optName),input=row.querySelector('input'),btn=row.querySelector('.write-btn');btn.disabled=true;try{let bytes=null;if(meta.type!=='action'){let raw=input.value;if(raw==='')throw new Error('Enter a value first');let oldRaw=null;if(findFormat(moduleName,optionMeta(moduleName,optName).id)){const fetched=await fetchOption(moduleName,optName);oldRaw=fetched.raw}bytes=valueToBytes(moduleName,optName,raw,oldRaw)}await exchange(activeRecipient,eventId(moduleName,optName),STATUS.SET,bytes);log(`${meta.type==='action'?'Ran':'Saved'} ${friendlyOptionName(moduleName,optName)}${input.value?`: ${formatOptionValue(moduleName,optName,input.value)}`:''}`,'success');toast('Device accepted the request')}catch(e){log(`Save failed for ${friendlyOptionName(moduleName,optName)}: ${e.message}`,'error');toast(e.message)}finally{btn.disabled=false}}
 async function readAll(){const name=$('moduleSelect').value;if(!name)return;const rows=[...$('configPanel').querySelectorAll('.config-row')];for(const row of rows){const opt=row.querySelector('[data-option]').dataset.option;if(optionMeta(name,opt).type==='action')continue;await readOption(name,opt,row)}toast('Read operation completed')}
 
 function fwModule(){return Object.keys(modules).find(k=>k==='dfu'||k.startsWith('dfu/'))}
@@ -656,8 +947,8 @@ themeToggle.addEventListener('click', () => {
   applyTheme(current === 'dark' ? 'light' : 'dark');
 });
 
-$('endpointSelect').addEventListener('change',()=>{const d=devices[Number($('endpointSelect').value)];if(!d)return;activeDevice=d;activeRecipient=d.recipient;modules=d.config;currentFw=null;dfuImage=null;renderConnected();$('fwInfo').innerHTML='<div class="muted">Not read yet.</div>';$('devInfo').innerHTML='<div class="muted">Not read yet.</div>';$('dfuDetails').textContent='Read firmware information before selecting an update.';$('startDfuBtn').disabled=true;$('dfuTrust').checked=false;$('dfuTrust').disabled=true;log(`Selected endpoint ${d.board} (${d.hwid})`)});$('connectBtn').addEventListener('click',connectDevice);$('disconnectBtn').addEventListener('click',disconnect);$('refreshBtn').addEventListener('click',async()=>{try{await initializeSelected()}catch(e){toast(e.message)}});$('moduleSelect').addEventListener('change',renderConfig);$('configSearch').addEventListener('input',renderConfig);$('readAllBtn').addEventListener('click',readAll);$('getFwInfoBtn').addEventListener('click',async()=>{try{await fwInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('getDevInfoBtn').addEventListener('click',async()=>{try{await devInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('rebootBtn').addEventListener('click',async()=>{try{await reboot()}catch(e){log(e.message,'error');toast(e.message)}});$('dfuTrust').addEventListener('change',()=>$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked);$('startDfuBtn').addEventListener('click',startDfu);$('startLedBtn').addEventListener('click',startLed);$('stopLedBtn').addEventListener('click',stopLed);$('startMusicBtn').addEventListener('click',startMusic);$('stopMusicBtn').addEventListener('click',stopMusic);$('wavFile').addEventListener('change',e=>$('wavName').textContent=e.target.files[0]?.name||'No audio selected');$('clearLogBtn').addEventListener('click',()=>$('logList').innerHTML='<div class="muted">No activity yet.</div>');$('refreshBatteryBtn').addEventListener('click',refreshBatteryData);document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${b.dataset.page}`))}));
-if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected&&e.device===selected){log('USB device disconnected by browser','error');disconnect()}});else log('WebHID API unavailable. Open this page in Chrome or Edge.','error');
+$('endpointSelect').addEventListener('change',()=>{const d=devices[Number($('endpointSelect').value)];if(!d)return;activeDevice=d;activeRecipient=d.recipient;modules=d.config;currentFw=null;dfuImage=null;renderConnected();$('fwInfo').innerHTML='<div class="muted">Not read yet.</div>';$('devInfo').innerHTML='<div class="muted">Not read yet.</div>';$('dfuDetails').textContent='Read firmware information before selecting an update.';$('startDfuBtn').disabled=true;$('dfuTrust').checked=false;$('dfuTrust').disabled=true;log(`Selected endpoint ${d.board} (${d.hwid})`)});$('connectBtn').addEventListener('click',connectDevice);$('disconnectBtn').addEventListener('click',disconnect);$('refreshBtn').addEventListener('click',async()=>{try{await initializeSelected()}catch(e){toast(e.message)}});$('moduleSelect').addEventListener('change',renderConfig);$('configSearch').addEventListener('input',renderConfig);$('readAllBtn').addEventListener('click',readAll);$('getFwInfoBtn').addEventListener('click',async()=>{try{await fwInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('getDevInfoBtn').addEventListener('click',async()=>{try{await devInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('rebootBtn').addEventListener('click',async()=>{try{await reboot()}catch(e){log(e.message,'error');toast(e.message)}});$('dfuTrust').addEventListener('change',()=>$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked);$('startDfuBtn').addEventListener('click',startDfu);$('startLedBtn').addEventListener('click',startLed);$('stopLedBtn').addEventListener('click',stopLed);$('startMusicBtn').addEventListener('click',startMusic);$('stopMusicBtn').addEventListener('click',stopMusic);$('wavFile').addEventListener('change',e=>$('wavName').textContent=e.target.files[0]?.name||'No audio selected');$('clearLogBtn').addEventListener('click',()=>$('logList').innerHTML='<div class="muted">No activity yet.</div>');$('refreshBatteryBtn').addEventListener('click',refreshBatteryData);$('testerBackBtn').addEventListener('click',()=>activatePage('overview'));document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{if(!b.hidden)activatePage(b.dataset.page)}));
+if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected&&e.device===selected){log('USB device disconnected by browser','error');disconnect()}});else log('This browser cannot connect to USB devices. Open this page in Chrome or Edge.','error');
 
 
         const counts = {
