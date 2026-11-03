@@ -102,8 +102,8 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><div class="brand-mark">G</div><div><strong>G Mouse V1 Maintenance Tool</strong><small>Mouse Management &amp; Firmware Update</small></div></div>
+<header class="topbar">
+    <div class="brand"><div class="brand-mark">G</div><div><strong>G Mouse V1 / Dongle V1 Maintenance Tool</strong><small>Mouse & Dongle Management & Firmware Update</small></div></div>
     <div class="top-actions"><button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button><span id="connectionBadge" class="badge offline">Not connected</span><button id="connectBtn" class="primary">Connect USB device</button></div>
   </header>
   <main class="shell">
@@ -111,7 +111,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
       <div class="device-card">
         <div class="section-label">SELECTED DEVICE</div>
         <div id="deviceName" class="device-name">No device selected</div>
-        <div id="deviceMeta" class="muted">Connect your G Mouse V1 to begin.</div>
+        <div id="deviceMeta" class="muted">Connect your G Mouse V1 or G Dongle V1 to begin.</div>
         <label class="endpoint-label">Configuration endpoint<select id="endpointSelect" disabled><option>Connect a device</option></select></label>
         <button id="disconnectBtn" class="subtle full" disabled>Disconnect</button>
       </div>
@@ -124,11 +124,11 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
         <button class="nav-item" data-page="logs"><span>≡</span> Activity log</button>
 <button class="nav-item" data-page="mouseTester"><span>🖱</span> Mouse Tester</button>
       </nav>
-      <div class="sidebar-foot">USB VID filter: <code>0x1915</code><br/>Chrome / Edge · WebHID</div>
+      <div class="sidebar-foot">USB VID filter: <code>0x1915</code> · PIDs: <code>0x52de</code> (Mouse V1), <code>0x52dc</code> (Dongle V1)<br/>Chrome / Edge · WebHID</div>
     </aside>
     <section class="content">
       <section class="page active" id="page-overview">
-        <div class="page-heading"><div><div class="eyebrow">DEVICE MANAGEMENT</div><h1>Overview</h1><p>Connect your G Mouse V1 to inspect firmware and available configuration modules.</p></div><button id="refreshBtn" class="secondary" disabled>Refresh device data</button></div>
+        <div class="page-heading"><div><div class="eyebrow">DEVICE MANAGEMENT</div><h1>Overview</h1><p>Connect your G Mouse V1 or G Dongle V1 to inspect firmware and available configuration modules.</p></div><button id="refreshBtn" class="secondary" disabled>Refresh device data</button></div>
         <div class="stats-grid">
           <article class="stat"><span>Board</span><strong id="statBoard">—</strong></article>
           <article class="stat"><span>Hardware ID</span><strong id="statHwid">—</strong></article>
@@ -136,7 +136,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
           <article class="stat"><span>USB interface</span><strong id="statUsb">—</strong></article>
         </div>
         <article class="panel"><div class="panel-head"><div><h2>Discovered modules</h2><p>Modules reported by the device firmware.</p></div><span id="moduleCount" class="count">0 modules</span></div><div id="moduleOverview" class="module-grid empty-state">Connect a device to discover its modules.</div></article>
-        <article class="notice"><strong>Browser-only operation</strong><p>All communication runs in this page through the WebHID API. No Python runtime, local server, or background helper is used. The browser may ask you to select the USB device and grant permission.</p></article>
+        <article class="notice"><strong>Browser-only operation</strong><p>All communication runs in this page through the WebHID API. No Python runtime, local server, or background helper is used. The browser may ask you to select the USB device and grant permission. Supports G Mouse V1 (PID 0x52de) and G Dongle V1 (PID 0x52dc).</p></article>
       </section>
 
       <section class="page" id="page-configuration">
@@ -201,7 +201,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
           <article class="panel"><div class="panel-head"><div><h2>Firmware information</h2><p>Read firmware metadata from the DFU module.</p></div></div><div id="fwInfo" class="info-list"><div class="muted">Not read yet.</div></div><button id="getFwInfoBtn" class="secondary" disabled>Read firmware info</button></article>
           <article class="panel"><div class="panel-head"><div><h2>Device identification</h2><p>Read USB identity and generation information.</p></div></div><div id="devInfo" class="info-list"><div class="muted">Not read yet.</div></div><button id="getDevInfoBtn" class="secondary" disabled>Read device info</button></article>
         </div>
-        <article class="panel"><div class="panel-head"><div><h2>Firmware update</h2><p>Select a G Mouse V1 DFU ZIP package. The webpage inspects the manifest and chooses the image for the connected board and inactive flash slot.</p></div></div>
+        <article class="panel"><div class="panel-head"><div><h2>Firmware update</h2><p>Select a G Mouse V1 / G Dongle V1 DFU ZIP package. The webpage inspects the manifest and chooses the image for the connected board and inactive flash slot.</p></div></div>
           <div class="upload-row"><label class="file-picker">Choose DFU ZIP<input type="file" id="dfuFile" accept=".zip,application/zip" disabled /></label><div id="dfuFileName" class="muted">No file selected</div></div>
           <div id="dfuDetails" class="dfu-details muted">Read firmware information before selecting an update.</div>
           <div class="warning-box"><strong>Update caution</strong><p>Do not disconnect the USB device or close this tab during transfer. MCUboot signature verification is not implemented in this browser build; package structure, manifest target, board, bootloader and image header are checked, but that is not equivalent to the Python <code>imgtool</code> cryptographic verification. Use only firmware packages from a trusted source.</p></div>
@@ -277,7 +277,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
     </section>
   </main>
   <div id="toast" class="toast" role="status"></div>
-  <script>
+<script>
 'use strict';
 // G Mouse V1 Maintenance Tool browser application.
 // Firmware protocol identifiers are retained where required for device compatibility.
@@ -285,8 +285,11 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 // G Mouse V1 firmware config-channel transport.
 // Report 7 is Output and Report 8 is Input; each carries 29 data bytes.
 // WebHID sendReport() receives the report payload without a report-ID byte.
-const VID = 0x1915, PID = 0x52de;
+const VID = 0x1915, PIDs = [0x52de, 0x52dc];
+// Interrupt report IDs (used by Mouse)
 const REPORT_OUTPUT_ID = 7, REPORT_INPUT_ID = 8, REPORT_SIZE = 29, PAYLOAD_SIZE = REPORT_SIZE;
+// Feature report ID (used by Dongle and Mouse fallback)
+const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 30;
 const HID_BATTERY_UPDATE_RECIPIENT = 0xff, HID_BATTERY_UPDATE_EVENT_ID = 0xff;
 const STATUS = {PENDING:0, GET_MAX_MOD_ID:1, GET_HWID:2, GET_BOARD_NAME:3, INDEX_PEERS:4, GET_PEER:5, SET:6, FETCH:7, SUCCESS:8, TIMEOUT:9, REJECT:10, WRITE_FAIL:11, DISCONNECTED:12, GET_PEERS_CACHE:13, FAULT:99};
 const TYPE_TO_BOARD = {gaming_mouse:['nrf52840gmouse'],dongle:['nrf52840dongle','nrf52833dongle','nrf52820dongle'],keyboard:['nrf52kbd'],desktop_mouse:['nrf52dmouse']};
@@ -390,6 +393,121 @@ async function exchange(recipient,evId,status,eventData=null){
   const result=requestQueue.then(send,send);requestQueue=result.catch(()=>{});return result;
 }
 
+// Feature Report transport (Report ID 6, 30 bytes) - used by Dongle
+// Header format: <BBBBB (report_id, recipient, event_id, status, data_len)
+let useFeatureReports = false;
+const FEATURE_HEADER_FORMAT = [FEATURE_REPORT_ID]; // report ID byte
+const pendingFeatureRequests = new Map();
+let featureRequestQueue = Promise.resolve();
+
+function parseFeatureResponse(data) {
+  const bytes = u8(data);
+  if (bytes.length < 5) throw new Error(`Feature response too short: ${bytes.length} bytes`);
+  const reportId = bytes[0];
+  const recipient = bytes[1];
+  const eventId = bytes[2];
+  const status = bytes[3];
+  const dataLen = bytes[4];
+  if (dataLen > bytes.length - 5) throw new Error(`Invalid feature data length: ${dataLen}`);
+  const payload = dataLen > 0 ? bytes.slice(5, 5 + dataLen) : new Uint8Array();
+  return {recipient, eventId, status, payload};
+}
+
+async function exchangeFeature(recipient, evId, status, eventData = null) {
+  const send = async () => {
+    if (!selected?.opened) throw new Error('USB HID device is not connected');
+    if (pendingFeatureRequests.has(evId)) throw new Error(`Feature request for event ${evId} is already pending`);
+    
+    const bytes = eventData ? u8(eventData) : new Uint8Array();
+    if (bytes.length > FEATURE_REPORT_SIZE - 5) throw new Error(`Feature payload too large (${bytes.length}; maximum ${FEATURE_REPORT_SIZE - 5})`);
+    
+    // Build feature report with report ID byte
+    const packet = new Uint8Array(FEATURE_REPORT_SIZE);
+    packet[0] = FEATURE_REPORT_ID;
+    packet[1] = recipient;
+    packet[2] = evId & 255;
+    packet[3] = status;
+    packet[4] = bytes.length;
+    packet.set(bytes, 5);
+    // Pad with zeros
+    // (already zero-initialized)
+    
+    const response = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        pendingFeatureRequests.delete(evId);
+        reject(new Error(`Timed out waiting for Feature Report response (recipient ${recipient}, event ${evId}).`));
+      }, 15000);
+      pendingFeatureRequests.set(evId, {recipient, resolve, reject, timer, allowDisconnected: false});
+    });
+    
+    try {
+      await selected.sendFeatureReport(FEATURE_REPORT_ID, packet);
+    } catch (error) {
+      const p = pendingFeatureRequests.get(evId);
+      if (p) {
+        clearTimeout(p.timer);
+        pendingFeatureRequests.delete(evId);
+        p.reject(new Error(`Feature Report send failed: ${error.message}`));
+      }
+    }
+    return response;
+  };
+  
+  const result = featureRequestQueue.then(send, send);
+  featureRequestQueue = result.catch(() => {});
+  return result;
+}
+
+function handleFeatureReport(event) {
+  if (event.reportId !== FEATURE_REPORT_ID) return;
+  try {
+    const response = parseFeatureResponse(new Uint8Array(event.data.buffer, event.data.byteOffset, event.data.byteLength));
+    const pending = pendingFeatureRequests.get(response.eventId);
+    if (!pending) return;
+    if (response.status === STATUS.PENDING) return;
+    pendingFeatureRequests.delete(response.eventId);
+    clearTimeout(pending.timer);
+    if (response.recipient !== pending.recipient) {
+      pending.reject(new Error(`Feature response recipient mismatch: expected ${pending.recipient}, got ${response.recipient}`));
+      return;
+    }
+    if (response.status === STATUS.SUCCESS) {
+      pending.resolve(response.payload);
+      return;
+    }
+    if (response.status === STATUS.DISCONNECTED && pending.allowDisconnected) {
+      pending.resolve(null);
+      return;
+    }
+    const name = Object.keys(STATUS).find(k => STATUS[k] === response.status) || `status ${response.status}`;
+    pending.reject(new Error(`Device returned ${name} (${response.status}) for event ${response.eventId}`));
+  } catch (error) {
+    log(`Invalid Feature Report: ${error.message}`, 'error');
+  }
+}
+
+// Unified exchange function that tries interrupt first, then falls back to feature reports
+async function exchangeUnified(recipient, evId, status, eventData = null) {
+  if (!useFeatureReports) {
+    try {
+      return await exchange(recipient, evId, status, eventData);
+    } catch (error) {
+      // Check if it's a timeout or device not responding - try feature reports
+      if (error.message.includes('Timed out') || error.message.includes('write failed')) {
+        log(`Interrupt report failed, trying feature reports: ${error.message}`);
+        useFeatureReports = true;
+        // Re-register for feature reports
+        selected.removeEventListener('inputreport', handleConfigInputReport);
+        selected.addEventListener('inputreport', handleFeatureReport);
+        return await exchangeFeature(recipient, evId, status, eventData);
+      }
+      throw error;
+    }
+  } else {
+    return await exchangeFeature(recipient, evId, status, eventData);
+  }
+}
+
 function decodeBatteryStatus(id, level, status, chargePhase=0) {
   const presenceCode=status&0x03, chargeCode=status&0x0c, levelCode=status&0x60, powerSourceCode=status&0x0380;
   const presence=presenceCode===2?'Present':presenceCode===1?'Not present':'Unknown';
@@ -472,10 +590,10 @@ async function discoverConfig(recipient){const max=await getMaxModuleId(recipien
 async function readInfo(recipient){const board=await exchange(recipient,0,STATUS.GET_BOARD_NAME);const hwid=await exchange(recipient,0,STATUS.GET_HWID);return {board:decode(board||new Uint8Array()),hwid:hex(hwid||new Uint8Array())}}
 async function getPeers(recipient=0){const peers={};try{await exchange(recipient,0,STATUS.INDEX_PEERS);while(true){const d=await exchange(recipient,0,STATUS.GET_PEER);if(!d||d.length<2)break;const peerId=d[d.length-1];if(peerId===255)break;peers[hex(d.slice(0,-1))]=peerId;if(Object.keys(peers).length>255)return {}}}catch(e){log(`Peer discovery: ${e.message}`)}return peers}
 
-async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PID}]});if(!chosen.length)return;selected=chosen[0];await selected.open();selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config reports OUT 7 / IN 8`);await initializeSelected();}catch(e){selected=null;log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
-async function initializeSelected(){if(!selected)return;setBusy(true);try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){log(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData()}catch(e){log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`);try{await selected.close()}catch{}selected=null;activeDevice=null;renderDisconnected()}finally{setBusy(false)}}
+async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;selected=chosen[0];await selected.open();useFeatureReports=false;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config reports OUT 7 / IN 8`);await initializeSelected();}catch(e){selected=null;log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
+async function initializeSelected(){if(!selected)return;setBusy(true);try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){log(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData()}catch(e){log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`);try{await selected.close()}catch{}selected=null;activeDevice=null;renderDisconnected()}finally{setBusy(false)}}
 function renderConnected(){if(!activeDevice)return;const d=activeDevice;const endpoint=$('endpointSelect');endpoint.innerHTML='';devices.forEach((dev,index)=>{const op=document.createElement('option');op.value=String(index);op.textContent=`${dev.board} · ${dev.hwid.slice(0,12)}${dev.direct?' (USB)':' (peer)'}`;endpoint.append(op)});endpoint.value=String(Math.max(0,devices.indexOf(activeDevice)));endpoint.disabled=devices.length<2;$('connectionBadge').textContent='Connected';$('connectionBadge').className='badge online';$('deviceName').textContent=d.board;$('deviceMeta').textContent=`HW ID: ${d.hwid}${devices.length>1?` · ${devices.length} endpoints`:''}`;$('disconnectBtn').disabled=false;$('refreshBtn').disabled=false;$('readAllBtn').disabled=false;$('getFwInfoBtn').disabled=false;$('getDevInfoBtn').disabled=false;$('rebootBtn').disabled=false;$('dfuFile').disabled=false;$('startLedBtn').disabled=false;$('startMusicBtn').disabled=false;$('wavFile').disabled=false;$('refreshBatteryBtn').disabled=false;$('statBoard').textContent=d.board;$('statHwid').textContent=d.hwid;$('statModules').textContent=Object.keys(modules).length;$('statUsb').textContent=`${selected.vendorId.toString(16).toUpperCase()}:${selected.productId.toString(16).toUpperCase()}`;$('moduleCount').textContent=`${Object.keys(modules).length} modules`;$('moduleOverview').className='module-grid';$('moduleOverview').innerHTML='';for(const [name,mod] of Object.entries(modules)){const tile=document.createElement('div');tile.className='module-tile';tile.innerHTML=`<strong></strong><small></small>`;tile.querySelector('strong').textContent=name;tile.querySelector('small').textContent=`${Object.keys(mod.options).length} options`; $('moduleOverview').append(tile)}const sel=$('moduleSelect');sel.innerHTML='';for(const name of Object.keys(modules)){const op=document.createElement('option');op.value=name;op.textContent=name;sel.append(op)}sel.disabled=false;$('configSearch').disabled=false;renderConfig();$('refreshBatteryBtn').disabled=false;}
-function renderDisconnected(){$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile','startLedBtn','startMusicBtn','wavFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 modules';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its modules.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load configuration options.'}
+function renderDisconnected(){$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile','startLedBtn','startMusicBtn','wavFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 modules';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its modules.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load configuration options.'}
 async function disconnect(){stopLed();stopMusic();try{if(selected?.opened)await selected.close()}catch{}selected=null;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
 
 function optionMeta(moduleName,optName){const m=OPTIONS[moduleName]||{};return m[optName]||{id:optName,range:null,help:'Firmware-reported option (no local metadata available)',type:'raw'}}
@@ -638,7 +756,12 @@ if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected
             }
         }
 
+        function isMouseTesterActive() {
+            return $('page-mouseTester').classList.contains('active');
+        }
+
         document.addEventListener('pointerdown', event => {
+            if (!isMouseTesterActive()) return;
             if (event.pointerType !== 'mouse') return;
             if (event.button === 0 && event.target.closest('.nav-button')) return;
             event.preventDefault();
@@ -653,10 +776,12 @@ if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected
         }, true);
 
         document.addEventListener('auxclick', event => {
+            if (!isMouseTesterActive()) return;
             event.preventDefault();
         }, true);
 
         document.addEventListener('keydown', event => {
+            if (!isMouseTesterActive()) return;
             if (event.repeat || event.key.toLowerCase() !== 'd' || !event.metaKey) return;
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -664,16 +789,19 @@ if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected
         }, true);
 
         document.addEventListener('contextmenu', event => {
+            if (!isMouseTesterActive()) return;
             event.preventDefault();
         }, true);
 
         document.addEventListener('wheel', event => {
+            if (!isMouseTesterActive()) return;
             event.preventDefault();
             const name = event.deltaY < 0 ? 'scroll-up' : 'scroll-down';
             countInput(name);
         }, {passive: false, capture: true});
 
         document.addEventListener('pointermove', event => {
+            if (!isMouseTesterActive()) return;
             if (event.pointerType !== 'mouse') return;
             const samples = typeof event.getCoalescedEvents === 'function'
                 ? event.getCoalescedEvents()
