@@ -143,12 +143,12 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 @media(max-width:430px){.stats-grid,.module-grid{grid-template-columns:1fr}.top-actions button{padding:9px}.config-columns{display:none}.config-row{grid-template-columns:1fr}.config-row .option-range{display:block}.battery-main{align-items:flex-start}.battery-visual{min-width:65px}.battery-icon{width:44px;height:78px}}
 @media(max-width:720px){.mouse-tester-open #page-mouseTester.active{grid-template-rows:auto auto auto minmax(0,.8fr) minmax(0,1.2fr)}.mouse-tester-open #page-mouseTester .two-col:last-child .panel:first-child .chart{display:none}}
 
-</style>
+.prof-mapping{grid-column:1/-1}.map-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.map-help{font-size:10px;color:var(--text-muted);text-align:right}.map-tabs{display:flex;gap:6px;flex-wrap:wrap}.map-tabs button{border:1px solid var(--input-border);background:var(--input-bg);color:var(--text-main);border-radius:7px;padding:7px 12px;font:inherit;font-weight:700;cursor:pointer}.map-tabs button.on{background:var(--battery-good);color:#07111d;border-color:var(--battery-good)}.map-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.map-row{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:8px;align-items:center;border:1px solid var(--border-color);border-radius:7px;padding:7px 8px;background:rgba(255,255,255,.025)}.map-button{display:grid;gap:2px}.map-button small{font-size:9px;color:var(--text-muted)}.map-row select{width:100%;min-width:0}@media(max-width:900px){.map-list{grid-template-columns:1fr}}.map-select{display:flex;align-items:end;gap:14px;flex-wrap:wrap}.map-select label{display:grid;gap:5px;max-width:330px}.map-selected-hint{font-size:10px;color:var(--text-muted);padding-bottom:8px}.map-tabs{display:flex;gap:6px;flex-wrap:wrap}.map-tabs button{border:1px solid var(--input-border);background:var(--input-bg);color:var(--text-main);border-radius:7px;padding:6px 10px;font:inherit;font-weight:700;cursor:default}.map-tabs button.on{background:rgba(85,210,210,.12);border-color:var(--battery-good)}.map-list{display:block}.map-table{display:grid;gap:6px;max-width:980px}.map-table-row{display:grid;grid-template-columns:minmax(190px,1.3fr) minmax(150px,1fr);gap:8px;align-items:center;padding:7px 9px;border:1px solid var(--border-color);border-radius:7px;background:rgba(255,255,255,.025)}.map-table-head{background:rgba(255,255,255,.06);font-size:10px;color:var(--text-muted)}.map-table-row select{width:100%;min-width:0}.prof-card .bar{transition:background-color .45s ease}.map-fixed-action{display:flex;align-items:center;min-height:23px;padding:3px 8px;border:1px solid var(--input-border);border-radius:3px;background:var(--input-bg);color:var(--text-muted);font-size:12px}.map-button{display:grid;gap:2px}.map-button small{font-size:9px;color:var(--text-muted)}.map-action-card{display:grid;gap:5px;border:1px solid var(--border-color);border-radius:8px;padding:10px;background:rgba(255,255,255,.025)}.map-action-card small{font-size:9px;color:var(--text-muted)}.map-action-card select{width:100%}@media(max-width:900px){.map-list{grid-template-columns:1fr}.map-select{display:block}}.map-test-panel{display:grid;gap:8px;border-top:1px solid var(--border-color);padding-top:12px}.map-test-panel textarea{width:100%;min-height:90px;resize:vertical;border:1px solid var(--input-border);border-radius:7px;padding:9px;background:var(--input-bg);color:var(--text-main);font:inherit}.button-map-panel{display:flex;flex-direction:column;gap:12px}.button-map-panel .prof-mapping{margin:0!important;border:0;padding:0}.button-map-panel .map-list{max-width:980px}.map-table-row{grid-template-columns:minmax(150px,1.2fr) repeat(3,minmax(120px,1fr))}</style>
 </head>
 <body>
 <header class="topbar">
     <div class="brand"><div class="brand-mark">G</div><div><strong>G Mouse V1 / Dongle V1 Maintenance Tool</strong><small>Mouse & Dongle Management & Firmware Update</small></div></div>
-    <div class="top-actions"><button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button><span id="connectionBadge" class="badge offline">Not connected</span><button id="connectBtn" class="primary">Connect USB device</button></div>
+    <div class="top-actions"><button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button><span id="connectionBadge" class="badge offline">Not connected</span><button id="connectBtn" class="primary">Connect Device</button></div>
   </header>
   <main class="shell">
     <aside class="sidebar">
@@ -162,7 +162,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
       <nav id="nav">
         <button class="nav-item active" data-page="overview"><span>▦</span> Overview</button>
         <button class="nav-item" data-page="configuration"><span>⚙</span> BLE Settings</button>
-        <button class="nav-item" data-page="profiles" hidden><span>★</span> Profiles</button>
+        <button class="nav-item" data-page="profiles" hidden><span>★</span> Profiles</button><button class="nav-item" data-page="buttonMap" hidden><span>?</span> Button Mapping</button>
         <button class="nav-item" data-page="battery"><span>▣</span> Battery</button>
         <button class="nav-item" data-page="firmware"><span>↻</span> Firmware & DFU</button>
         <button class="nav-item" data-page="logs"><span>≡</span> Activity log</button>
@@ -188,7 +188,6 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
         <div class="config-toolbar"><label>Setting group <select id="moduleSelect" disabled><option>Select a connected device</option></select></label><div class="toolbar-spacer"></div><input id="configSearch" type="search" placeholder="Find a setting…" disabled /></div>
         <div id="configPanel" class="panel config-panel empty-state">Connect a device to load configuration options.</div>
       </section>
-
 
       <section class="page" id="page-profiles">
         <div class="page-heading"><div><div class="eyebrow">PERSONALIZE</div><h1>Profiles</h1><p>Your G Mouse V1 stores 5 profiles. Pick one, adjust it and save it to the mouse.</p></div></div>
@@ -222,12 +221,16 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
               </div>
             </div>
           </div>
+
+          <div id="profMappingSection" hidden></div>
           <div id="profDirty" class="prof-dirty" hidden></div>
           <div class="button-row"><button id="profSaveBtn" class="primary" disabled>Save to mouse</button><button id="profDiscardBtn" class="secondary" disabled>Discard changes</button><button id="profActivateBtn" class="secondary" disabled>Use this profile now</button><button id="profDefaultBtn" class="secondary">Factory default</button><button id="profReloadBtn" class="secondary" disabled>Reload from mouse</button><button id="profExportBtn" class="secondary">Export backup</button><label class="file-picker">Import backup<input type="file" id="profImport" accept=".json,application/json" /></label><button id="profHistBtn" class="secondary">History</button></div>
           <div id="profStatus" class="muted status-line">Connect your mouse to edit profiles.</div>
         </article>
         <dialog id="profHistDlg"><div class="panel-head"><div><h2>Change history</h2><p style="display:block">What you saved or switched on this computer.</p></div><button id="profHistClear" class="secondary">Clear</button></div><div id="profHistory" class="prof-history"><div class="muted">No changes yet.</div></div><div class="button-row" style="margin-top:12px"><button id="profHistClose" class="primary">Close</button></div></dialog>
       </section>
+
+      <section class="page" id="page-buttonMap"><div class="page-heading"><div><div class="eyebrow">PERSONALIZE</div><h1>Button Mapping</h1><p>Choose a physical button, then assign its Base, Shift and Shift + Shift actions. Set a button to "Hold as Shift" to use it as Shift; hold two Shift buttons for Shift + Shift.</p></div></div><article class="panel button-map-panel" id="buttonMapPanel"><div class="prof-sec prof-mapping"><div class="map-head"><div><h3>Button actions</h3><div class="hint">The three standard mouse buttons are always available. Optional buttons are shown when a button array is selected.</div></div></div><div class="map-select"><label>Optional button array<select id="profMapArray"><option value="">Connect a device to read button array</option></select></label><div class="map-selected-hint">Assign the normal action for each physical button.</div></div><div id="profMap" class="map-list"></div><div class="button-row"><button id="profMapSaveBtn" class="primary" disabled>Save mappings to mouse</button></div><div id="profMapStatus" class="muted">Connect your G Mouse V1 to load button mappings.</div></div><div class="map-test-panel"><div><h3>Button mapping test window</h3><p class="muted">Click inside the test area, then press the physical mouse button after saving its mapping.</p></div><textarea id="profMapTest" rows="5" placeholder="Test output appears here..."></textarea><div id="profMapTestStatus" class="muted">Test window is ready.</div><button id="profMapTestClear" class="secondary" type="button">Clear test window</button></div></article></section>
 
       <section class="page" id="page-battery">
         <div class="page-heading">
@@ -293,7 +296,6 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
           <div class="button-row"><button id="startDfuBtn" class="danger" disabled>Start firmware update</button><button id="rebootBtn" class="secondary" disabled>Reboot device</button></div>
         </article>
       </section>
-
 
       <section class="page" id="page-logs"><div class="page-heading"><div><div class="eyebrow">DIAGNOSTICS</div><h1>Activity log</h1><p>USB connection, configuration requests and transfer status.</p></div><button id="clearLogBtn" class="secondary">Clear log</button></div><article class="panel"><div id="logList" class="log-list"><div class="muted">No activity yet.</div></div></article></section>
 <section class="page" id="page-mouseTester">
@@ -497,7 +499,7 @@ let selected = null, devices = [], activeDevice = null, activeRecipient = 0, mod
 
 function log(message, kind='') { const list=$('logList'); if(list.querySelector('.muted')) list.innerHTML=''; const row=document.createElement('div'); row.className=`log-entry ${kind}`; const t=document.createElement('time'); t.textContent=new Date().toLocaleTimeString(); const m=document.createElement('span'); m.textContent=message; row.append(t,m); list.prepend(row); }
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
-function setBusy(disabled){['connectBtn','refreshBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice);$('readAllBtn').disabled=disabled||!activeDevice||Object.keys(availableModules()).length===0}
+function setBusy(disabled){$('connectBtn').disabled=disabled||!!activeDevice;['refreshBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice);$('readAllBtn').disabled=disabled||!activeDevice||Object.keys(availableModules()).length===0}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function u8(data){return data instanceof Uint8Array?data:new Uint8Array(data)}
 function decode(data){return new TextDecoder().decode(data).replace(/\0/g,'')}
@@ -554,6 +556,7 @@ function updateDeviceTabs(device){
   const hideMouseFeatures=!!device&&boardType(device.board)==='dongle';
   for(const page of ['battery','mouseTester'])document.querySelector(`nav [data-page="${page}"]`).hidden=hideMouseFeatures;
   document.querySelector('nav [data-page="profiles"]').hidden=!device||hideMouseFeatures||!modules?.profile_mgr;
+  document.querySelector('nav [data-page="buttonMap"]').hidden=!device||hideMouseFeatures||!modules?.profile_mgr;
   if(hideMouseFeatures&&document.querySelector('nav .nav-item.active')?.dataset.page!=='overview')activatePage('overview');
 }
 function activatePage(page){
@@ -785,6 +788,7 @@ async function getPeers(recipient=0,note=log){const peers={};try{await exchange(
 async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;let lastError=null;for(const candidate of chosen){try{selected=candidate;await selected.open();const hasOutput=selected.collections.some(collection=>collection.outputReports.some(report=>report.reportId===REPORT_OUTPUT_ID));const hasFeature=selected.collections.some(collection=>collection.featureReports.some(report=>report.reportId===FEATURE_REPORT_ID));if(!hasOutput&&!hasFeature)throw new Error('Selected device exposes neither config Output Report 7 nor Feature Report 6.');useFeatureReports=!hasOutput&&hasFeature;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config transport ${useFeatureReports?'Feature Report 6':'Output Report 7'}, battery notifications Input Report 8`);if(await initializeSelected(candidate!==chosen[chosen.length-1]))return}catch(e){lastError=e;if(selected?.opened)try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false}}if(lastError){log(`Connection failed: ${lastError.message}`,'error');toast(lastError.message)}}catch(e){log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
 let initError=null;async function initializeSelected(silent=false){if(!selected)return;setBusy(true);const notes=[];const note=(m,t)=>notes.push([m,t]);initError=null;try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){note(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0,note);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData();return true}catch(e){initError=e;if(!silent){notes.forEach(([m,t])=>log(m,t));log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`)}try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;activeDevice=null;renderDisconnected();return false}finally{setBusy(false)}}
 function renderConnected(){
+  $('connectBtn').disabled=true;
   if(!activeDevice)return;
   const d=activeDevice,visible=availableModules();
   updateDeviceTabs(d);
@@ -842,7 +846,7 @@ function renderConnected(){
     $('configPanel').textContent='This device does not expose configurable settings.';
   }else renderConfig();
 }
-function renderDisconnected(){activatePage('overview');updateDeviceTabs(null);$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 setting groups';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its settings.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load settings.'}
+function renderDisconnected(){$('connectBtn').disabled=false;activatePage('overview');updateDeviceTabs(null);$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 setting groups';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its settings.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load settings.'}
 async function disconnect(){try{if(selected?.opened)await selected.close()}catch{}selected=null;useFeatureReports=false;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
 
 function optionMeta(moduleName,optName){const m=OPTIONS[moduleName]||{};return m[optName]||{id:optName,range:null,help:'Firmware-reported option (no local metadata available)',type:'raw'}}
@@ -983,7 +987,6 @@ function setDfuProgress(offset,length,status){const p=length?Math.min(100,offset
 async function waitDfuInactive(){let last;for(let i=0;i<120;i++){last=await dfuSync();if(last.state===0)return last;setDfuProgress(last.offset,last.length,last.state===3?'Waiting for flash cleanup…':'Waiting for device…');await sleep(1000)}throw new Error('Timed out waiting for DFU slot to become inactive')}
 async function startDfu(){if(!dfuImage||dfuBusy||!$('dfuTrust').checked)return;if(!confirm(`Update ${activeDevice.board} to firmware ${dfuImage.version}?\n\nDo not disconnect the device during transfer.`))return;dfuBusy=true;$('startDfuBtn').disabled=true;$('disconnectBtn').disabled=true;try{const bin=dfuImage.bin,length=bin.length,checksum=crc32(bin,1);let info=await waitDfuInactive();if(info.state!==0)throw new Error('Another DFU operation is active');let offset=info.length===length&&info.crc===checksum&&info.offset<=length?info.offset:0;const startData=new Uint8Array(12),sv=new DataView(startData.buffer);sv.setUint32(0,length,true);sv.setUint32(4,checksum,true);sv.setUint32(8,offset,true);const m=fwModule();await exchange(activeRecipient,eventId(m,'start'),STATUS.SET,startData);info=await dfuSync();if(![1,2].includes(info.state))throw new Error('Device did not start DFU');let nextCheckpoint=Math.min(offset+info.buffer,length);while(offset<length){const chunk=bin.slice(offset,Math.min(offset+DFU_CHUNK_SIZE,nextCheckpoint));if(!chunk.length)break;await exchange(activeRecipient,eventId(m,'data'),STATUS.SET,chunk);offset+=chunk.length;setDfuProgress(offset,length,'Transferring firmware…');if(offset>=nextCheckpoint){let synced=false;for(let retry=0;retry<30;retry++){const s=await dfuSync();if(s.length!==length||s.crc!==checksum)throw new Error('DFU synchronization metadata mismatch');if(s.state===2){await sleep(300);continue}if(s.state===0&&s.offset!==length)throw new Error('DFU interrupted by device');if(s.state!==0&&s.offset!==offset)throw new Error(`DFU offset mismatch: device ${s.offset}, browser ${offset}`);synced=true;break}if(!synced)throw new Error('DFU checkpoint timeout');nextCheckpoint=Math.min(nextCheckpoint+info.buffer,length)}}const final=await waitDfuInactive();if(final.state!==0||final.offset!==length)throw new Error('Device did not confirm completed image');setDfuProgress(length,length,'Transfer complete. Rebooting…');const rebootData=await exchange(activeRecipient,eventId(m,'reboot'),STATUS.FETCH);if(!rebootData||!rebootData[0])throw new Error('Firmware transfer completed, but reboot was not confirmed');setDfuProgress(length,length,'Firmware update completed');log(`Firmware ${dfuImage.version} transferred and reboot requested`,'success');toast('Firmware update completed')}catch(e){setDfuProgress(0,1,`Failed: ${e.message}`);log(`DFU failed: ${e.message}`,'error');toast(`DFU failed: ${e.message}`)}finally{dfuBusy=false;$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked;$('disconnectBtn').disabled=!activeDevice}}
 
-
 // Theme switching
 const themeToggle = $('themeToggle');
 function applyTheme(theme) {
@@ -1000,7 +1003,6 @@ themeToggle.addEventListener('click', () => {
 
 $('endpointSelect').addEventListener('change',()=>{const d=devices[Number($('endpointSelect').value)];if(!d)return;activeDevice=d;activeRecipient=d.recipient;modules=d.config;currentFw=null;dfuImage=null;renderConnected();$('fwInfo').innerHTML='<div class="muted">Not read yet.</div>';$('devInfo').innerHTML='<div class="muted">Not read yet.</div>';$('dfuDetails').textContent='Read firmware information before selecting an update.';$('startDfuBtn').disabled=true;$('dfuTrust').checked=false;$('dfuTrust').disabled=true;log(`Selected endpoint ${d.board} (${d.hwid})`)});$('connectBtn').addEventListener('click',connectDevice);$('disconnectBtn').addEventListener('click',disconnect);$('refreshBtn').addEventListener('click',async()=>{try{await initializeSelected()}catch(e){toast(e.message)}});$('moduleSelect').addEventListener('change',renderConfig);$('configSearch').addEventListener('input',renderConfig);$('readAllBtn').addEventListener('click',readAll);$('getFwInfoBtn').addEventListener('click',async()=>{try{await fwInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('getDevInfoBtn').addEventListener('click',async()=>{try{await devInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('rebootBtn').addEventListener('click',async()=>{try{await reboot()}catch(e){log(e.message,'error');toast(e.message)}});$('dfuTrust').addEventListener('change',()=>$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked);$('startDfuBtn').addEventListener('click',startDfu);$('clearLogBtn').addEventListener('click',()=>$('logList').innerHTML='<div class="muted">No activity yet.</div>');$('refreshBatteryBtn').addEventListener('click',refreshBatteryData);$('testerBackBtn').addEventListener('click',()=>activatePage('overview'));document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{if(!b.hidden)activatePage(b.dataset.page)}));
 if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected&&e.device===selected){log('USB device disconnected by browser','error');disconnect()}});else log('This browser cannot connect to USB devices. Open this page in Chrome or Edge.','error');
-
 
         const counts = {
             left: 0, right: 0, middle: 0, dpi: 0, 'win-d': 0,
@@ -1195,12 +1197,11 @@ if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected
                 Math.max(125, ...pollingHistory.slice(-60)));
         });
 
-    
 </script>
 <script>
 /* Profiles: binary codec (same layout as src/util/profile_core.h), device client and editor. */
 const ProfileCodec = (() => {
-  const SIZE = 42, VERSION = 1;
+  const SIZE = 222, LEGACY_SIZE = 42, OLD_SIZE = 87, VERSION = 2, BUTTONS = 15, LAYERS = 3, ACTION_SIZE = 4;
   const crc16 = (b, n) => { let c = 0xFFFF; for (let i = 0; i < n; i++) { c ^= b[i] << 8; for (let k = 0; k < 8; k++) c = (c & 0x8000) ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF; } return c; };
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v) || 0)));
   const normalize = p => ({
@@ -1209,7 +1210,12 @@ const ProfileCodec = (() => {
     cpi: clamp(Math.round((Number(p.cpi) || 1600) / 50) * 50, 100, 25000),
     scroll: clamp(p.scroll, 10, 200), angle: clamp(p.angle, -30, 30), accel: clamp(p.accel, 0, 100),
     snap: p.snap ? 1 : 0, bright: clamp(p.bright === undefined ? 100 : p.bright, 10, 100), ledMode: clamp(p.ledMode === undefined ? 1 : p.ledMode, 0, 2), ledEvery: clamp(p.ledEvery === undefined ? 10 : p.ledEvery, 1, 255), snooze: clamp(p.snooze, 0, 65535), saver: clamp(p.saver, 0, 65535),
-    color: p.color, battery: p.battery
+    color: p.color, battery: p.battery,
+    map: Array.from({length: LAYERS}, (_, l) => Array.from({length: BUTTONS}, (_, i) => {
+      const a = p.map?.[l]?.[i];
+      return typeof a === 'object' ? {type: Number(a.type) || 0, usage: Number(a.usage) || 0, modifiers: Number(a.modifiers) || 0} :
+        {type: Number(a ?? (l === 0 && i < 4 ? i + 1 : 0)) || 0, usage: 0, modifiers: 0};
+    }))
   });
   const hexToRgb = h => [1, 3, 5].map(i => parseInt(String(h).slice(i, i + 2), 16) || 0);
   const rgbToHex = a => '#' + [...a].map(v => v.toString(16).padStart(2, '0')).join('');
@@ -1221,19 +1227,33 @@ const ProfileCodec = (() => {
     p.battery.forEach((c, i) => b.set(hexToRgb(c), 15 + i * 3));
     for (let i = 0; i < p.name.length; i++) b[27 + i] = p.name.charCodeAt(i);
     b[37] = p.bright; b[38] = p.ledMode; b[39] = p.ledEvery;
-    dv.setUint16(40, crc16(b, 40), true);
+    p.map.forEach((layer, l) => layer.forEach((action, i) => {
+      const offset = 40 + (l * BUTTONS + i) * ACTION_SIZE;
+      const a = typeof action === 'object' ? action : {type: Number(action) || 0};
+      b[offset] = a.type || 0; b[offset + 1] = a.usage || 0;
+      b[offset + 2] = a.modifiers || 0;
+    }));
+    dv.setUint16(SIZE - 2, crc16(b, SIZE - 2), true);
     return b;
   };
   const decode = bytes => {
-    const b = Uint8Array.from(bytes).slice(0, SIZE), dv = new DataView(b.buffer);
-    if (b.length !== SIZE) throw new Error('The mouse returned incomplete profile data.');
-    if (dv.getUint16(40, true) !== crc16(b, 40)) throw new Error('Profile data failed its integrity check.');
-    if (b[0] !== VERSION) throw new Error('This profile was written by a different firmware version.');
+    const raw = Uint8Array.from(bytes);
+    const size = raw.length === LEGACY_SIZE ? LEGACY_SIZE :
+      raw.length === OLD_SIZE ? OLD_SIZE : SIZE;
+    const b = raw.slice(0, size), dv = new DataView(b.buffer);
+    if (b.length !== size) throw new Error(`The mouse returned an unsupported profile size (${raw.length} bytes). Update the firmware before editing profiles.`);
+    if (dv.getUint16(size - 2, true) !== crc16(b, size - 2)) throw new Error('Profile data failed its integrity check.');
+    if (b[0] !== VERSION && !(size !== SIZE && b[0] === 1)) throw new Error('This profile was written by a different firmware version.');
     let name = ''; for (let i = 27; i < 37 && b[i]; i++) name += String.fromCharCode(b[i]);
     return {
       name, polling: b[1], cpi: dv.getUint16(2, true), scroll: b[4], angle: dv.getInt8(5), accel: b[6], snap: b[7],
       snooze: dv.getUint16(8, true), saver: dv.getUint16(10, true), bright: b[37] || 100, ledMode: b[38], ledEvery: b[39] || 10, color: rgbToHex(b.slice(12, 15)),
-      battery: [0, 1, 2, 3].map(i => rgbToHex(b.slice(15 + i * 3, 18 + i * 3)))
+      battery: [0, 1, 2, 3].map(i => rgbToHex(b.slice(15 + i * 3, 18 + i * 3))),
+      map: Array.from({length: LAYERS}, (_, l) => Array.from({length: BUTTONS}, (_, i) => {
+        if (size !== SIZE) return 0;
+        const o = 40 + (l * BUTTONS + i) * ACTION_SIZE;
+        return {type: b[o], usage: b[o + 1], modifiers: b[o + 2]};
+      }))
     };
   };
   return { encode, decode, normalize, SIZE };
@@ -1247,11 +1267,31 @@ const ProfileClient = {
   },
   async get(name) { const d = await exchange(activeRecipient, this.id(name), STATUS.FETCH); if (!d || !d.length) throw new Error('The mouse did not answer.'); return d; },
   set(name, bytes) { return exchange(activeRecipient, this.id(name), STATUS.SET, Uint8Array.from(bytes)); },
-  async load(slot) { await this.set('edit_slot', [slot]); return ProfileCodec.decode(await this.get('core')); },
+  async load(slot) {
+    await this.set('edit_slot', [slot]);
+    const head = await this.get('core');
+    const tail = modules.profile_mgr?.options?.core_tail
+      ? await this.get('core_tail') : new Uint8Array();
+    return ProfileCodec.decode(new Uint8Array([...head, ...tail]));
+  },
+  async buttonArrayType() {
+    return modules.profile_mgr?.options?.button_array
+      ? (await this.get('button_array'))[0]
+      : 0;
+  },
   async save(slot, profile) {
     await this.set('edit_slot', [slot]);
-    await this.set('core', ProfileCodec.encode(profile));
-    const back = await this.get('core'), want = ProfileCodec.encode(profile);
+    const want = ProfileCodec.encode(profile);
+    if (modules.profile_mgr?.options?.core_tail) {
+      await this.set('core', want.slice(0, 124));
+      await this.set('core_tail', want.slice(124));
+    } else {
+      await this.set('core', want);
+    }
+    const head = await this.get('core');
+    const tail = modules.profile_mgr?.options?.core_tail
+      ? await this.get('core_tail') : new Uint8Array();
+    const back = new Uint8Array([...head, ...tail]);
     if (back.length < want.length || want.some((v, i) => back[i] !== v)) throw new Error('The mouse did not keep the saved values.');
   },
   async active() { return (await this.get('active'))[0]; },
@@ -1261,10 +1301,80 @@ const ProfileClient = {
 const ProfileUI = (() => {
   const ids = { bright: 'profBright', ledMode: 'profLedMode', ledEvery: 'profLedEvery', name: 'profName', polling: 'profPolling', cpi: 'profCpi', scroll: 'profScroll', angle: 'profAngle', accel: 'profAccel', snap: 'profSnap', snooze: 'profSnooze', saver: 'profSaver', color: 'profColor' };
   let slot = 0, active = 0, cache = [], loaded = [], busy = false;
-  const status = (t, kind) => { $('profStatus').textContent = t; $('profStatus').className = 'status-line ' + (kind || 'muted'); };
-  const readForm = () => { const p = {}; for (const [k, id] of Object.entries(ids)) p[k] = $(id).value; p.battery = [0, 1, 2, 3].map(i => $('profBat' + i).value); return p; };
-  const fillForm = p => { for (const [k, id] of Object.entries(ids)) $(id).value = p[k]; p.battery.forEach((c, i) => $('profBat' + i).value = c); };
-  const setBusy = b => { busy = b; ['profSaveBtn', 'profActivateBtn', 'profReloadBtn'].forEach(id => $(id).disabled = b || !modules.profile_mgr); };
+  const status = (t, kind) => {
+    $('profStatus').textContent = t;
+    $('profStatus').className = 'status-line ' + (kind || 'muted');
+    $('profMapStatus').textContent = t;
+    $('profMapStatus').className = 'muted ' + (kind || '');
+  };
+  const actions = [
+    ['No action', {type: 0, usage: 0, modifiers: 0}], ['Left click', {type: 1, usage: 0, modifiers: 0}],
+    ['Right click', {type: 2, usage: 0, modifiers: 0}], ['Middle click', {type: 3, usage: 0, modifiers: 0}],
+    ['Back', {type: 4, usage: 0, modifiers: 0}], ['Forward', {type: 5, usage: 0, modifiers: 0}],
+    ['Hold as Shift', {type: 6, usage: 0, modifiers: 0}], ['Keyboard A', {type: 7, usage: 4, modifiers: 0}],
+    ['Keyboard Enter', {type: 7, usage: 40, modifiers: 0}], ['Ctrl + Keyboard A', {type: 8, usage: 4, modifiers: 1}],
+    ...Array.from({length: 25}, (_, i) => [`Keyboard ${String.fromCharCode(66 + i)}`, {type: 7, usage: 5 + i, modifiers: 0}]),
+    ...Array.from({length: 10}, (_, i) => [`Keyboard ${i}`, {type: 7, usage: 39 + i, modifiers: 0}]),
+    ...Array.from({length: 12}, (_, i) => [`Keyboard F${i + 1}`, {type: 7, usage: 58 + i, modifiers: 0}]),
+    ['Keyboard Space', {type: 7, usage: 44, modifiers: 0}],
+    ['Keyboard Tab', {type: 7, usage: 43, modifiers: 0}],
+    ['Keyboard Escape', {type: 7, usage: 41, modifiers: 0}],
+    ['Keyboard Backspace', {type: 7, usage: 42, modifiers: 0}],
+    ['Keyboard Up', {type: 7, usage: 82, modifiers: 0}],
+    ['Keyboard Down', {type: 7, usage: 81, modifiers: 0}],
+    ['Keyboard Left', {type: 7, usage: 80, modifiers: 0}],
+    ['Keyboard Right', {type: 7, usage: 79, modifiers: 0}],
+    ['Ctrl + Keyboard Enter', {type: 8, usage: 40, modifiers: 1}],
+    ['Alt + Keyboard Tab', {type: 8, usage: 43, modifiers: 4}],
+    ['Shift + Keyboard Tab', {type: 8, usage: 43, modifiers: 2}]
+  ];
+  const buttonNames = ['Left mouse button', 'Right mouse button', 'Middle mouse button', 'Side button 1', 'Profile / peer button', ...Array.from({length: 10}, (_, n) => `Side button ${n + 2}`)];
+  let buttonCount = 0, mapDraft = null;
+  const buttonArrayTypes = {
+    0: { count: 0, label: 'No button array' },
+    1: { count: 7, label: '7-button array' },
+    2: { count: 12, label: '12-button array' },
+    3: { count: 6, label: '6-button array' },
+    4: { count: 3, label: '3-button array' }
+  };
+  const applyButtonArrayType = index => {
+    const type = buttonArrayTypes[Number(index)] || buttonArrayTypes[0];
+    buttonCount = type.count;
+    const picker = $('profMapArray');
+    picker.innerHTML = '';
+    picker.add(new Option(type.label, type.count));
+    picker.disabled = true;
+  };
+  const setButtonArrayType = index => applyButtonArrayType(index);
+  const readMap = () => mapDraft || Array.from({length: 3}, () => Array(15).fill(0));
+  const renderMap = p => {
+    p = ProfileCodec.normalize(p);
+    if (!mapDraft) mapDraft = p.map.map(layer => layer.slice());
+    const arrayPicker = $('profMapArray'); arrayPicker.value = buttonCount;
+    const host = $('profMap'); host.innerHTML = '';
+    const table = document.createElement('div'); table.className = 'map-table';
+    const header = document.createElement('div'); header.className = 'map-table-row map-table-head';
+    header.innerHTML = '<b>Physical button</b><b>Base action</b><b>Shift action</b><b>Shift + Shift action</b>'; table.append(header);
+    const visibleButtons = buttonCount ? 3 + buttonCount : 3;
+    buttonNames.slice(0, visibleButtons).forEach((name, i) => {
+      if (i === 4) return;
+      const row = document.createElement('div'); row.className = 'map-table-row';
+      const label = document.createElement('div'); label.className = 'map-button'; label.innerHTML = `<b>${name}</b><small>Button ${i + 1}</small>`;
+      row.append(label);
+      [0, 1, 2].forEach(layer => {
+        const select = document.createElement('select'); select.id = `profMap-${layer}-${i}`;
+        actions.forEach(([label, action]) => select.add(new Option(label, JSON.stringify(action))));
+        const current = mapDraft[layer][i] || {type: 0};
+        select.value = JSON.stringify(current);
+        select.addEventListener('change', () => { mapDraft[layer][i] = JSON.parse(select.value); refresh(); }); row.append(select);
+      });
+      table.append(row);
+    });
+    host.append(table);
+  };
+  const readForm = () => { const p = {}; for (const [k, id] of Object.entries(ids)) p[k] = $(id).value; p.battery = [0, 1, 2, 3].map(i => $('profBat' + i).value); p.map = readMap(); return p; };
+  const fillForm = p => { mapDraft = null; for (const [k, id] of Object.entries(ids)) $(id).value = p[k]; p.battery.forEach((c, i) => $('profBat' + i).value = c); renderMap(p); };
+  const setBusy = b => { busy = b; ['profSaveBtn', 'profMapSaveBtn', 'profActivateBtn', 'profReloadBtn'].forEach(id => $(id).disabled = b || !modules.profile_mgr); };
   const B = [['#00ff00', '#ffa000', '#ff0000', '#0000ff']][0];
   const mk = (name, polling, cpi, scroll, accel, snap, snooze, saver, color, bright, ledMode, ledEvery, short, long) =>
     ({ p: { name, polling, cpi, scroll, angle: 0, accel, snap, bright, ledMode, ledEvery, snooze, saver, color, battery: B }, short, long });
@@ -1295,6 +1405,7 @@ const ProfileUI = (() => {
     for (const k of Object.keys(LABEL)) {
       if (JSON.stringify(base[k]) !== JSON.stringify(now[k])) out.push(`${LABEL[k]}: ${show(k, base[k])} → ${show(k, now[k])}`);
     }
+    if (JSON.stringify(base.map) !== JSON.stringify(now.map)) out.push('Button mappings changed');
     return out;
   };
   const SLIDERS = [
@@ -1332,6 +1443,7 @@ const ProfileUI = (() => {
     box.hidden = !d.length;
     if (d.length) { box.innerHTML = '<b>Not saved to the mouse yet</b>'; const ul = document.createElement('ul'); d.forEach(x => { const li = document.createElement('li'); li.textContent = x; ul.append(li); }); box.append(ul); }
     $('profDiscardBtn').disabled = busy || !d.length;
+    $('profMapSaveBtn').disabled = busy || !modules.profile_mgr || !d.length;
     renderSlots();
   };
   const renderSlots = () => {
@@ -1367,10 +1479,16 @@ const ProfileUI = (() => {
     setBusy(true);
     try {
       active = await ProfileClient.active();
+      setButtonArrayType(await ProfileClient.buttonArrayType());
       status('Reading all profiles from the mouse…');
       for (let i = 0; i < 5; i++) { cache[i] = await ProfileClient.load(i); loaded[i] = true; }
       slot = active; fillForm(cache[slot]); status('All profiles loaded from the mouse.');
-    } catch (e) { status(e.message, 'error'); toast(e.message); }
+    } catch (e) {
+      setButtonArrayType(0);
+      fillForm(ProfileCodec.normalize(PRESETS[slot].p));
+      status(`${e.message} Button mappings are unavailable until the firmware responds.`, 'error');
+      toast(e.message);
+    }
     finally { setBusy(false); refresh(); }
   }
   async function save() {
@@ -1406,6 +1524,15 @@ const ProfileUI = (() => {
   }
   buildControls();
   $('profSaveBtn').addEventListener('click', save);
+  $('profMapSaveBtn').addEventListener('click', save);
+  $('profMapTest').addEventListener('keydown', e => {
+    $('profMapTestStatus').textContent = `Received ${e.key} (${e.code})`;
+  });
+  $('profMapTestClear').addEventListener('click', () => {
+    $('profMapTest').value = '';
+    $('profMapTestStatus').textContent = 'Test window cleared.';
+    $('profMapTest').focus();
+  });
   $('profDiscardBtn').addEventListener('click', () => { fillForm(cache[slot]); refresh(); status('Changes discarded.'); });
   $('profHistClear').addEventListener('click', () => { localStorage.removeItem(HIST_KEY); renderHistory(); });
   for (const id of [...Object.values(ids), 'profBat0', 'profBat1', 'profBat2', 'profBat3']) $(id).addEventListener('input', refresh);
@@ -1418,6 +1545,7 @@ const ProfileUI = (() => {
   $('profExportBtn').addEventListener('click', exportBackup);
   $('profImport').addEventListener('change', e => { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ''; });
   document.querySelector('nav [data-page="profiles"]').addEventListener('click', open);
+  document.querySelector('nav [data-page="buttonMap"]').addEventListener('click', () => { open(); });
 
   // The mouse switches profile with its button. A direct USB or BLE link pushes the change; behind
   // the dongle there is no push, so the page also asks the mouse while the Profiles page is open.
@@ -1434,7 +1562,7 @@ const ProfileUI = (() => {
         !document.body.classList.contains('profiles-open')) return;
     try { const n = await ProfileClient.active(); if (!busy) onActive(n); } catch { /* next poll retries */ }
   }, 2000);
-  return { open, onActive };
+  return { open, onActive, setButtonArrayType };
 })();
 </script>
 </body>
