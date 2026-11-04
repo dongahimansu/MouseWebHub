@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
@@ -64,6 +64,24 @@ nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;back
 .progress-track{height:8px;background:var(--button-secondary-bg);border-radius:20px;overflow:hidden}.progress-bar{height:100%;width:0;background:var(--battery-good);transition:width .15s}
 .button-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.danger{background:#991b1b;color:#fee2e2}
 .form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:15px 0 20px}.form-grid input{min-width:0;width:100%}.status-line{margin-top:13px}
+.prof-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:4px 0 18px}.prof-card{position:relative;text-align:left;display:grid;gap:6px;padding:12px;border:1px solid var(--border-color);border-radius:10px;background:var(--input-bg);color:var(--text-main);cursor:pointer;font:inherit;overflow:hidden}.prof-card:hover{border-color:var(--battery-good)}.prof-card.selected{border-color:var(--battery-good);box-shadow:0 0 0 1px var(--battery-good) inset}.prof-card .bar{position:absolute;left:0;top:0;right:0;height:4px}.prof-card b{font-size:12px;display:flex;justify-content:space-between;gap:6px;align-items:center;margin-top:4px}.prof-card small{font-size:10px;color:var(--text-muted)}.prof-card .chips{display:flex;flex-wrap:wrap;gap:4px}.chip{font-size:9px;padding:2px 6px;border-radius:99px;background:rgba(127,127,127,.18)}.chip.live{background:var(--battery-good);color:#052e2b;font-weight:700}.chip.warn{background:#f59e0b;color:#2b1a00;font-weight:700}
+.prof-sections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.prof-sec{border:1px solid var(--border-color);border-radius:10px;padding:14px;display:grid;gap:12px;align-content:start}.prof-sec h3{margin:0;font-size:12px}.prof-sec label{display:grid;gap:6px;font-size:11px;font-weight:700}.prof-sec input[type=range]{width:100%;padding:0}.prof-sec .hint{font-size:10px;color:var(--text-muted);font-weight:400}.prof-colors{display:grid;grid-template-columns:1fr 1fr;gap:10px}.prof-colors input[type=color]{width:100%;height:30px;padding:0;border:1px solid var(--input-border);border-radius:6px;background:none}.prof-preview{display:flex;gap:6px;align-items:center;font-size:10px;color:var(--text-muted)}.prof-preview i{width:22px;height:22px;border-radius:50%;border:1px solid rgba(127,127,127,.4);display:inline-block}
+.prof-dirty{margin:14px 0 0;padding:10px 12px;border-radius:8px;background:rgba(245,158,11,.14);border:1px solid #f59e0b;font-size:11px}.prof-dirty ul{margin:6px 0 0;padding-left:18px}.prof-history{max-height:180px;overflow:auto;font-size:11px;display:grid;gap:6px}.prof-history div{display:flex;gap:10px}.prof-history time{color:var(--text-muted);min-width:70px}
+.profiles-open .shell{height:calc(100vh - 72px);min-height:0}.profiles-open .sidebar{overflow:auto;min-height:0}
+.profiles-open .content{height:100%;min-height:0;overflow:hidden;padding:10px 18px}
+#page-profiles.active{display:flex;flex-direction:column;gap:8px;height:calc(100vh - 130px);overflow:hidden}.profiles-open #page-profiles.active{height:100%}
+#page-profiles .page-heading{margin:0}#page-profiles .page-heading h1{font-size:20px;margin:2px 0}#page-profiles .page-heading p{display:none}#page-profiles .page-heading .eyebrow{font-size:8px}
+#page-profiles .panel{margin:0;padding:12px;flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}#page-profiles .panel-head{margin:0}#page-profiles .panel-head p{display:none}#page-profiles .panel h2{margin:0}
+#page-profiles .panel>*{flex-shrink:0}#page-profiles .panel>.prof-sections{flex:1 1 0;min-height:0}
+#page-profiles .prof-cards{margin:0;gap:8px}#page-profiles .prof-card{padding:7px 9px;gap:3px}#page-profiles .prof-card small{display:none}
+#page-profiles .prof-sections{flex:1;min-height:0;gap:10px}#page-profiles .prof-sec{padding:10px;gap:7px;min-height:0;overflow:hidden}
+#page-profiles .prof-dirty{margin:0;padding:5px 10px;max-height:52px;overflow:hidden}#page-profiles .prof-dirty ul{display:flex;flex-wrap:wrap;gap:4px 16px;list-style:none;padding:0;margin:2px 0 0}
+#page-profiles .status-line{margin:0;font-size:11px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button{border:1px solid var(--input-border);background:var(--input-bg);color:var(--text-main);border-radius:99px;padding:6px 11px;font:inherit;font-size:11px;font-weight:700;cursor:pointer}.seg button.on{background:var(--battery-good);color:#052e2b;border-color:var(--battery-good)}
+.sl{display:grid;gap:3px}.sl[hidden]{display:none}.sl .top{display:flex;justify-content:space-between;font-size:11px;font-weight:700}.sl .top b{color:var(--battery-good)}.sl input[type=range]{width:100%;margin:0;padding:0}.sl .ends{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-muted)}.sl .ends button{border:1px solid var(--input-border);background:var(--input-bg);color:var(--text-main);border-radius:99px;padding:2px 9px;font:inherit;font-size:10px;cursor:pointer}.sl .ends button:hover{border-color:var(--battery-good)}
+.prof-colors{grid-template-columns:repeat(5,1fr)!important;gap:6px!important}.prof-colors label{font-size:9px!important;gap:3px!important}
+#profHistDlg{border:1px solid var(--border-color);border-radius:12px;background:var(--input-bg);color:var(--text-main);padding:16px;width:min(560px,92vw)}#profHistDlg::backdrop{background:rgba(0,0,0,.5)}
+@media(max-width:900px){.prof-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.prof-sections{grid-template-columns:1fr}.profiles-open .content{overflow:auto}#page-profiles.active{height:auto;overflow:visible}}
 .log-list{display:grid;gap:0}.log-entry{display:grid;grid-template-columns:80px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-color);font-size:11px}.log-entry time{color:var(--text-muted)}.log-entry.error{color:#fca5a5}.log-entry.success{color:#6ee7b7}
 footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{padding:0 5px}.copyright{border-top:1px solid var(--border-color);margin-top:22px;padding-top:18px;color:var(--text-muted)}
 .toast{position:fixed;bottom:22px;right:22px;background:#020617;color:#fff;padding:12px 16px;border-radius:9px;font-size:12px;box-shadow:0 8px 30px #0006;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s;z-index:10}.toast.show{opacity:1;transform:translateY(0)}
@@ -144,9 +162,9 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
       <nav id="nav">
         <button class="nav-item active" data-page="overview"><span>▦</span> Overview</button>
         <button class="nav-item" data-page="configuration"><span>⚙</span> BLE Settings</button>
+        <button class="nav-item" data-page="profiles" hidden><span>★</span> Profiles</button>
         <button class="nav-item" data-page="battery"><span>▣</span> Battery</button>
         <button class="nav-item" data-page="firmware"><span>↻</span> Firmware & DFU</button>
-        <button class="nav-item" data-page="led"><span>◉</span> LED stream</button>
         <button class="nav-item" data-page="logs"><span>≡</span> Activity log</button>
 <button class="nav-item" data-page="mouseTester"><span>🖱</span> Mouse Tester</button>
       </nav>
@@ -171,6 +189,45 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
         <div id="configPanel" class="panel config-panel empty-state">Connect a device to load configuration options.</div>
       </section>
 
+
+      <section class="page" id="page-profiles">
+        <div class="page-heading"><div><div class="eyebrow">PERSONALIZE</div><h1>Profiles</h1><p>Your G Mouse V1 stores 5 profiles. Pick one, adjust it and save it to the mouse.</p></div></div>
+        <article class="panel">
+          <div class="panel-head"><div><h2>Choose a profile</h2><p id="profActiveInfo">Connect your mouse to load its profiles.</p></div></div>
+          <div class="prof-cards" id="profSlots"></div>
+          <div class="prof-sections">
+            <div class="prof-sec"><h3>Movement</h3>
+              <label>Profile name<input type="text" id="profName" maxlength="10" /></label>
+              <div><div class="top" style="font-size:11px;font-weight:700;margin-bottom:5px">Report rate</div><div class="seg" data-seg="profPolling"></div><input type="hidden" id="profPolling" /></div>
+              <div class="sl" data-sl="profCpi"></div>
+              <div class="sl" data-sl="profScroll"></div>
+            </div>
+            <div class="prof-sec"><h3>Pointer</h3>
+              <div class="sl" data-sl="profAngle"></div>
+              <div class="sl" data-sl="profAccel"></div>
+              <div><div class="top" style="font-size:11px;font-weight:700;margin-bottom:5px">Straight-line assist</div><div class="seg" data-seg="profSnap"></div><input type="hidden" id="profSnap" /></div>
+            </div>
+            <div class="prof-sec"><h3>Power and lights</h3>
+              <div class="sl" data-sl="profSnooze"></div>
+              <div class="sl" data-sl="profSaver"></div>
+              <div class="sl" data-sl="profBright"></div>
+              <div><div class="top" style="font-size:11px;font-weight:700;margin-bottom:5px">Profile light</div><div class="seg" data-seg="profLedMode"></div><input type="hidden" id="profLedMode" /></div>
+              <div class="sl" data-sl="profLedEvery" hidden></div>
+              <div class="prof-colors">
+                <label>Profile<input type="color" id="profColor" /></label>
+                <label>Good<input type="color" id="profBat0" /></label>
+                <label>Low<input type="color" id="profBat1" /></label>
+                <label>Critical<input type="color" id="profBat2" /></label>
+                <label>Charging<input type="color" id="profBat3" /></label>
+              </div>
+            </div>
+          </div>
+          <div id="profDirty" class="prof-dirty" hidden></div>
+          <div class="button-row"><button id="profSaveBtn" class="primary" disabled>Save to mouse</button><button id="profDiscardBtn" class="secondary" disabled>Discard changes</button><button id="profActivateBtn" class="secondary" disabled>Use this profile now</button><button id="profDefaultBtn" class="secondary">Factory default</button><button id="profReloadBtn" class="secondary" disabled>Reload from mouse</button><button id="profExportBtn" class="secondary">Export backup</button><label class="file-picker">Import backup<input type="file" id="profImport" accept=".json,application/json" /></label><button id="profHistBtn" class="secondary">History</button></div>
+          <div id="profStatus" class="muted status-line">Connect your mouse to edit profiles.</div>
+        </article>
+        <dialog id="profHistDlg"><div class="panel-head"><div><h2>Change history</h2><p style="display:block">What you saved or switched on this computer.</p></div><button id="profHistClear" class="secondary">Clear</button></div><div id="profHistory" class="prof-history"><div class="muted">No changes yet.</div></div><div class="button-row" style="margin-top:12px"><button id="profHistClose" class="primary">Close</button></div></dialog>
+      </section>
 
       <section class="page" id="page-battery">
         <div class="page-heading">
@@ -237,11 +294,6 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
         </article>
       </section>
 
-      <section class="page" id="page-led">
-        <div class="page-heading"><div><div class="eyebrow">LIGHT EFFECTS</div><h1>LED stream</h1><p>Stream generated colors or synchronize LED effects with a WAV audio file.</p></div></div>
-        <article class="panel"><div class="panel-head"><div><h2>Continuous random color stream</h2><p>Fills the device LED effect buffer with random RGB steps.</p></div></div><div class="form-grid"><label>LED ID<input type="number" id="ledId" min="0" value="0" /></label><label>Frequency (Hz)<input type="number" id="ledFreq" min="1" max="100" value="10" /></label><label>Substeps<input type="number" id="ledSubsteps" min="1" max="255" value="10" /></label></div><div class="button-row"><button id="startLedBtn" class="primary" disabled>Start LED stream</button><button id="stopLedBtn" class="secondary" disabled>Stop stream</button></div><div id="ledStatus" class="muted status-line">Connect a device to start streaming.</div></article>
-        <article class="panel"><div class="panel-head"><div><h2>Music-synchronized LED stream</h2><p>Choose a WAV file. The browser plays the audio and derives color from the audio signal.</p></div></div><div class="upload-row"><label class="file-picker">Choose WAV<input type="file" id="wavFile" accept=".wav,audio/wav" disabled /></label><span id="wavName" class="muted">No audio selected</span></div><div class="button-row"><button id="startMusicBtn" class="secondary" disabled>Play with LED sync</button><button id="stopMusicBtn" class="secondary" disabled>Stop music</button></div><div id="musicStatus" class="muted status-line">WAV audio only.</div></article>
-      </section>
 
       <section class="page" id="page-logs"><div class="page-heading"><div><div class="eyebrow">DIAGNOSTICS</div><h1>Activity log</h1><p>USB connection, configuration requests and transfer status.</p></div><button id="clearLogBtn" class="secondary">Clear log</button></div><article class="panel"><div id="logList" class="log-list"><div class="muted">No activity yet.</div></div></article></section>
 <section class="page" id="page-mouseTester">
@@ -317,7 +369,7 @@ const REPORT_OUTPUT_ID = 7, REPORT_INPUT_ID = 8, REPORT_SIZE = 128, PAYLOAD_SIZE
 // Feature report ID (used by Dongle and Mouse fallback)
 const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 128;
 const DFU_CHUNK_SIZE = REPORT_SIZE - 4;
-const HID_BATTERY_UPDATE_RECIPIENT = 0xff, HID_BATTERY_UPDATE_EVENT_ID = 0xff;
+const HID_BATTERY_UPDATE_RECIPIENT = 0xff, HID_BATTERY_UPDATE_EVENT_ID = 0xff, HID_PROFILE_UPDATE_EVENT_ID = 0xfe;
 const STATUS = {PENDING:0, GET_MAX_MOD_ID:1, GET_HWID:2, GET_BOARD_NAME:3, INDEX_PEERS:4, GET_PEER:5, SET:6, FETCH:7, SUCCESS:8, TIMEOUT:9, REJECT:10, WRITE_FAIL:11, DISCONNECTED:12, GET_PEERS_CACHE:13, FAULT:99};
 const TYPE_TO_BOARD = {gaming_mouse:['nrf52840gmouse'],dongle:['nrf52840dongle','nrf52833dongle','nrf52820dongle'],keyboard:['nrf52kbd'],desktop_mouse:['nrf52dmouse']};
 const OPTIONS = {
@@ -367,8 +419,7 @@ const FRIENDLY_MODULE_NAMES = {
  'ble_bond':'Bluetooth pairing',
  'factory_reset':'Factory reset',
  'bas':'Battery information',
- 'dfu':'Firmware update',
- 'led_stream':'LED lighting'
+ 'dfu':'Firmware update'
 };
 const FRIENDLY_OPTION_NAMES = {
  downshift_run:'Time before sensor sleep',
@@ -426,8 +477,6 @@ const FRIENDLY_OPTION_HELP = {
  peer_erase:'Remove saved Bluetooth pairings. This action cannot be undone.',
  peer_search:'Put the device into pairing mode to connect to a new host.',
  fast_pair:'Reset saved pairing information.',
- set_led_effect:'LED animation data is managed by the LED controls.',
- get_leds_state:'Check whether the LED controller is ready to accept effects.',
  fwinfo:'Firmware details are shown in the Firmware & DFU section.',
  devinfo:'Device details are shown in the Firmware & DFU section.'
 };
@@ -444,11 +493,11 @@ const OPTION_SCALES = {
  wifi_present_threshold:100, wifi_active_threshold:100
 };
 const $ = id => document.getElementById(id);
-let selected = null, devices = [], activeDevice = null, activeRecipient = 0, modules = {}, currentFw = null, dfuImage = null, dfuBusy = false, ledTimer = null, ledBusy = false, audioCtx = null, audioSource = null, audioAnalyser = null, audioElement = null, musicRAF = null, stopMusicFlag = false;
+let selected = null, devices = [], activeDevice = null, activeRecipient = 0, modules = {}, currentFw = null, dfuImage = null, dfuBusy = false;
 
 function log(message, kind='') { const list=$('logList'); if(list.querySelector('.muted')) list.innerHTML=''; const row=document.createElement('div'); row.className=`log-entry ${kind}`; const t=document.createElement('time'); t.textContent=new Date().toLocaleTimeString(); const m=document.createElement('span'); m.textContent=message; row.append(t,m); list.prepend(row); }
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
-function setBusy(disabled){['connectBtn','refreshBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','startLedBtn','startMusicBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice);$('readAllBtn').disabled=disabled||!activeDevice||Object.keys(availableModules()).length===0}
+function setBusy(disabled){['connectBtn','refreshBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn'].forEach(id=>$(id).disabled=disabled||!activeDevice);$('readAllBtn').disabled=disabled||!activeDevice||Object.keys(availableModules()).length===0}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function u8(data){return data instanceof Uint8Array?data:new Uint8Array(data)}
 function decode(data){return new TextDecoder().decode(data).replace(/\0/g,'')}
@@ -503,12 +552,14 @@ function formatOptionRange(meta,optionName){
 }
 function updateDeviceTabs(device){
   const hideMouseFeatures=!!device&&boardType(device.board)==='dongle';
-  for(const page of ['battery','led','mouseTester'])document.querySelector(`nav [data-page="${page}"]`).hidden=hideMouseFeatures;
+  for(const page of ['battery','mouseTester'])document.querySelector(`nav [data-page="${page}"]`).hidden=hideMouseFeatures;
+  document.querySelector('nav [data-page="profiles"]').hidden=!device||hideMouseFeatures||!modules?.profile_mgr;
   if(hideMouseFeatures&&document.querySelector('nav .nav-item.active')?.dataset.page!=='overview')activatePage('overview');
 }
 function activatePage(page){
   if(document.querySelector(`nav [data-page="${page}"]`)?.hidden)page='overview';
   document.body.classList.toggle('mouse-tester-open',page==='mouseTester');
+  document.body.classList.toggle('profiles-open',page==='profiles');
   document.querySelectorAll('.nav-item').forEach(button=>button.classList.toggle('active',button.dataset.page===page));
   document.querySelectorAll('.page').forEach(section=>section.classList.toggle('active',section.id===`page-${page}`));
 }
@@ -534,6 +585,10 @@ function handleConfigInputReport(event){
       const batteryId=response.payload[0];
       if(batteryId!==1 && batteryId!==2) throw new Error(`Unknown battery ID ${batteryId}.`);
       renderHidBattery(batteryId,response.payload.slice(1));
+      return;
+    }
+    if(response.recipient===HID_BATTERY_UPDATE_RECIPIENT && response.eventId===HID_PROFILE_UPDATE_EVENT_ID){
+      if(response.status===STATUS.SUCCESS && response.payload.length>=1 && typeof ProfileUI!=='undefined')ProfileUI.onActive(response.payload[0]);
       return;
     }
     const pending=pendingRequests.get(response.eventId);
@@ -754,9 +809,6 @@ function renderConnected(){
   $('getDevInfoBtn').disabled=false;
   $('rebootBtn').disabled=false;
   $('dfuFile').disabled=false;
-  $('startLedBtn').disabled=false;
-  $('startMusicBtn').disabled=false;
-  $('wavFile').disabled=false;
   $('refreshBatteryBtn').disabled=isDongleEndpoint();
   $('statBoard').textContent=d.board;
   $('statHwid').textContent=d.hwid;
@@ -790,8 +842,8 @@ function renderConnected(){
     $('configPanel').textContent='This device does not expose configurable settings.';
   }else renderConfig();
 }
-function renderDisconnected(){activatePage('overview');updateDeviceTabs(null);$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile','startLedBtn','startMusicBtn','wavFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 setting groups';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its settings.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load settings.'}
-async function disconnect(){stopLed();stopMusic();try{if(selected?.opened)await selected.close()}catch{}selected=null;useFeatureReports=false;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
+function renderDisconnected(){activatePage('overview');updateDeviceTabs(null);$('connectionBadge').textContent='Not connected';$('connectionBadge').className='badge offline';$('deviceName').textContent='No device selected';$('deviceMeta').textContent='Connect your G Mouse V1 or G Dongle V1 to begin.';$('disconnectBtn').disabled=true;$('startDfuBtn').disabled=true;$('dfuTrust').disabled=true;$('endpointSelect').disabled=true;$('endpointSelect').innerHTML='<option>Connect a device</option>';['refreshBtn','readAllBtn','getFwInfoBtn','getDevInfoBtn','rebootBtn','dfuFile'].forEach(id=>$(id).disabled=true);$('statBoard').textContent=$('statHwid').textContent=$('statModules').textContent=$('statUsb').textContent='—';$('moduleCount').textContent='0 setting groups';$('moduleOverview').className='module-grid empty-state';$('moduleOverview').textContent='Connect a device to discover its settings.';$('moduleSelect').disabled=true;$('moduleSelect').innerHTML='<option>Connect a device</option>';$('configSearch').disabled=true;$('configPanel').className='panel config-panel empty-state';$('configPanel').textContent='Connect a device to load settings.'}
+async function disconnect(){try{if(selected?.opened)await selected.close()}catch{}selected=null;useFeatureReports=false;activeDevice=null;devices=[];modules={};currentFw=null;dfuImage=null;$('refreshBatteryBtn').disabled=true;renderDisconnected();log('USB device disconnected')}
 
 function optionMeta(moduleName,optName){const m=OPTIONS[moduleName]||{};return m[optName]||{id:optName,range:null,help:'Firmware-reported option (no local metadata available)',type:'raw'}}
 function moduleOptionMap(moduleName){const actual=modules[moduleName]?.options||{};const result={};for(const [name,meta] of Object.entries(OPTIONS[moduleName]||{})){if(actual[meta.id]!==undefined)result[name]={...meta,deviceOption:meta.id,deviceId:actual[meta.id].id}}for(const [name,desc] of Object.entries(actual)){if(!Object.values(OPTIONS[moduleName]||{}).some(meta=>meta.id===name))result[name]={id:name,range:null,help:'',type:'raw',deviceOption:name,deviceId:desc.id}}return result}
@@ -931,14 +983,6 @@ function setDfuProgress(offset,length,status){const p=length?Math.min(100,offset
 async function waitDfuInactive(){let last;for(let i=0;i<120;i++){last=await dfuSync();if(last.state===0)return last;setDfuProgress(last.offset,last.length,last.state===3?'Waiting for flash cleanup…':'Waiting for device…');await sleep(1000)}throw new Error('Timed out waiting for DFU slot to become inactive')}
 async function startDfu(){if(!dfuImage||dfuBusy||!$('dfuTrust').checked)return;if(!confirm(`Update ${activeDevice.board} to firmware ${dfuImage.version}?\n\nDo not disconnect the device during transfer.`))return;dfuBusy=true;$('startDfuBtn').disabled=true;$('disconnectBtn').disabled=true;try{const bin=dfuImage.bin,length=bin.length,checksum=crc32(bin,1);let info=await waitDfuInactive();if(info.state!==0)throw new Error('Another DFU operation is active');let offset=info.length===length&&info.crc===checksum&&info.offset<=length?info.offset:0;const startData=new Uint8Array(12),sv=new DataView(startData.buffer);sv.setUint32(0,length,true);sv.setUint32(4,checksum,true);sv.setUint32(8,offset,true);const m=fwModule();await exchange(activeRecipient,eventId(m,'start'),STATUS.SET,startData);info=await dfuSync();if(![1,2].includes(info.state))throw new Error('Device did not start DFU');let nextCheckpoint=Math.min(offset+info.buffer,length);while(offset<length){const chunk=bin.slice(offset,Math.min(offset+DFU_CHUNK_SIZE,nextCheckpoint));if(!chunk.length)break;await exchange(activeRecipient,eventId(m,'data'),STATUS.SET,chunk);offset+=chunk.length;setDfuProgress(offset,length,'Transferring firmware…');if(offset>=nextCheckpoint){let synced=false;for(let retry=0;retry<30;retry++){const s=await dfuSync();if(s.length!==length||s.crc!==checksum)throw new Error('DFU synchronization metadata mismatch');if(s.state===2){await sleep(300);continue}if(s.state===0&&s.offset!==length)throw new Error('DFU interrupted by device');if(s.state!==0&&s.offset!==offset)throw new Error(`DFU offset mismatch: device ${s.offset}, browser ${offset}`);synced=true;break}if(!synced)throw new Error('DFU checkpoint timeout');nextCheckpoint=Math.min(nextCheckpoint+info.buffer,length)}}const final=await waitDfuInactive();if(final.state!==0||final.offset!==length)throw new Error('Device did not confirm completed image');setDfuProgress(length,length,'Transfer complete. Rebooting…');const rebootData=await exchange(activeRecipient,eventId(m,'reboot'),STATUS.FETCH);if(!rebootData||!rebootData[0])throw new Error('Firmware transfer completed, but reboot was not confirmed');setDfuProgress(length,length,'Firmware update completed');log(`Firmware ${dfuImage.version} transferred and reboot requested`,'success');toast('Firmware update completed')}catch(e){setDfuProgress(0,1,`Failed: ${e.message}`);log(`DFU failed: ${e.message}`,'error');toast(`DFU failed: ${e.message}`)}finally{dfuBusy=false;$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked;$('disconnectBtn').disabled=!activeDevice}}
 
-async function ledState(id){const m=Object.keys(modules).find(k=>k==='led_stream'||k.startsWith('led_stream/'));if(!m)throw new Error('LED stream module not found');const d=await exchange(activeRecipient,eventId(m,'get_leds_state'),STATUS.FETCH,null,1);if(!d||d.length<2)throw new Error('Invalid LED state response');const ledCount=d.length-1;if(id>=ledCount)throw new Error(`LED ID ${id} is not available (count ${ledCount})`);return {ready:!!d[0],free:d[id+1],module:m}}
-async function sendLedStep(m,id,r,g,b,substeps,subtime){const data=new Uint8Array(8),v=new DataView(data.buffer);v.setUint8(0,r);v.setUint8(1,g);v.setUint8(2,b);v.setUint16(3,substeps,true);v.setUint16(5,subtime,true);v.setUint8(7,id);await exchange(activeRecipient,eventId(m,'set_led_effect'),STATUS.SET,data,1)}
-async function ledPump(){if(!ledBusy)return;try{const id=Number($('ledId').value),freq=Number($('ledFreq').value),subs=Number($('ledSubsteps').value);const state=await ledState(id);if(!state.ready)throw new Error('LEDs are not ready');for(let i=0;i<state.free&&ledBusy;i++){await sendLedStep(state.module,id,Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256),subs,Math.floor(1000/(freq*subs)))}}catch(e){log(`LED stream stopped: ${e.message}`,'error');$('ledStatus').textContent=e.message;stopLed();return}if(ledBusy)ledTimer=setTimeout(ledPump,20)}
-function startLed(){const freq=Number($('ledFreq').value),id=Number($('ledId').value),subs=Number($('ledSubsteps').value);if(!Number.isInteger(freq)||freq<=0||!Number.isInteger(id)||id<0||!Number.isInteger(subs)||subs<1||subs>65535){toast('Check LED ID, frequency and substeps');return}ledBusy=true;$('startLedBtn').disabled=true;$('stopLedBtn').disabled=false;$('ledStatus').textContent='LED stream running…';log(`Started random LED stream: LED ${id}, ${freq} Hz`);ledPump()}
-function stopLed(){ledBusy=false;if(ledTimer)clearTimeout(ledTimer);$('startLedBtn').disabled=!activeDevice;$('stopLedBtn').disabled=true;if($('ledStatus'))$('ledStatus').textContent='LED stream stopped.'}
-async function startMusic(){const file=$('wavFile').files[0];if(!file){toast('Choose a WAV file');return}const id=Number($('ledId').value),freq=Number($('ledFreq').value);if(!Number.isInteger(id)||id<0||!Number.isInteger(freq)||freq<=0){toast('Invalid LED ID or frequency');return}try{const url=URL.createObjectURL(file);audioElement=new Audio(url);audioElement.crossOrigin='anonymous';audioCtx=new (window.AudioContext||window.webkitAudioContext)();await audioCtx.resume();audioSource=audioCtx.createMediaElementSource(audioElement);audioAnalyser=audioCtx.createAnalyser();audioAnalyser.fftSize=1024;audioSource.connect(audioAnalyser);audioAnalyser.connect(audioCtx.destination);await new Promise((resolve,reject)=>{audioElement.oncanplay=resolve;audioElement.onerror=()=>reject(new Error('Cannot decode selected WAV audio'));audioElement.load()});const m=Object.keys(modules).find(k=>k==='led_stream'||k.startsWith('led_stream/'));if(!m)throw new Error('LED stream module not found');const state=await ledState(id);if(!state.ready)throw new Error('LEDs are not ready');stopMusicFlag=false;$('startMusicBtn').disabled=true;$('stopMusicBtn').disabled=false;$('musicStatus').textContent='Playing audio with LED synchronization…';await audioElement.play();const bins=new Uint8Array(audioAnalyser.fftSize);let sent=0;const step=async()=>{if(stopMusicFlag||audioElement.ended)return;audioAnalyser.getByteTimeDomainData(bins);let min=255,max=0;for(const x of bins){min=Math.min(min,x);max=Math.max(max,x)}const peak=Math.min(1,(max-min)/128),hue=(240-peak*120)/360;const rgb=hsvToRgb(hue,1,1);try{const s=await ledState(id);if(s.free>0){await sendLedStep(m,id,rgb[0],rgb[1],rgb[2],10,Math.max(0,Math.floor(1000/(freq*10))));sent++}}catch(e){log(`Music LED stream error: ${e.message}`,'error');stopMusic();return}musicRAF=requestAnimationFrame(step)};audioElement.onended=()=>stopMusic();musicRAF=requestAnimationFrame(step);log(`Started music LED stream: ${file.name}`,'success')}catch(e){log(`Music LED stream failed: ${e.message}`,'error');toast(e.message);stopMusic()}}
-function hsvToRgb(h,s,v){const i=Math.floor(h*6),f=h*6-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);let r,g,b;switch(i%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;default:r=v;g=p;b=q}return [r,g,b].map(x=>Math.round(x*255))}
-function stopMusic(){stopMusicFlag=true;if(musicRAF)cancelAnimationFrame(musicRAF);if(audioElement){audioElement.pause();URL.revokeObjectURL(audioElement.src);audioElement=null}if(audioCtx){audioCtx.close().catch(()=>{});audioCtx=null}audioSource=null;audioAnalyser=null;$('startMusicBtn').disabled=!activeDevice;$('stopMusicBtn').disabled=true;if($('musicStatus'))$('musicStatus').textContent='Music LED stream stopped.'}
 
 // Theme switching
 const themeToggle = $('themeToggle');
@@ -954,7 +998,7 @@ themeToggle.addEventListener('click', () => {
   applyTheme(current === 'dark' ? 'light' : 'dark');
 });
 
-$('endpointSelect').addEventListener('change',()=>{const d=devices[Number($('endpointSelect').value)];if(!d)return;activeDevice=d;activeRecipient=d.recipient;modules=d.config;currentFw=null;dfuImage=null;renderConnected();$('fwInfo').innerHTML='<div class="muted">Not read yet.</div>';$('devInfo').innerHTML='<div class="muted">Not read yet.</div>';$('dfuDetails').textContent='Read firmware information before selecting an update.';$('startDfuBtn').disabled=true;$('dfuTrust').checked=false;$('dfuTrust').disabled=true;log(`Selected endpoint ${d.board} (${d.hwid})`)});$('connectBtn').addEventListener('click',connectDevice);$('disconnectBtn').addEventListener('click',disconnect);$('refreshBtn').addEventListener('click',async()=>{try{await initializeSelected()}catch(e){toast(e.message)}});$('moduleSelect').addEventListener('change',renderConfig);$('configSearch').addEventListener('input',renderConfig);$('readAllBtn').addEventListener('click',readAll);$('getFwInfoBtn').addEventListener('click',async()=>{try{await fwInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('getDevInfoBtn').addEventListener('click',async()=>{try{await devInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('rebootBtn').addEventListener('click',async()=>{try{await reboot()}catch(e){log(e.message,'error');toast(e.message)}});$('dfuTrust').addEventListener('change',()=>$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked);$('startDfuBtn').addEventListener('click',startDfu);$('startLedBtn').addEventListener('click',startLed);$('stopLedBtn').addEventListener('click',stopLed);$('startMusicBtn').addEventListener('click',startMusic);$('stopMusicBtn').addEventListener('click',stopMusic);$('wavFile').addEventListener('change',e=>$('wavName').textContent=e.target.files[0]?.name||'No audio selected');$('clearLogBtn').addEventListener('click',()=>$('logList').innerHTML='<div class="muted">No activity yet.</div>');$('refreshBatteryBtn').addEventListener('click',refreshBatteryData);$('testerBackBtn').addEventListener('click',()=>activatePage('overview'));document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{if(!b.hidden)activatePage(b.dataset.page)}));
+$('endpointSelect').addEventListener('change',()=>{const d=devices[Number($('endpointSelect').value)];if(!d)return;activeDevice=d;activeRecipient=d.recipient;modules=d.config;currentFw=null;dfuImage=null;renderConnected();$('fwInfo').innerHTML='<div class="muted">Not read yet.</div>';$('devInfo').innerHTML='<div class="muted">Not read yet.</div>';$('dfuDetails').textContent='Read firmware information before selecting an update.';$('startDfuBtn').disabled=true;$('dfuTrust').checked=false;$('dfuTrust').disabled=true;log(`Selected endpoint ${d.board} (${d.hwid})`)});$('connectBtn').addEventListener('click',connectDevice);$('disconnectBtn').addEventListener('click',disconnect);$('refreshBtn').addEventListener('click',async()=>{try{await initializeSelected()}catch(e){toast(e.message)}});$('moduleSelect').addEventListener('change',renderConfig);$('configSearch').addEventListener('input',renderConfig);$('readAllBtn').addEventListener('click',readAll);$('getFwInfoBtn').addEventListener('click',async()=>{try{await fwInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('getDevInfoBtn').addEventListener('click',async()=>{try{await devInfo()}catch(e){log(e.message,'error');toast(e.message)}});$('rebootBtn').addEventListener('click',async()=>{try{await reboot()}catch(e){log(e.message,'error');toast(e.message)}});$('dfuTrust').addEventListener('change',()=>$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked);$('startDfuBtn').addEventListener('click',startDfu);$('clearLogBtn').addEventListener('click',()=>$('logList').innerHTML='<div class="muted">No activity yet.</div>');$('refreshBatteryBtn').addEventListener('click',refreshBatteryData);$('testerBackBtn').addEventListener('click',()=>activatePage('overview'));document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{if(!b.hidden)activatePage(b.dataset.page)}));
 if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected&&e.device===selected){log('USB device disconnected by browser','error');disconnect()}});else log('This browser cannot connect to USB devices. Open this page in Chrome or Edge.','error');
 
 
@@ -1152,6 +1196,246 @@ if('hid'in navigator)navigator.hid.addEventListener('disconnect',e=>{if(selected
         });
 
     
+</script>
+<script>
+/* Profiles: binary codec (same layout as src/util/profile_core.h), device client and editor. */
+const ProfileCodec = (() => {
+  const SIZE = 42, VERSION = 1;
+  const crc16 = (b, n) => { let c = 0xFFFF; for (let i = 0; i < n; i++) { c ^= b[i] << 8; for (let k = 0; k < 8; k++) c = (c & 0x8000) ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF; } return c; };
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v) || 0)));
+  const normalize = p => ({
+    name: String(p.name || '').replace(/[^\x20-\x7E]/g, '').slice(0, 10),
+    polling: clamp(p.polling, 0, 5),
+    cpi: clamp(Math.round((Number(p.cpi) || 1600) / 50) * 50, 100, 25000),
+    scroll: clamp(p.scroll, 10, 200), angle: clamp(p.angle, -30, 30), accel: clamp(p.accel, 0, 100),
+    snap: p.snap ? 1 : 0, bright: clamp(p.bright === undefined ? 100 : p.bright, 10, 100), ledMode: clamp(p.ledMode === undefined ? 1 : p.ledMode, 0, 2), ledEvery: clamp(p.ledEvery === undefined ? 10 : p.ledEvery, 1, 255), snooze: clamp(p.snooze, 0, 65535), saver: clamp(p.saver, 0, 65535),
+    color: p.color, battery: p.battery
+  });
+  const hexToRgb = h => [1, 3, 5].map(i => parseInt(String(h).slice(i, i + 2), 16) || 0);
+  const rgbToHex = a => '#' + [...a].map(v => v.toString(16).padStart(2, '0')).join('');
+  const encode = raw => {
+    const p = normalize(raw), b = new Uint8Array(SIZE), dv = new DataView(b.buffer);
+    b[0] = VERSION; b[1] = p.polling; dv.setUint16(2, p.cpi, true); b[4] = p.scroll; dv.setInt8(5, p.angle); b[6] = p.accel; b[7] = p.snap;
+    dv.setUint16(8, p.snooze, true); dv.setUint16(10, p.saver, true);
+    b.set(hexToRgb(p.color), 12);
+    p.battery.forEach((c, i) => b.set(hexToRgb(c), 15 + i * 3));
+    for (let i = 0; i < p.name.length; i++) b[27 + i] = p.name.charCodeAt(i);
+    b[37] = p.bright; b[38] = p.ledMode; b[39] = p.ledEvery;
+    dv.setUint16(40, crc16(b, 40), true);
+    return b;
+  };
+  const decode = bytes => {
+    const b = Uint8Array.from(bytes).slice(0, SIZE), dv = new DataView(b.buffer);
+    if (b.length !== SIZE) throw new Error('The mouse returned incomplete profile data.');
+    if (dv.getUint16(40, true) !== crc16(b, 40)) throw new Error('Profile data failed its integrity check.');
+    if (b[0] !== VERSION) throw new Error('This profile was written by a different firmware version.');
+    let name = ''; for (let i = 27; i < 37 && b[i]; i++) name += String.fromCharCode(b[i]);
+    return {
+      name, polling: b[1], cpi: dv.getUint16(2, true), scroll: b[4], angle: dv.getInt8(5), accel: b[6], snap: b[7],
+      snooze: dv.getUint16(8, true), saver: dv.getUint16(10, true), bright: b[37] || 100, ledMode: b[38], ledEvery: b[39] || 10, color: rgbToHex(b.slice(12, 15)),
+      battery: [0, 1, 2, 3].map(i => rgbToHex(b.slice(15 + i * 3, 18 + i * 3)))
+    };
+  };
+  return { encode, decode, normalize, SIZE };
+})();
+
+const ProfileClient = {
+  id(name) {
+    const m = modules.profile_mgr, o = m?.options?.[name];
+    if (!o) throw new Error('This mouse firmware does not support profiles. Update the firmware first.');
+    return (m.id << 4) | o.id;
+  },
+  async get(name) { const d = await exchange(activeRecipient, this.id(name), STATUS.FETCH); if (!d || !d.length) throw new Error('The mouse did not answer.'); return d; },
+  set(name, bytes) { return exchange(activeRecipient, this.id(name), STATUS.SET, Uint8Array.from(bytes)); },
+  async load(slot) { await this.set('edit_slot', [slot]); return ProfileCodec.decode(await this.get('core')); },
+  async save(slot, profile) {
+    await this.set('edit_slot', [slot]);
+    await this.set('core', ProfileCodec.encode(profile));
+    const back = await this.get('core'), want = ProfileCodec.encode(profile);
+    if (back.length < want.length || want.some((v, i) => back[i] !== v)) throw new Error('The mouse did not keep the saved values.');
+  },
+  async active() { return (await this.get('active'))[0]; },
+  activate(slot) { return this.set('active', [slot]); }
+};
+
+const ProfileUI = (() => {
+  const ids = { bright: 'profBright', ledMode: 'profLedMode', ledEvery: 'profLedEvery', name: 'profName', polling: 'profPolling', cpi: 'profCpi', scroll: 'profScroll', angle: 'profAngle', accel: 'profAccel', snap: 'profSnap', snooze: 'profSnooze', saver: 'profSaver', color: 'profColor' };
+  let slot = 0, active = 0, cache = [], loaded = [], busy = false;
+  const status = (t, kind) => { $('profStatus').textContent = t; $('profStatus').className = 'status-line ' + (kind || 'muted'); };
+  const readForm = () => { const p = {}; for (const [k, id] of Object.entries(ids)) p[k] = $(id).value; p.battery = [0, 1, 2, 3].map(i => $('profBat' + i).value); return p; };
+  const fillForm = p => { for (const [k, id] of Object.entries(ids)) $(id).value = p[k]; p.battery.forEach((c, i) => $('profBat' + i).value = c); };
+  const setBusy = b => { busy = b; ['profSaveBtn', 'profActivateBtn', 'profReloadBtn'].forEach(id => $(id).disabled = b || !modules.profile_mgr); };
+  const B = [['#00ff00', '#ffa000', '#ff0000', '#0000ff']][0];
+  const mk = (name, polling, cpi, scroll, accel, snap, snooze, saver, color, bright, ledMode, ledEvery, short, long) =>
+    ({ p: { name, polling, cpi, scroll, angle: 0, accel, snap, bright, ledMode, ledEvery, snooze, saver, color, battery: B }, short, long });
+  const PRESETS = [
+    mk('Gaming', 3, 1600, 100, 0, 0, 300, 600, '#ff0000', 50, 0, 10, 'Balanced everyday gaming', 'Gaming: 1000 Hz, 1600 CPI, raw input with no acceleration. Red light always on.'),
+    mk('MaxPerf', 5, 3200, 100, 0, 0, 60, 120, '#ff00ff', 50, 0, 10, 'Fastest response, eSports', 'MaxPerf: 4000 Hz, 3200 CPI, quick sleep timers. Magenta light always on.'),
+    mk('Battery', 0, 800, 80, 0, 0, 15, 30, '#00ff00', 10, 1, 10, 'Longest battery life', 'Battery: 125 Hz, 800 CPI, 80% scroll, very short sleep timers. Dim green light fades only when the profile changes.'),
+    mk('Sport', 4, 2400, 100, 5, 0, 180, 360, '#ffff00', 80, 2, 5, 'Fast sweeping movements', 'Sport: 2000 Hz, 2400 CPI, 5% acceleration for wide swipes. Yellow light fades every 5 s.'),
+    mk('Office', 1, 1200, 100, 0, 1, 600, 1200, '#00ffff', 50, 0, 10, 'Precise design and office work', 'Office: 250 Hz, 1200 CPI, straight-line assist on for exact lines. Cyan light always on.')
+  ];
+  const LEDMODE = ['Always on', 'Fade on change', 'Blink fade'];
+  const POLL = ['125 Hz', '250 Hz', '500 Hz', '1000 Hz', '2000 Hz', '4000 Hz'];
+  const LABEL = { name: 'Name', polling: 'Report rate', cpi: 'Pointer speed', scroll: 'Scroll speed', angle: 'Sensor angle', accel: 'Acceleration', snap: 'Straight-line assist', snooze: 'Sleep after idle', saver: 'Battery saver', bright: 'Light intensity', ledMode: 'Profile light mode', ledEvery: 'Blink interval', color: 'Profile light', battery: 'Battery lights' };
+  const dur = s => { s = Number(s) || 0; return s === 0 ? 'Never' : s < 60 ? `${s} s` : `${Math.round(s / 6) / 10} min`; };
+  const FMT = { polling: v => POLL[v] || v, cpi: v => `${v} CPI`, scroll: v => `${v}%`, angle: v => `${v}°`, accel: v => `${v}%`, snap: v => v ? 'On' : 'Off', ledMode: v => LEDMODE[v] || v, ledEvery: v => `${v} s`, snooze: dur, saver: dur, battery: v => v.join(' ') };
+  const show = (k, v) => (FMT[k] ? FMT[k](v) : v);
+  const HIST_KEY = 'gmouse-v1-profile-history';
+  const history = () => { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } };
+  const addHistory = text => { const h = history(); h.unshift({ t: new Date().toLocaleString(), text }); localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(0, 40))); renderHistory(); };
+  const renderHistory = () => {
+    const host = $('profHistory'), h = history(); host.innerHTML = '';
+    if (!h.length) { host.innerHTML = '<div class="muted">No changes yet.</div>'; return; }
+    for (const e of h) { const r = document.createElement('div'), t = document.createElement('time'), s = document.createElement('span'); t.textContent = e.t; s.textContent = e.text; r.append(t, s); host.append(r); }
+  };
+  const diff = () => {
+    const base = cache[slot]; if (!base) return [];
+    const now = ProfileCodec.normalize(readForm()), out = [];
+    for (const k of Object.keys(LABEL)) {
+      if (JSON.stringify(base[k]) !== JSON.stringify(now[k])) out.push(`${LABEL[k]}: ${show(k, base[k])} → ${show(k, now[k])}`);
+    }
+    return out;
+  };
+  const SLIDERS = [
+    { id: 'profCpi', title: 'Pointer speed', min: 100, max: 25000, step: 50, def: 1600, fmt: v => `${v} CPI` },
+    { id: 'profScroll', title: 'Scroll speed', min: 10, max: 200, step: 5, def: 100, fmt: v => `${v}%` },
+    { id: 'profAngle', title: 'Sensor angle', min: -30, max: 30, step: 1, def: 0, fmt: v => `${v}°` },
+    { id: 'profAccel', title: 'Pointer acceleration', min: 0, max: 100, step: 5, def: 0, fmt: v => v == 0 ? 'Off' : `${v}%` },
+    { id: 'profSnooze', title: 'Sleep after idle', min: 0, max: 1800, step: 10, def: 300, fmt: dur },
+    { id: 'profSaver', title: 'Battery saver after', min: 0, max: 1800, step: 10, def: 60, fmt: dur },
+    { id: 'profBright', title: 'Light intensity', min: 10, max: 100, step: 5, def: 50, fmt: v => `${v}%` },
+    { id: 'profLedEvery', title: 'Blink fade every', min: 1, max: 60, step: 1, def: 10, fmt: v => `${v} s` }
+  ];
+  const SEGS = { profPolling: [[0, '125 Hz'], [1, '250 Hz'], [2, '500 Hz'], [3, '1000 Hz'], [4, '2000 Hz'], [5, '4000 Hz']], profSnap: [[0, 'Off'], [1, 'On']], profLedMode: [[0, 'Always on'], [1, 'Fade on change'], [2, 'Blink fade']] };
+  const buildControls = () => {
+    for (const s of SLIDERS) {
+      const host = document.querySelector(`[data-sl="${s.id}"]`);
+      host.innerHTML = `<div class="top"><span>${s.title}</span><b></b></div><input type="range" id="${s.id}" min="${s.min}" max="${s.max}" step="${s.step}"><div class="ends"><span>Low: ${s.fmt(s.min)}</span><button type="button">Default: ${s.fmt(s.def)}</button><span>High: ${s.fmt(s.max)}</span></div>`;
+      host.querySelector('button').addEventListener('click', () => { $(s.id).value = s.def; refresh(); });
+    }
+    for (const [id, opts] of Object.entries(SEGS)) {
+      const host = document.querySelector(`[data-seg="${id}"]`);
+      for (const [v, t] of opts) {
+        const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v; b.textContent = t;
+        b.addEventListener('click', () => { $(id).value = v; refresh(); });
+        host.append(b);
+      }
+    }
+  };
+  const refresh = () => {
+    const f = readForm();
+    for (const s of SLIDERS) document.querySelector(`[data-sl="${s.id}"] .top b`).textContent = s.fmt(Number($(s.id).value));
+    for (const id of Object.keys(SEGS)) document.querySelectorAll(`[data-seg="${id}"] button`).forEach(b => b.classList.toggle('on', b.dataset.v === String($(id).value)));
+    document.querySelector('[data-sl="profLedEvery"]').hidden = String($('profLedMode').value) !== '2';
+    const d = diff(), box = $('profDirty');
+    box.hidden = !d.length;
+    if (d.length) { box.innerHTML = '<b>Not saved to the mouse yet</b>'; const ul = document.createElement('ul'); d.forEach(x => { const li = document.createElement('li'); li.textContent = x; ul.append(li); }); box.append(ul); }
+    $('profDiscardBtn').disabled = busy || !d.length;
+    renderSlots();
+  };
+  const renderSlots = () => {
+    const host = $('profSlots'); host.innerHTML = '';
+    const dirty = diff().length > 0;
+    for (let i = 0; i < 5; i++) {
+      const p = cache[i], b = document.createElement('button');
+      b.className = 'prof-card' + (i === slot ? ' selected' : '');
+      const bar = document.createElement('span'); bar.className = 'bar'; bar.style.background = p?.color || '#64748b';
+      const title = document.createElement('b'); title.textContent = p?.name || `Profile ${i + 1}`;
+      const chips = document.createElement('span'); chips.className = 'chips';
+      const add = (t, c) => { const s = document.createElement('span'); s.className = 'chip ' + (c || ''); s.textContent = t; chips.append(s); };
+      if (i === active) add('In use', 'live');
+      if (i === slot && dirty) add('Unsaved', 'warn');
+      if (p) { add(`${p.cpi} CPI`); add(POLL[p.polling]); } else add('Not loaded');
+      const sub = document.createElement('small'); sub.textContent = PRESETS[i].short; sub.title = PRESETS[i].long;
+      b.append(bar, title, sub, chips);
+      b.addEventListener('click', () => select(i));
+      host.append(b);
+    }
+    $('profActiveInfo').textContent = `Profile ${active + 1} is in use on the mouse. Editing profile ${slot + 1}. Factory default: ${PRESETS[slot].long}`;
+  };
+  async function select(i) {
+    if (busy) return;
+    if (i !== slot && diff().length && !confirm(`Profile ${slot + 1} has changes that are not saved. Switch anyway?`)) return;
+    setBusy(true);
+    try { slot = i; if (!cache[i] || !loaded[i]) { cache[i] = await ProfileClient.load(i); loaded[i] = true; } fillForm(cache[i]); refresh(); status(`Profile ${i + 1} loaded.`); }
+    catch (e) { status(e.message, 'error'); toast(e.message); }
+    finally { setBusy(false); refresh(); }
+  }
+  async function open() {
+    if (!modules.profile_mgr || busy) return;
+    setBusy(true);
+    try {
+      active = await ProfileClient.active();
+      status('Reading all profiles from the mouse…');
+      for (let i = 0; i < 5; i++) { cache[i] = await ProfileClient.load(i); loaded[i] = true; }
+      slot = active; fillForm(cache[slot]); status('All profiles loaded from the mouse.');
+    } catch (e) { status(e.message, 'error'); toast(e.message); }
+    finally { setBusy(false); refresh(); }
+  }
+  async function save() {
+    setBusy(true);
+    try {
+      const p = ProfileCodec.normalize(readForm()), changes = diff();
+      await ProfileClient.save(slot, p);
+      cache[slot] = p; fillForm(p);
+      addHistory(`Saved profile ${slot + 1}${changes.length ? ' — ' + changes.join('; ') : ' (no changes)'}`);
+      status(`Profile ${slot + 1} saved to the mouse.`, 'success'); log(`Saved profile ${slot + 1} to the mouse`, 'success'); toast('Profile saved');
+    } catch (e) { status(e.message, 'error'); toast(e.message); log(`Profile save failed: ${e.message}`, 'error'); }
+    finally { setBusy(false); refresh(); }
+  }
+  async function activate() {
+    setBusy(true);
+    try { await ProfileClient.activate(slot); active = slot; addHistory(`Mouse switched to profile ${slot + 1}`); status(`The mouse now uses profile ${slot + 1}.`, 'success'); }
+    catch (e) { status(e.message, 'error'); toast(e.message); }
+    finally { setBusy(false); refresh(); }
+  }
+  function exportBackup() {
+    const data = { app: 'G Mouse V1 profiles', version: 1, profile: ProfileCodec.normalize(readForm()), slot: slot + 1 };
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+    a.download = `g-mouse-v1-profile-${slot + 1}.json`; a.click(); URL.revokeObjectURL(a.href);
+  }
+  async function importBackup(file) {
+    try {
+      const data = JSON.parse(await file.text());
+      if (data.app !== 'G Mouse V1 profiles' || !data.profile) throw new Error('This file is not a G Mouse V1 profile backup.');
+      fillForm(ProfileCodec.normalize(data.profile)); refresh();
+      status('Backup loaded. Review the values, then choose Save to mouse.');
+    } catch (e) { status(e.message, 'error'); toast(e.message); }
+  }
+  buildControls();
+  $('profSaveBtn').addEventListener('click', save);
+  $('profDiscardBtn').addEventListener('click', () => { fillForm(cache[slot]); refresh(); status('Changes discarded.'); });
+  $('profHistClear').addEventListener('click', () => { localStorage.removeItem(HIST_KEY); renderHistory(); });
+  for (const id of [...Object.values(ids), 'profBat0', 'profBat1', 'profBat2', 'profBat3']) $(id).addEventListener('input', refresh);
+  $('profHistBtn').addEventListener('click', () => { renderHistory(); $('profHistDlg').showModal(); });
+  $('profHistClose').addEventListener('click', () => $('profHistDlg').close());
+  renderHistory();
+  $('profActivateBtn').addEventListener('click', activate);
+  $('profReloadBtn').addEventListener('click', () => { loaded[slot] = false; cache[slot] = null; select(slot); });
+  $('profDefaultBtn').addEventListener('click', () => { fillForm(ProfileCodec.normalize(PRESETS[slot].p)); refresh(); status(`Factory defaults for profile ${slot + 1} (${PRESETS[slot].p.name}) filled in. Choose Save to mouse to apply.`); });
+  $('profExportBtn').addEventListener('click', exportBackup);
+  $('profImport').addEventListener('change', e => { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ''; });
+  document.querySelector('nav [data-page="profiles"]').addEventListener('click', open);
+
+  // The mouse switches profile with its button. A direct USB or BLE link pushes the change; behind
+  // the dongle there is no push, so the page also asks the mouse while the Profiles page is open.
+  function onActive(n) {
+    if (!loaded.length || n === active || n < 0 || n > 4) return;
+    active = n;
+    addHistory(`Mouse switched to profile ${n + 1} (button)`);
+    status(`The mouse switched to profile ${n + 1}.`, 'success');
+    toast(`Profile ${n + 1} is now in use`);
+    refresh();
+  }
+  setInterval(async () => {
+    if (busy || document.hidden || !activeDevice || !modules.profile_mgr || !loaded.length ||
+        !document.body.classList.contains('profiles-open')) return;
+    try { const n = await ProfileClient.active(); if (!busy) onActive(n); } catch { /* next poll retries */ }
+  }, 2000);
+  return { open, onActive };
+})();
 </script>
 </body>
 </html>

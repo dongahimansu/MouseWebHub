@@ -15,12 +15,11 @@ No Python, Node.js, local server, backend, or helper application is required. We
 - Settings — friendly names and descriptions for discovered settings, with readable value previews and save controls.
 - Battery — primary/backup live telemetry and decoded state labels.
 - Firmware & DFU — firmware metadata and update workflow.
-- LED stream — random and WAV-reactive LED streaming.
 - Activity log — communication and operation messages.
 
-When a G Dongle V1 endpoint is selected, the Battery, LED stream, and Mouse Tester tabs are hidden. They reappear when a mouse endpoint is selected or after disconnecting.
+When a G Dongle V1 endpoint is selected, the Battery and Mouse Tester tabs are hidden. They reappear when a mouse endpoint is selected or after disconnecting.
 
-Setting groups and options are shown with friendly names and plain-language descriptions instead of firmware IDs. Values include readable units and previews; scaled wireless-quality values are displayed as decimals while the firmware wire format remains unchanged. Battery snapshots on a mouse endpoint are decoded into a readable summary. Firmware-transfer internals and LED streaming commands are kept out of Settings because those have dedicated sections. Settings without a known safe format are labeled as advanced data, shown as hexadecimal, and kept read-only.
+Setting groups and options are shown with friendly names and plain-language descriptions instead of firmware IDs. Values include readable units and previews; scaled wireless-quality values are displayed as decimals while the firmware wire format remains unchanged. Battery snapshots on a mouse endpoint are decoded into a readable summary. Firmware-transfer internals are kept out of Settings because those have dedicated sections. Settings without a known safe format are labeled as advanced data, shown as hexadecimal, and kept read-only.
 
 The dongle's Settings view also hides the BAS battery group, which is not supported on the dongle itself. A connected mouse endpoint continues to show its battery settings.
 
@@ -35,3 +34,9 @@ The Battery tab routes unsolicited frames with recipient `0xFF` and event ID `0x
 - The browser DFU implementation does not perform the cryptographic signature verification provided by the Python `imgtool` workflow. Only use trusted firmware packages and do not use browser DFU where signature verification is mandatory.
 
 © 2026 G Mouse V1 Maintenance Tool. All rights reserved.
+
+## Profiles
+
+The **Profiles** tab (G Mouse V1 only) edits the 5 profiles stored on the mouse: report rate, CPI, scroll speed, sensor angle, acceleration, straight-line assist, sleep and battery-saver timers, LED colours and light intensity (10�100 %, scales the firmware LED effects). Values travel as a 40-byte little-endian block with a CRC-16 (layout in `src/util/profile_core.h`) through the `profile_mgr` configuration module (options `active`, `edit_slot`, `core`, `valid`). The mouse is the source of truth; backups are JSON files. Button maps, shift layers and macros are planned next.
+
+A short press of button 4 on the mouse switches to the next profile (round-robin). The RGB LED (PWM, P1.24/P1.22/P1.23, active low) blinks the profile colour once per profile number, scaled by the light intensity. Direct USB/BLE links push the change to this page; behind the dongle the page polls every 2 s while the Profiles tab is open. BLE peer selection by button is disabled; manage peers from Settings (long press still erases the peer).
