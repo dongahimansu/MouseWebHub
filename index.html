@@ -53,7 +53,7 @@ nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;back
 .config-toolbar select,.config-toolbar input,.form-grid input{height:38px;border:1px solid var(--input-border);border-radius:8px;background:var(--input-bg);padding:0 11px;font:inherit;font-size:12px;color:var(--text-main);min-width:220px}
 .toolbar-spacer{flex:1}.config-toolbar input{min-width:210px}.config-panel{padding:0;overflow:hidden}.config-panel.empty-state{padding:28px}
 .config-intro{margin:0 0 16px}.config-group{border-bottom:1px solid var(--border-color)}.group-title{background:var(--bg-color);padding:13px 18px;font-size:12px;font-weight:800;color:var(--text-main);display:flex;justify-content:space-between}
-.config-columns,.config-row{display:grid;grid-template-columns:minmax(180px,1.1fr) minmax(170px,1fr) minmax(180px,1.2fr) 85px;gap:13px;align-items:center;padding:12px 18px}.config-columns{font-size:10px;font-weight:750;color:var(--text-muted);background:var(--card-bg)}.config-row{border-top:1px solid var(--border-color)}
+.config-columns,.config-row{display:grid;grid-template-columns:minmax(180px,1.1fr) minmax(170px,1fr) minmax(180px,1.2fr) 85px;gap:13px;align-items:center;padding:12px 18px}.config-columns{font-size:10px;font-weight:750;color:var(--text-muted);background:var(--card-bg)}.config-row{border-top:1px solid var(--border-color)}.config-row [hidden]{display:none!important}.config-columns.action-only,.config-row.action-only{grid-template-columns:minmax(180px,1fr) 120px}
 .option-name{font-size:12px;font-weight:700}.option-help,.option-range,.option-preview{font-size:10px;color:var(--text-muted);margin-top:4px}.option-technical{font-size:9px;color:var(--text-muted);margin-top:3px;opacity:.8}
 .config-row input{width:100%;height:34px;border:1px solid var(--input-border);border-radius:7px;padding:0 9px;font:inherit;font-size:12px;background:var(--input-bg);color:var(--text-main)}
 .config-row button{padding:8px 10px}.config-row .read-btn{background:var(--button-secondary-bg);color:var(--button-secondary-text)}.config-row .write-btn{background:#064e3b;color:#a7f3d0}.option-value{display:flex;gap:6px}.option-value input{min-width:0}
@@ -143,7 +143,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
       </div>
       <nav id="nav">
         <button class="nav-item active" data-page="overview"><span>▦</span> Overview</button>
-        <button class="nav-item" data-page="configuration"><span>⚙</span> Settings</button>
+        <button class="nav-item" data-page="configuration"><span>⚙</span> BLE Settings</button>
         <button class="nav-item" data-page="battery"><span>▣</span> Battery</button>
         <button class="nav-item" data-page="firmware"><span>↻</span> Firmware & DFU</button>
         <button class="nav-item" data-page="led"><span>◉</span> LED stream</button>
@@ -166,7 +166,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
       </section>
 
       <section class="page" id="page-configuration">
-        <div class="page-heading"><div><div class="eyebrow">DEVICE SETTINGS</div><h1>Settings</h1><p>Read a setting before changing it. Save applies your changes. Firmware updates and LED controls have their own sections.</p></div><button id="readAllBtn" class="secondary" disabled>Read all settings</button></div>
+        <div class="page-heading"><div><div class="eyebrow">BLUETOOTH</div><h1>BLE Settings</h1><p>Manage Bluetooth LE pairing and connection options.</p></div><button id="readAllBtn" class="secondary" disabled>Read all settings</button></div>
         <div class="config-toolbar"><label>Setting group <select id="moduleSelect" disabled><option>Select a connected device</option></select></label><div class="toolbar-spacer"></div><input id="configSearch" type="search" placeholder="Find a setting…" disabled /></div>
         <div id="configPanel" class="panel config-panel empty-state">Connect a device to load configuration options.</div>
       </section>
@@ -309,13 +309,14 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 // Firmware protocol identifiers are retained where required for device compatibility.
 
 // G Mouse V1 firmware config-channel transport.
-// Report 7 is Output and Report 8 is Input; each carries 29 data bytes.
+// Report 7 is Output and Report 8 is Input; each carries 128 bytes (4-byte header + 124 data bytes).
 // WebHID sendReport() receives the report payload without a report-ID byte.
 const VID = 0x1915, PIDs = [0x52de, 0x52dc];
 // Interrupt report IDs (used by Mouse)
-const REPORT_OUTPUT_ID = 7, REPORT_INPUT_ID = 8, REPORT_SIZE = 29, PAYLOAD_SIZE = REPORT_SIZE;
+const REPORT_OUTPUT_ID = 7, REPORT_INPUT_ID = 8, REPORT_SIZE = 128, PAYLOAD_SIZE = REPORT_SIZE;
 // Feature report ID (used by Dongle and Mouse fallback)
-const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 29;
+const FEATURE_REPORT_ID = 6, FEATURE_REPORT_SIZE = 128;
+const DFU_CHUNK_SIZE = REPORT_SIZE - 4;
 const HID_BATTERY_UPDATE_RECIPIENT = 0xff, HID_BATTERY_UPDATE_EVENT_ID = 0xff;
 const STATUS = {PENDING:0, GET_MAX_MOD_ID:1, GET_HWID:2, GET_BOARD_NAME:3, INDEX_PEERS:4, GET_PEER:5, SET:6, FETCH:7, SUCCESS:8, TIMEOUT:9, REJECT:10, WRITE_FAIL:11, DISCONNECTED:12, GET_PEERS_CACHE:13, FAULT:99};
 const TYPE_TO_BOARD = {gaming_mouse:['nrf52840gmouse'],dongle:['nrf52840dongle','nrf52833dongle','nrf52820dongle'],keyboard:['nrf52kbd'],desktop_mouse:['nrf52dmouse']};
@@ -456,8 +457,8 @@ function boardType(name){for(const [k,v] of Object.entries(TYPE_TO_BOARD))if(v.i
 function isDongleEndpoint(device=activeDevice){return !!device&&boardType(device.board)==='dongle'}
 function availableModules(){
   return Object.fromEntries(Object.entries(modules).filter(([name])=>{
-    if(isDongleEndpoint()&&(name==='bas'||name.startsWith('bas/')))return false;
-    return !['dfu','led_stream'].some(internal=>name===internal||name.startsWith(`${internal}/`));
+    if(isDongleEndpoint())return name==='ble_bond';
+    return name==='ble_bond'||name==='ble_qos';
   }));
 }
 function friendlyModuleName(name){
@@ -552,7 +553,7 @@ async function exchangeOutputReport(recipient,evId,status,eventData=null){
     if(!selected?.opened)throw new Error('USB HID device is not connected');
     if(pendingRequests.has(evId))throw new Error(`Request for event ${evId} is already pending`);
     const packet=new Uint8Array(REPORT_SIZE),bytes=eventData?u8(eventData):new Uint8Array();
-    if(bytes.length>REPORT_SIZE-4)throw new Error(`HID event payload too large (${bytes.length}; maximum 25)`);
+    if(bytes.length>REPORT_SIZE-4)throw new Error(`HID event payload too large (${bytes.length}; maximum ${REPORT_SIZE-4})`);
     packet[0]=recipient;packet[1]=evId&255;packet[2]=status;packet[3]=bytes.length;packet.set(bytes,4);
     const response=new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>{pendingRequests.delete(evId);reject(new Error(`Timed out waiting for HID Input Report 8 (recipient ${recipient}, event ${evId}).`));},15000);
@@ -587,6 +588,7 @@ async function exchangeFeature(recipient, evId, status, eventData = null) {
 
     await selected.sendFeatureReport(FEATURE_REPORT_ID, packet);
     const deadline = Date.now() + 15000;
+    let pollDelay = 1;
     while (Date.now() < deadline) {
       const reportData = await selected.receiveFeatureReport(FEATURE_REPORT_ID);
       if (!(reportData instanceof DataView)) {
@@ -603,7 +605,8 @@ async function exchangeFeature(recipient, evId, status, eventData = null) {
       }
       const response = parseConfigInputReport(frameData);
       if (response.status === STATUS.PENDING) {
-        await sleep(20);
+        await sleep(pollDelay);
+        pollDelay=Math.min(pollDelay*2,20);
         continue;
       }
       if (response.recipient !== recipient || response.eventId !== (evId & 255)) {
@@ -722,10 +725,10 @@ async function fetchNextOption(recipient,moduleId){const ev=(moduleId<<4);const 
 async function discoverModule(recipient,moduleId){const found=[];let end=-1;for(let i=0;i<18;i++){const opt=await fetchNextOption(recipient,moduleId);if(found.includes(opt))break;if(opt.startsWith('\n'))end=found.length;found.push(opt)}if(end<0)throw new Error(`Malformed module descriptor at module ${moduleId}`);const ordered=found.slice(end).concat(found.slice(0,end)).slice(1);const moduleName=ordered.shift();if(!moduleName)throw new Error(`Missing module name at module ${moduleId}`);const options={};ordered.forEach((name,index)=>options[name]={id:index+1});let fullName=moduleName;if(options.module_variant){const variant=await exchange(recipient,(moduleId<<4)|options.module_variant.id,STATUS.FETCH);fullName+=`/${decode(variant||new Uint8Array())}`}return {name:fullName,config:{id:moduleId,options}}}
 async function discoverConfig(recipient){const max=await getMaxModuleId(recipient),result={};for(let i=0;i<=max;i++){const m=await discoverModule(recipient,i);result[m.name]=m.config}return result}
 async function readInfo(recipient){const board=await exchange(recipient,0,STATUS.GET_BOARD_NAME);const hwid=await exchange(recipient,0,STATUS.GET_HWID);return {board:decode(board||new Uint8Array()),hwid:hex(hwid||new Uint8Array())}}
-async function getPeers(recipient=0){const peers={};try{await exchange(recipient,0,STATUS.INDEX_PEERS);while(true){const d=await exchange(recipient,0,STATUS.GET_PEER);if(!d||d.length<2)break;const peerId=d[d.length-1];if(peerId===255)break;peers[hex(d.slice(0,-1))]=peerId;if(Object.keys(peers).length>255)return {}}}catch(e){log(`Peer discovery: ${e.message}`)}return peers}
+async function getPeers(recipient=0,note=log){const peers={};try{await exchange(recipient,0,STATUS.INDEX_PEERS);while(true){const d=await exchange(recipient,0,STATUS.GET_PEER);if(!d||d.length<2)break;const peerId=d[d.length-1];if(peerId===255)break;peers[hex(d.slice(0,-1))]=peerId;if(Object.keys(peers).length>255)return {}}}catch(e){note(`Peer discovery: ${e.message}`)}return peers}
 
-async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;selected=chosen[0];await selected.open();const hasOutput=selected.collections.some(collection=>collection.outputReports.some(report=>report.reportId===REPORT_OUTPUT_ID));const hasFeature=selected.collections.some(collection=>collection.featureReports.some(report=>report.reportId===FEATURE_REPORT_ID));if(!hasOutput&&!hasFeature)throw new Error('Selected device exposes neither config Output Report 7 nor Feature Report 6.');useFeatureReports=!hasOutput&&hasFeature;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config transport ${useFeatureReports?'Feature Report 6':'Output Report 7'}, battery notifications Input Report 8`);await initializeSelected();}catch(e){if(selected?.opened)try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
-async function initializeSelected(){if(!selected)return;setBusy(true);try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){log(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData()}catch(e){log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`);try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;activeDevice=null;renderDisconnected()}finally{setBusy(false)}}
+async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;let lastError=null;for(const candidate of chosen){try{selected=candidate;await selected.open();const hasOutput=selected.collections.some(collection=>collection.outputReports.some(report=>report.reportId===REPORT_OUTPUT_ID));const hasFeature=selected.collections.some(collection=>collection.featureReports.some(report=>report.reportId===FEATURE_REPORT_ID));if(!hasOutput&&!hasFeature)throw new Error('Selected device exposes neither config Output Report 7 nor Feature Report 6.');useFeatureReports=!hasOutput&&hasFeature;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config transport ${useFeatureReports?'Feature Report 6':'Output Report 7'}, battery notifications Input Report 8`);if(await initializeSelected(candidate!==chosen[chosen.length-1]))return}catch(e){lastError=e;if(selected?.opened)try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false}}if(lastError){log(`Connection failed: ${lastError.message}`,'error');toast(lastError.message)}}catch(e){log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
+let initError=null;async function initializeSelected(silent=false){if(!selected)return;setBusy(true);const notes=[];const note=(m,t)=>notes.push([m,t]);initError=null;try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){note(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0,note);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData();return true}catch(e){initError=e;if(!silent){notes.forEach(([m,t])=>log(m,t));log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`)}try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;activeDevice=null;renderDisconnected();return false}finally{setBusy(false)}}
 function renderConnected(){
   if(!activeDevice)return;
   const d=activeDevice,visible=availableModules();
@@ -802,7 +805,8 @@ function renderConfig(){
   const opts=moduleOptionMap(name),search=$('configSearch').value.trim().toLowerCase();
   const intro=document.createElement('p');
   intro.className='config-intro muted';
-  intro.textContent=name==='ble_qos'
+  const actionOnly=Object.values(opts).every(meta=>meta.type==='action');
+  intro.textContent=actionOnly?'Choose an action to manage Bluetooth pairing.':name==='ble_qos'
     ?'These advanced wireless controls affect how the mouse selects Bluetooth channels. Change them only if you have recommended values.'
     :'Read a setting to see its current value. Edit the value and choose Save to apply it.';
   panel.append(intro);
@@ -817,8 +821,8 @@ function renderConfig(){
   head.append(groupName,count);
   group.append(head);
   const columns=document.createElement('div');
-  columns.className='config-columns';
-  for(const label of ['Setting','Allowed value','Value','Action']){
+  columns.className='config-columns'+(actionOnly?' action-only':'');
+  for(const label of actionOnly?['Setting','Action']:['Setting','Allowed value','Value','Action']){
     const column=document.createElement('span');
     column.textContent=label;
     columns.append(column);
@@ -830,7 +834,7 @@ function renderConfig(){
     if(!`${label} ${help} ${opt}`.toLowerCase().includes(search))continue;
     visibleCount++;
     const row=document.createElement('div');
-    row.className='config-row';
+    row.className='config-row'+(actionOnly?' action-only':'');
     const title=document.createElement('div');
     const optionTitle=document.createElement('div');
     optionTitle.className='option-name';
@@ -885,7 +889,10 @@ function renderConfig(){
       save.addEventListener('click',()=>writeOption(name,opt,row));
       actions.append(save);
     }
-    row.append(title,range,value,actions);
+    if(actionOnly){
+      value.hidden=true;
+      row.append(title,actions,value);
+    }else row.append(title,range,value,actions);
     group.append(row);
   }
   if(visibleCount)panel.append(group);
@@ -922,7 +929,7 @@ function crc32(bytes,seed=1){let c=(seed^0xffffffff)>>>0;for(const b of bytes){c
 async function dfuSync(){const d=await dfuGet('sync');if(!d||d.length!==15)throw new Error('Invalid DFU sync response');const v=new DataView(d.buffer,d.byteOffset,d.byteLength);return {state:v.getUint8(0),length:v.getUint32(1,true),crc:v.getUint32(5,true),offset:v.getUint32(9,true),buffer:v.getUint16(13,true)}}
 function setDfuProgress(offset,length,status){const p=length?Math.min(100,offset/length*100):0;$('dfuProgress').style.width=`${p}%`;$('dfuPercent').textContent=`${p.toFixed(1)}%`;$('dfuStatus').textContent=status}
 async function waitDfuInactive(){let last;for(let i=0;i<120;i++){last=await dfuSync();if(last.state===0)return last;setDfuProgress(last.offset,last.length,last.state===3?'Waiting for flash cleanup…':'Waiting for device…');await sleep(1000)}throw new Error('Timed out waiting for DFU slot to become inactive')}
-async function startDfu(){if(!dfuImage||dfuBusy||!$('dfuTrust').checked)return;if(!confirm(`Update ${activeDevice.board} to firmware ${dfuImage.version}?\n\nDo not disconnect the device during transfer.`))return;dfuBusy=true;$('startDfuBtn').disabled=true;$('disconnectBtn').disabled=true;try{const bin=dfuImage.bin,length=bin.length,checksum=crc32(bin,1);let info=await waitDfuInactive();if(info.state!==0)throw new Error('Another DFU operation is active');let offset=info.length===length&&info.crc===checksum&&info.offset<=length?info.offset:0;const startData=new Uint8Array(12),sv=new DataView(startData.buffer);sv.setUint32(0,length,true);sv.setUint32(4,checksum,true);sv.setUint32(8,offset,true);const m=fwModule();await exchange(activeRecipient,eventId(m,'start'),STATUS.SET,startData);info=await dfuSync();if(![1,2].includes(info.state))throw new Error('Device did not start DFU');let nextCheckpoint=Math.min(offset+info.buffer,length);while(offset<length){const chunk=bin.slice(offset,Math.min(offset+25,nextCheckpoint));if(!chunk.length)break;await exchange(activeRecipient,eventId(m,'data'),STATUS.SET,chunk);offset+=chunk.length;setDfuProgress(offset,length,'Transferring firmware…');if(offset>=nextCheckpoint){let synced=false;for(let retry=0;retry<30;retry++){const s=await dfuSync();if(s.length!==length||s.crc!==checksum)throw new Error('DFU synchronization metadata mismatch');if(s.state===2){await sleep(300);continue}if(s.state===0&&s.offset!==length)throw new Error('DFU interrupted by device');if(s.state!==0&&s.offset!==offset)throw new Error(`DFU offset mismatch: device ${s.offset}, browser ${offset}`);synced=true;break}if(!synced)throw new Error('DFU checkpoint timeout');nextCheckpoint=Math.min(nextCheckpoint+info.buffer,length)}}const final=await waitDfuInactive();if(final.state!==0||final.offset!==length)throw new Error('Device did not confirm completed image');setDfuProgress(length,length,'Transfer complete. Rebooting…');const rebootData=await exchange(activeRecipient,eventId(m,'reboot'),STATUS.FETCH);if(!rebootData||!rebootData[0])throw new Error('Firmware transfer completed, but reboot was not confirmed');setDfuProgress(length,length,'Firmware update completed');log(`Firmware ${dfuImage.version} transferred and reboot requested`,'success');toast('Firmware update completed')}catch(e){setDfuProgress(0,1,`Failed: ${e.message}`);log(`DFU failed: ${e.message}`,'error');toast(`DFU failed: ${e.message}`)}finally{dfuBusy=false;$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked;$('disconnectBtn').disabled=!activeDevice}}
+async function startDfu(){if(!dfuImage||dfuBusy||!$('dfuTrust').checked)return;if(!confirm(`Update ${activeDevice.board} to firmware ${dfuImage.version}?\n\nDo not disconnect the device during transfer.`))return;dfuBusy=true;$('startDfuBtn').disabled=true;$('disconnectBtn').disabled=true;try{const bin=dfuImage.bin,length=bin.length,checksum=crc32(bin,1);let info=await waitDfuInactive();if(info.state!==0)throw new Error('Another DFU operation is active');let offset=info.length===length&&info.crc===checksum&&info.offset<=length?info.offset:0;const startData=new Uint8Array(12),sv=new DataView(startData.buffer);sv.setUint32(0,length,true);sv.setUint32(4,checksum,true);sv.setUint32(8,offset,true);const m=fwModule();await exchange(activeRecipient,eventId(m,'start'),STATUS.SET,startData);info=await dfuSync();if(![1,2].includes(info.state))throw new Error('Device did not start DFU');let nextCheckpoint=Math.min(offset+info.buffer,length);while(offset<length){const chunk=bin.slice(offset,Math.min(offset+DFU_CHUNK_SIZE,nextCheckpoint));if(!chunk.length)break;await exchange(activeRecipient,eventId(m,'data'),STATUS.SET,chunk);offset+=chunk.length;setDfuProgress(offset,length,'Transferring firmware…');if(offset>=nextCheckpoint){let synced=false;for(let retry=0;retry<30;retry++){const s=await dfuSync();if(s.length!==length||s.crc!==checksum)throw new Error('DFU synchronization metadata mismatch');if(s.state===2){await sleep(300);continue}if(s.state===0&&s.offset!==length)throw new Error('DFU interrupted by device');if(s.state!==0&&s.offset!==offset)throw new Error(`DFU offset mismatch: device ${s.offset}, browser ${offset}`);synced=true;break}if(!synced)throw new Error('DFU checkpoint timeout');nextCheckpoint=Math.min(nextCheckpoint+info.buffer,length)}}const final=await waitDfuInactive();if(final.state!==0||final.offset!==length)throw new Error('Device did not confirm completed image');setDfuProgress(length,length,'Transfer complete. Rebooting…');const rebootData=await exchange(activeRecipient,eventId(m,'reboot'),STATUS.FETCH);if(!rebootData||!rebootData[0])throw new Error('Firmware transfer completed, but reboot was not confirmed');setDfuProgress(length,length,'Firmware update completed');log(`Firmware ${dfuImage.version} transferred and reboot requested`,'success');toast('Firmware update completed')}catch(e){setDfuProgress(0,1,`Failed: ${e.message}`);log(`DFU failed: ${e.message}`,'error');toast(`DFU failed: ${e.message}`)}finally{dfuBusy=false;$('startDfuBtn').disabled=!dfuImage||!$('dfuTrust').checked;$('disconnectBtn').disabled=!activeDevice}}
 
 async function ledState(id){const m=Object.keys(modules).find(k=>k==='led_stream'||k.startsWith('led_stream/'));if(!m)throw new Error('LED stream module not found');const d=await exchange(activeRecipient,eventId(m,'get_leds_state'),STATUS.FETCH,null,1);if(!d||d.length<2)throw new Error('Invalid LED state response');const ledCount=d.length-1;if(id>=ledCount)throw new Error(`LED ID ${id} is not available (count ${ledCount})`);return {ready:!!d[0],free:d[id+1],module:m}}
 async function sendLedStep(m,id,r,g,b,substeps,subtime){const data=new Uint8Array(8),v=new DataView(data.buffer);v.setUint8(0,r);v.setUint8(1,g);v.setUint8(2,b);v.setUint16(3,substeps,true);v.setUint16(5,subtime,true);v.setUint8(7,id);await exchange(activeRecipient,eventId(m,'set_led_effect'),STATUS.SET,data,1)}
