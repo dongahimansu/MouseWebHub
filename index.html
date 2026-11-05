@@ -49,6 +49,7 @@ nav{display:grid;gap:5px}.nav-item{display:flex;align-items:center;gap:12px;back
 .count{background:var(--button-secondary-bg);color:var(--button-secondary-text);padding:6px 9px;border-radius:20px;font-size:10px;font-weight:700}
 .module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.module-tile{padding:13px;border:1px solid var(--border-color);border-radius:9px;background:var(--bg-color)}.module-tile strong{font-size:12px;display:block;overflow-wrap:anywhere}.module-tile small{color:var(--text-muted);font-size:10px}
 .empty-state{color:var(--text-muted);font-size:12px;padding:24px;text-align:center}.notice{padding:16px 18px;background:#132b2a;border-color:#14532d}.notice strong{font-size:12px;color:#a7f3d0}.notice p{font-size:11px;color:#a7c9bd;line-height:1.6;margin:5px 0 0}
+.peer-erase-panel{padding:22px}.peer-erase-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}.peer-erase-icon{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:12px;background:rgba(16,185,129,.14);color:var(--battery-good);font-size:20px}.peer-erase-header h2{font-size:16px;margin:1px 0 5px}.peer-erase-header p,.peer-erase-card p{color:var(--text-muted);font-size:12px;line-height:1.55;margin:0}.peer-erase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.peer-erase-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:180px;padding:17px;border:1px solid var(--border-color);border-radius:11px;background:var(--bg-color)}.peer-erase-card h3{margin:0;font-size:13px}.peer-erase-card p{flex:1}.peer-erase-card .peer-erase-action{width:100%;min-height:39px;background:#7f1d1d;color:#fee2e2}.peer-erase-card .peer-erase-action:hover:not(:disabled){background:#991b1b}.peer-erase-card .peer-erase-action:disabled{background:var(--button-secondary-bg);color:var(--button-secondary-text)}.peer-erase-warning{display:flex;align-items:flex-start;gap:9px;margin-top:16px;padding:12px 14px;border:1px solid rgba(245,158,11,.3);border-radius:9px;background:rgba(245,158,11,.08);color:var(--text-muted);font-size:11px;line-height:1.5}.peer-erase-warning strong{color:var(--battery-warn)}.peer-erase-warning-icon{color:var(--battery-warn);font-weight:800}@media(max-width:900px){.peer-erase-grid{grid-template-columns:1fr}.peer-erase-card{min-height:0}.peer-erase-card p{flex:none}}
 .config-toolbar{display:flex;align-items:end;gap:14px;margin-bottom:14px}.config-toolbar label,.form-grid label{display:grid;gap:7px;font-size:11px;color:var(--text-main);font-weight:700}
 .config-toolbar select,.config-toolbar input,.form-grid input{height:38px;border:1px solid var(--input-border);border-radius:8px;background:var(--input-bg);padding:0 11px;font:inherit;font-size:12px;color:var(--text-main);min-width:220px}
 .toolbar-spacer{flex:1}.config-toolbar input{min-width:210px}.config-panel{padding:0;overflow:hidden}.config-panel.empty-state{padding:28px}
@@ -147,7 +148,7 @@ footer{padding:14px 2px;color:var(--text-muted);font-size:10px}footer span{paddi
 </head>
 <body>
 <header class="topbar">
-    <div class="brand"><div class="brand-mark">G</div><div><strong>G Mouse V1 / Dongle V1 Maintenance Tool</strong><small>Mouse & Dongle Management & Firmware Update</small></div></div>
+    <div class="brand"><div class="brand-mark">G</div><div><strong>G Mouse V1 / Dongle V1 Maintenance Tool</strong><small>Mouse & Dongle Management & Firmware Update · Web App v1.0.0</small></div></div>
     <div class="top-actions"><button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button><span id="connectionBadge" class="badge offline">Not connected</span><button id="connectBtn" class="primary">Connect Device</button></div>
   </header>
   <main class="shell">
@@ -407,8 +408,8 @@ const OPTIONS = {
   channel_map:{id:'chmap',range:['0','0x1FFFFFFFFF'],help:'5-byte BLE channel map bitmask',type:'hex'},
   wifi_blacklist:{id:'blacklist',range:['0','1,2,...,11'],help:'List of blacklisted Wi-Fi channels',type:'text'}
  },
- 'ble_bond': {peer_erase:{id:'peer_erase',range:null,help:'Trigger peer erase',type:'action'},peer_search:{id:'peer_search',range:null,help:'Trigger peer search',type:'action'}},
- 'factory_reset': {fast_pair:{id:'fast_pair',range:null,help:'Trigger Fast Pair factory reset',type:'action'}}
+ 'ble_bond': {peer_erase:{id:'peer_erase',range:null,help:'Trigger peer erase',type:'action'},peer_erase_ble1:{id:'peer_erase_ble1',range:null,help:'Erase BLE1 pairing slot',type:'action'},peer_erase_ble2:{id:'peer_erase_ble2',range:null,help:'Erase BLE2 pairing slot',type:'action'},peer_search:{id:'peer_search',range:null,help:'Trigger peer search',type:'action'}},
+ 'factory_reset': {device:{id:'device',range:null,help:'Restore device factory defaults',type:'action'}}
 };
 const FORMATS = {
  'ble_qos/param_ble':{size:16,fields:[['sample_count_min','u16'],['min_channel_count','u8'],['weight_crc_ok','i16'],['weight_crc_error','i16'],['ble_block_threshold','u16'],['eval_max_count','u8'],['eval_duration','u16'],['eval_keepout_duration','u16'],['eval_success_threshold','u16']]},
@@ -509,7 +510,7 @@ function isDongleEndpoint(device=activeDevice){return !!device&&boardType(device
 function availableModules(){
   return Object.fromEntries(Object.entries(modules).filter(([name])=>{
     if(isDongleEndpoint())return name==='ble_bond';
-    return name==='ble_bond'||name==='ble_qos';
+    return name==='ble_bond'||name==='ble_qos'||name==='factory_reset';
   }));
 }
 function friendlyModuleName(name){
@@ -784,6 +785,7 @@ async function discoverModule(recipient,moduleId){const found=[];let end=-1;for(
 async function discoverConfig(recipient){const max=await getMaxModuleId(recipient),result={};for(let i=0;i<=max;i++){const m=await discoverModule(recipient,i);result[m.name]=m.config}return result}
 async function readInfo(recipient){const board=await exchange(recipient,0,STATUS.GET_BOARD_NAME);const hwid=await exchange(recipient,0,STATUS.GET_HWID);return {board:decode(board||new Uint8Array()),hwid:hex(hwid||new Uint8Array())}}
 async function getPeers(recipient=0,note=log){const peers={};try{await exchange(recipient,0,STATUS.INDEX_PEERS);while(true){const d=await exchange(recipient,0,STATUS.GET_PEER);if(!d||d.length<2)break;const peerId=d[d.length-1];if(peerId===255)break;peers[hex(d.slice(0,-1))]=peerId;if(Object.keys(peers).length>255)return {}}}catch(e){note(`Peer discovery: ${e.message}`)}return peers}
+function selectorPositionLabel(recipient,direct=false){return direct?'OFF / USB':recipient===0?'BLE1':recipient===1?'BLE2':recipient===2?'RF1':recipient===3?'RF2':'Peer '+recipient}
 
 async function connectDevice(){if(!('hid' in navigator)){toast('WebHID is not supported. Use Chrome or Edge.');return}try{const chosen=await navigator.hid.requestDevice({filters:[{vendorId:VID,productId:PIDs[0]},{vendorId:VID,productId:PIDs[1]}]});if(!chosen.length)return;let lastError=null;for(const candidate of chosen){try{selected=candidate;await selected.open();const hasOutput=selected.collections.some(collection=>collection.outputReports.some(report=>report.reportId===REPORT_OUTPUT_ID));const hasFeature=selected.collections.some(collection=>collection.featureReports.some(report=>report.reportId===FEATURE_REPORT_ID));if(!hasOutput&&!hasFeature)throw new Error('Selected device exposes neither config Output Report 7 nor Feature Report 6.');useFeatureReports=!hasOutput&&hasFeature;selected.addEventListener('inputreport',handleConfigInputReport);log(`USB HID device opened: VID 0x${selected.vendorId.toString(16)}, PID 0x${selected.productId.toString(16)}; config transport ${useFeatureReports?'Feature Report 6':'Output Report 7'}, battery notifications Input Report 8`);if(await initializeSelected(candidate!==chosen[chosen.length-1]))return}catch(e){lastError=e;if(selected?.opened)try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false}}if(lastError){log(`Connection failed: ${lastError.message}`,'error');toast(lastError.message)}}catch(e){log(`Connection failed: ${e.message}`,'error');toast(e.message)}}
 let initError=null;async function initializeSelected(silent=false){if(!selected)return;setBusy(true);const notes=[];const note=(m,t)=>notes.push([m,t]);initError=null;try{devices=[];try{const directInfo=await readInfo(0);const directConfig=await discoverConfig(0);devices.push({recipient:0,...directInfo,config:directConfig,direct:true})}catch(e){note(`USB endpoint is not directly configurable; checking connected peers: ${e.message}`)}const peers=await getPeers(0,note);for(const [peerHwid,recipient] of Object.entries(peers)){try{const info=await readInfo(recipient),config=await discoverConfig(recipient);devices.push({recipient,...info,config,direct:false,peerHwid})}catch(e){log(`Could not initialize peer ${peerHwid}: ${e.message}`,'error')}}if(!devices.length)throw new Error('No configurable G Mouse V1 or G Dongle V1 device endpoint was discovered');activeDevice=devices[0];activeRecipient=activeDevice.recipient;modules=activeDevice.config;renderConnected();log(`Initialized ${devices.length} device configuration endpoint(s).`,'success');toast(`Connected: ${activeDevice.board}`);refreshBatteryData();return true}catch(e){initError=e;if(!silent){notes.forEach(([m,t])=>log(m,t));log(`Device initialization failed: ${e.message}`,'error');toast(`Initialization failed: ${e.message}`)}try{await selected.close()}catch(closeError){log(`HID cleanup failed: ${closeError.message}`,'error')}selected=null;useFeatureReports=false;activeDevice=null;renderDisconnected();return false}finally{setBusy(false)}}
@@ -797,7 +799,7 @@ function renderConnected(){
   devices.forEach((dev,index)=>{
     const option=document.createElement('option');
     option.value=String(index);
-    option.textContent=`${dev.board} · ${dev.hwid.slice(0,12)}${dev.direct?' (USB)':' (peer)'}`;
+    option.textContent=`${selectorPositionLabel(dev.recipient,dev.direct)} · ${dev.board} · ${dev.hwid.slice(0,12)}${dev.direct?' (USB)':' (peer)'}`;
     endpoint.append(option);
   });
   endpoint.value=String(Math.max(0,devices.indexOf(activeDevice)));
@@ -805,7 +807,7 @@ function renderConnected(){
   $('connectionBadge').textContent='Connected';
   $('connectionBadge').className='badge online';
   $('deviceName').textContent=d.board;
-  $('deviceMeta').textContent=`HW ID: ${d.hwid}${devices.length>1?` · ${devices.length} endpoints`:''}`;
+  $('deviceMeta').textContent=`Switch: ${selectorPositionLabel(d.recipient,d.direct)} · HW ID: ${d.hwid}${devices.length>1?` · ${devices.length} endpoints`:''}`;
   $('disconnectBtn').disabled=false;
   $('refreshBtn').disabled=false;
   $('readAllBtn').disabled=false;
@@ -828,6 +830,18 @@ function renderConnected(){
     tile.querySelector('strong').textContent=friendlyModuleName(name);
     tile.querySelector('small').textContent=`${Object.keys(mod.options).length} settings`;
     $('moduleOverview').append(tile);
+  }
+  async function erasePeer(dev,optionName){
+    if(!confirm(`Erase the paired peer assigned to ${selectorPositionLabel(dev.recipient, false)}?\n\nThis cannot be undone.`))return;
+    const module=dev.config.ble_bond;
+    const option=module?.options?.[optionName];
+    if(!option){toast('Selected peer does not expose peer erase');return}
+    try{
+      await exchange(dev.recipient,(module.id<<4)|option.id,STATUS.SET,new Uint8Array());
+      log(`Erased paired peer assigned to ${selectorPositionLabel(dev.recipient, false)}`,'success');
+      toast('Peer erased');
+      await initializeSelected(true);
+    }catch(error){log(`Peer erase failed: ${error.message}`,'error');toast(error.message)}
   }
   const select=$('moduleSelect');
   select.innerHTML='';
@@ -859,6 +873,100 @@ function renderConfig(){
   panel.innerHTML='';
   if(!name||!availableModules()[name]){panel.textContent='Select a setting group.';return}
   const opts=moduleOptionMap(name),search=$('configSearch').value.trim().toLowerCase();
+  if(name==='factory_reset'){
+    panel.classList.add('peer-erase-panel');
+    const header=document.createElement('div');
+    header.className='peer-erase-header';
+    const heading=document.createElement('div');
+    const title=document.createElement('h2');
+    title.textContent='Restore factory defaults';
+    const description=document.createElement('p');
+    description.textContent='Reset the mouse profiles and Bluetooth pairing data.';
+    heading.append(title,description);
+    header.append(heading);
+    panel.append(header);
+    const warning=document.createElement('div');
+    warning.className='peer-erase-warning';
+    warning.innerHTML='<span class="peer-erase-warning-icon" aria-hidden="true">!</span><span><strong>This cannot be undone.</strong> All five user profiles will be replaced with firmware defaults and Bluetooth pairings will be removed. Fast Pair data is also cleared when supported by the firmware. Other application settings are unchanged. The mouse will restart.</span>';
+    panel.append(warning);
+    const button=document.createElement('button');
+    button.className='peer-erase-action';
+    button.textContent=opts.device?'Restore factory defaults':'Not supported by firmware';
+    button.disabled=!opts.device;
+    button.addEventListener('click',async()=>{
+      if(!confirm('Restore all factory defaults?\n\nThis resets all profiles and removes Bluetooth pairings. The mouse will restart.'))return;
+      button.disabled=true;
+      try{
+        await exchange(activeRecipient,eventId(name,'device'),STATUS.SET,new Uint8Array());
+        log('Factory reset accepted; the mouse will restart','success');
+        toast('Reset accepted. The mouse is restarting.');
+      }catch(error){log(`Factory reset failed: ${error.message}`,'error');toast(error.message);button.disabled=false}
+    });
+    panel.append(button);
+    return;
+  }
+  if(name==='ble_bond'){
+    ['peer_erase','peer_erase_ble1','peer_erase_ble2'].forEach(option=>delete opts[option]);
+    if(search){
+      panel.classList.add('empty-state');
+      panel.textContent='Bluetooth peer erase actions are always shown. Clear the search field to view them.';
+      return;
+    }
+    panel.classList.add('peer-erase-panel');
+    const eraseOptions=modules.ble_bond?.options||{};
+    const header=document.createElement('div');
+    header.className='peer-erase-header';
+    const icon=document.createElement('div');
+    icon.className='peer-erase-icon';
+    icon.setAttribute('aria-hidden','true');
+    icon.textContent='⌁';
+    const headerText=document.createElement('div');
+    const title=document.createElement('h2');
+    title.textContent='Manage Bluetooth pairings';
+    const description=document.createElement('p');
+    description.textContent='Remove one saved connection or clear both pairing slots on your mouse.';
+    headerText.append(title,description);
+    header.append(icon,headerText);
+    panel.append(header);
+    const cards=document.createElement('div');
+    cards.className='peer-erase-grid';
+    const peerActions=[
+      {title:'Bluetooth Peer 1',description:'Remove the saved pairing in slot 1. Peer 2 will remain saved.',option:'peer_erase_ble1',run:()=>eraseBleSlot(0)},
+      {title:'Bluetooth Peer 2',description:'Remove the saved pairing in slot 2. Peer 1 will remain saved.',option:'peer_erase_ble2',run:()=>eraseBleSlot(1)},
+      {title:'Both Bluetooth peers',description:'Remove all saved pairings from both slots on the mouse.',option:null,run:eraseBothBlePeers}
+    ];
+    for(const action of peerActions){
+      const supported=action.option
+        ? !!eraseOptions[action.option]
+        : !!eraseOptions.peer_erase_ble1&&!!eraseOptions.peer_erase_ble2;
+      const card=document.createElement('article');
+      card.className='peer-erase-card';
+      const heading=document.createElement('h3');
+      heading.textContent=action.title;
+      const detail=document.createElement('p');
+      detail.textContent=action.description;
+      const button=document.createElement('button');
+      button.className='peer-erase-action';
+      button.textContent=supported?'Erase pairing':'Not supported by firmware';
+      button.disabled=!supported;
+      if(!supported)button.title='This firmware does not expose the required BLE peer erase option.';
+      button.addEventListener('click',action.run);
+      card.append(heading,detail,button);
+      cards.append(card);
+    }
+    panel.append(cards);
+    const warning=document.createElement('div');
+    warning.className='peer-erase-warning';
+    const warningIcon=document.createElement('span');
+    warningIcon.className='peer-erase-warning-icon';
+    warningIcon.setAttribute('aria-hidden','true');
+    warningIcon.textContent='!';
+    const warningText=document.createElement('span');
+    warningText.innerHTML='<strong>Pairing removal cannot be undone.</strong> You will need to pair the mouse with the device again to reconnect.';
+    warning.append(warningIcon,warningText);
+    panel.append(warning);
+    return;
+  }
   const intro=document.createElement('p');
   intro.className='config-intro muted';
   const actionOnly=Object.values(opts).every(meta=>meta.type==='action');
@@ -882,6 +990,36 @@ function renderConfig(){
     const column=document.createElement('span');
     column.textContent=label;
     columns.append(column);
+  }
+  async function eraseBleSlot(slot){
+    if(!confirm(`Erase the ${slot===0?'BLE1':'BLE2'} pairing slot?\n\nThis cannot be undone.`))return;
+    const module=modules.ble_bond;
+    const option=module?.options?.[`peer_erase_ble${slot+1}`];
+    if(!option){toast('Firmware does not support individual BLE slot erase');return}
+    try{
+      await exchange(activeRecipient,(module.id<<4)|option.id,STATUS.SET,new Uint8Array());
+      log(`Erased ${slot===0?'BLE1':'BLE2'} pairing slot`,'success');
+      toast('BLE pairing slot erased');
+      await initializeSelected(true);
+    }catch(error){log(`BLE slot erase failed: ${error.message}`,'error');toast(error.message)}
+  }
+  async function eraseBothBlePeers(){
+    if(!confirm('Erase both BLE pairing peers?\n\nThis cannot be undone.'))return;
+    const module=modules.ble_bond;
+    if(!module?.options?.peer_erase_ble1||!module?.options?.peer_erase_ble2){
+      toast('Firmware does not support erasing both BLE peers');
+      return;
+    }
+    try{
+      for(const peerOption of ['peer_erase_ble1','peer_erase_ble2']){
+        const slot=module.options?.[peerOption];
+        if(!slot)throw new Error(`Firmware does not support ${peerOption}`);
+        await exchange(activeRecipient,(module.id<<4)|slot.id,STATUS.SET,new Uint8Array());
+      }
+      log('Erased both BLE peers','success');
+      toast('Both BLE peers erased');
+      await initializeSelected(true);
+    }catch(error){log(`BLE peer erase failed: ${error.message}`,'error');toast(error.message)}
   }
   group.append(columns);
   let visibleCount=0;
